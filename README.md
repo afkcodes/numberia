@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite. `npm run build` creates the production site in `dist/`; `npm run preview` serves that build. Node 22.6+ is required for the TypeScript tests.
+Open the local URL printed by Vite. `npm run build` creates the production site in `dist/`; `npm run preview` serves that build. Use Node 22.12+ for the development tools and TypeScript tests.
 
 ## Play
 
@@ -44,15 +44,20 @@ These sources support instructional approaches; they do not establish that this 
 ## Validation
 
 ```sh
-npm test
-npm run build
+npm run check
 ```
 
-Twenty-four tests cover saved clubhouse migration, duplicate/insufficient gem purchases, per-grade learning memory, spaced fact review, supported answers, physical answer models for every skill, bridge quantities, contextual bridge explanations, speech ordering and cancellation, error recovery, and spoken decimals and fractions. Browser checks verify pointer and keyboard placement, counting after props land, demonstrations, complete bridge geometry, stable playground size during celebrations, room delivery, and widths from 320 to 2048px. Regression tests also check fruit containment at multiple tray widths, the slide return path, and the squirrel’s pauses, facing, and climbing sequence. Engine tests exercise all supported grade/skill combinations over 10,000 generated questions, distinct valid choices, arithmetic correctness, grade-specific progression, duplicate reward protection, local-calendar streaks, and malformed-save recovery. Browser checks also cover 3D answer collection, retry coaching, animated demonstrations, completed missions, rewards, daily claims, companion unlocks, profile changes, and responsive layouts.
+Twenty-nine tests cover saved clubhouse migration, duplicate/insufficient gem purchases, per-grade learning memory, spaced fact review, supported answers, physical answer models for every skill, bridge quantities, contextual bridge explanations, speech ordering and cancellation, error recovery, and spoken decimals and fractions. Browser checks verify pointer and keyboard placement, counting after props land, demonstrations, complete bridge geometry, stable playground size during celebrations, room delivery, and widths from 320 to 2048px. Regression tests also check fruit containment at multiple tray widths, the slide return path, and the squirrel’s pauses, facing, and climbing sequence. Engine tests exercise all supported grade/skill combinations over 10,000 generated questions, distinct valid choices, arithmetic correctness, grade-specific progression, duplicate reward protection, local-calendar streaks, and malformed-save recovery. Browser checks also cover 3D answer collection, retry coaching, animated demonstrations, completed missions, rewards, daily claims, companion unlocks, profile changes, and responsive layouts.
+
+Oxfmt handles formatting; Oxlint checks correctness, React hooks, and dependency cycles. See [the development guide](docs/development.md) for commands and module responsibilities.
 
 ## Main files
 
-- `src/App.tsx`: adventure map, navigation, grade/profile controls, collection, practice, progress, and grown-up corner.
+- `src/App.tsx`: page composition and the active quest.
+- `src/app/` and `src/app/dialogs/`: navigation, dialog content, and the browser persistence hook.
+- `src/features/`: adventure map, welcome banner, daily quests, practice, backpack, and progress pages.
+- `src/components/`: shared characters, dialogs, math props, and visual primitives.
+- `src/saveReducer.ts` and `src/dailyQuests.ts`: typed progress actions and shared daily reward eligibility.
 - `src/Quest.tsx`: story, full-screen arena, answer flow, and completion celebration.
 - `src/Clubhouse.tsx` and `src/clubhouse.ts`: illustrated cottage, dress-up, pet interactions, and atomic gem purchases.
 - `src/HandsOn.tsx` and `src/handsOnModel.ts`: pointer/tap math missions and physical answer validation.
@@ -66,7 +71,7 @@ Twenty-four tests cover saved clubhouse migration, duplicate/insufficient gem pu
 - `src/home-layout.css`: home viewport layout, readable captions, responsive chapter cards, and ambient birds.
 - `src/MathGarden.tsx`, `src/fruitLayout.ts`, and `src/mathNarration.ts`: concrete arithmetic, spoken counting, tray geometry, and answer explanations.
 - `src/HintCoach.tsx`: dynamic Milo coaching and spoken explanations.
-- `src/game.ts`: question generation, persistence, and progression.
+- `src/game/`: arithmetic generation, missions, and domain types; `src/game.ts`: public exports, persistence, and progression.
 - `src/audio.ts`, `src/speechQueue.ts`, and `docs/voice.md`: original device narration, spoken counting, sound effects, and cancellation.
 - `src/Celebration.tsx`: particle celebrations.
 - `tokens.css`: shared visual tokens; `src/styles.css`, `src/playful.css`, `src/arena.css`, `src/storybook.css`, and `src/adventure-extras.css`: interface, toy-like theme, arena, scenery, and selection styles.
