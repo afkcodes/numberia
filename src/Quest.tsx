@@ -1,16 +1,21 @@
 import {
   ArrowRight,
   CheckCircle2,
+  Cherry,
   Gem,
   Hand,
   Heart,
   Home,
   Map as MapIcon,
+  MoonStar,
   Sparkles,
   Sprout,
   Star,
+  TreeDeciduous,
+  UtensilsCrossed,
   Volume2,
   VolumeX,
+  Waves,
 } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { playSound, speak, stopSpeaking } from './audio';
@@ -34,6 +39,14 @@ import Meadow from './Meadow';
 import ChapterIllustration from './playgrounds/ChapterIllustration';
 import MathSupport from './playgrounds/MathSupport';
 import { playgroundTheme } from './playgrounds/themes';
+
+const chapterIcons = {
+  moonberry: Cherry,
+  bridge: Waves,
+  picnic: UtensilsCrossed,
+  firefly: MoonStar,
+  wishing: TreeDeciduous,
+};
 
 type QuestProps = {
   save: Save;
@@ -60,6 +73,7 @@ export default function Quest({
 }: QuestProps) {
   const mission = missions[missionIndex];
   const theme = playgroundTheme(missionIndex);
+  const ChapterIcon = chapterIcons[theme.id];
   const skill = practiceSkill || missionSkill(save.grade, missionIndex);
   const [stage, setStage] = useState<'intro' | 'play' | 'reward'>('intro');
   const [round, setRound] = useState(0);
@@ -252,7 +266,7 @@ export default function Quest({
           <header className="arena-header">
             <div className="arena-title">
               <span className="arena-title-icon">
-                <Sprout size={25} />
+                <ChapterIcon size={25} aria-hidden="true" />
               </span>
               <div>
                 <strong>{practiceSkill ? 'A little practice magic' : mission.short}</strong>
@@ -294,7 +308,7 @@ export default function Quest({
               <div className="arena-world-heading">
                 <div>
                   <span className="arena-world-kicker">
-                    <LeafIcon />
+                    <ChapterIcon size={14} aria-hidden="true" />
                     {theme.invitation}
                   </span>
                   <h1>
@@ -663,7 +677,4 @@ export default function Quest({
       )}
     </Modal>
   );
-}
-function LeafIcon() {
-  return <Sprout size={14} />;
 }

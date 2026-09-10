@@ -1,45 +1,65 @@
 /* Chapter skins share the same readable math surfaces and predictable controls. */
 .quest-modal {
-  --world-header: #e3cef6;
-  --world-surface: #f2e4fc;
-  --world-ink: #583376;
-  --world-edge: #aa7dcc;
+  --world-header: #335d46;
+  --world-trim: #234733;
+  --world-surface: #f2e8ff;
+  --world-ink: #fff8e6;
+  --world-muted: #d8e9d5;
+  --world-edge: #769d75;
+  --world-accent: #d5b0ff;
+  --world-accent-ink: #50306c;
   --world-hill: #b8d787;
   --world-hill-front: #8fc16f;
   --world-tree: #60a873;
 }
 .quest-modal.playground-bridge {
-  --world-header: #b5e5df;
+  --world-header: #206669;
+  --world-trim: #17494e;
   --world-surface: #e0f4ec;
-  --world-ink: #205e62;
+  --world-ink: #fff8e6;
+  --world-muted: #cfeae5;
   --world-edge: #64b4ad;
+  --world-accent: #8de1d5;
+  --world-accent-ink: #174e51;
   --world-hill: #b0d696;
   --world-hill-front: #91c57d;
   --world-tree: #4eaa8b;
 }
 .quest-modal.playground-picnic {
-  --world-header: #ffd5aa;
+  --world-header: #4b6635;
+  --world-trim: #354b28;
   --world-surface: #ffedce;
-  --world-ink: #80472a;
-  --world-edge: #e5a16b;
+  --world-ink: #fff8e6;
+  --world-muted: #e4eacd;
+  --world-edge: #91a667;
+  --world-accent: #ffbc79;
+  --world-accent-ink: #693b20;
   --world-hill: #bfda8d;
   --world-hill-front: #9bc575;
   --world-tree: #68a66b;
 }
 .quest-modal.playground-firefly {
   --world-header: #293f62;
+  --world-trim: #1c2c48;
   --world-surface: #e7e8fa;
   --world-ink: #ffe7a0;
+  --world-muted: #d1e1f5;
   --world-edge: #688fba;
+  --world-accent: #ffe08a;
+  --world-accent-ink: #564326;
   --world-hill: #328b86;
   --world-hill-front: #286f7e;
   --world-tree: #48a29b;
 }
 .quest-modal.playground-wishing {
-  --world-header: #f4d3e1;
-  --world-surface: #fff0f1;
-  --world-ink: #75405c;
-  --world-edge: #d6a3bb;
+  --world-header: #285e3e;
+  --world-trim: #1e452f;
+  --world-surface: #fff3d6;
+  --world-ink: #fff4d5;
+  --world-muted: #d8e8c8;
+  --world-edge: #80a669;
+  --world-accent: #ffd16c;
+  --world-accent-ink: #614516;
   --world-hill: #b9d898;
   --world-hill-front: #91c38d;
   --world-tree: #65af8d;
@@ -63,17 +83,70 @@
   transform: rotate(5deg);
 }
 .quest-modal .arena-world,
+.quest-modal .arena-world-heading {
+  background: var(--world-header);
+}
+.quest-modal .arena-header,
+.quest-modal .arena-world .meadow-controls,
+.quest-modal .arena-world-footer {
+  background: var(--world-trim);
+  border-color: var(--world-edge);
+}
+.quest-modal .arena-header,
 .quest-modal .arena-world-heading,
 .quest-modal .arena-world .meadow-controls,
 .quest-modal .arena-world-footer {
-  background: var(--world-header);
-}
-.quest-modal .arena-world-heading,
-.quest-modal .arena-world-kicker,
-.quest-modal .arena-world .meadow-controls,
-.quest-modal .arena-world-footer,
-.quest-modal .arena-world-footer button {
   color: var(--world-ink);
+}
+.quest-modal .arena-title div > span,
+.quest-modal .arena-journey > span:last-child,
+.quest-modal .arena-world-kicker {
+  color: var(--world-muted);
+}
+.quest-modal .arena-title-icon {
+  background: var(--world-accent);
+  color: var(--world-accent-ink);
+  border-color: var(--world-accent);
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--world-accent) 45%, var(--world-trim));
+}
+.quest-modal .arena-sound,
+.quest-modal.play > .modal-inner > .modal-close {
+  background: var(--world-surface);
+  color: var(--world-trim);
+  border-color: var(--world-edge);
+}
+.quest-modal .journey-gem:not(.is-restored) {
+  background: var(--world-header);
+  border-color: var(--world-edge);
+  color: var(--world-muted);
+}
+.quest-modal .journey-gem.is-now:not(.is-restored) {
+  border-color: var(--world-accent);
+  color: var(--world-accent);
+}
+.quest-modal .arena-world-footer button,
+.quest-modal .arena-world-kicker svg,
+.quest-modal .arena-world-footer > span > svg,
+.quest-modal .arena-world .meadow-controls svg {
+  color: var(--world-accent);
+}
+.quest-modal .arena-world-footer button:focus-visible,
+.quest-modal .arena-sound:focus-visible,
+.quest-modal.play > .modal-inner > .modal-close:focus-visible {
+  outline: 3px solid var(--world-accent);
+  outline-offset: 3px;
+}
+@media (hover: hover) {
+  .quest-modal .arena-sound:hover,
+  .quest-modal.play > .modal-inner > .modal-close:hover {
+    background: var(--world-accent);
+    color: var(--world-accent-ink);
+  }
+  .quest-modal .arena-world-footer button:hover {
+    color: var(--world-ink);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
 }
 .quest-modal .arena-world-heading {
   border-bottom: 1px solid color-mix(in srgb, var(--world-edge) 60%, transparent);
