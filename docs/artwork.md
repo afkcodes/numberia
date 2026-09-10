@@ -1,0 +1,15 @@
+# Original Numberia artwork
+
+Both assets were generated with the built-in imagegen tool, then copied into this project. Character avatars and the 3D woodland are original code-native drawings/models.
+
+- `public/art/whispering-woods.png` — illustrated adventure-map background.
+- `public/art/explorers.png` — transparent explorer, Milo, and Pip artwork.
+
+## Forest prompt
+
+Use case: illustration-story. Asset type: background art for an interactive elementary math adventure game map, 1536 x 1024 landscape. Create an exquisitely charming hand-painted storybook game world, orthographic oblique aerial view of a sunlit enchanted woodland. A winding buttery-yellow sandy path from lower left through middle-left then center across a turquoise stream on a tiny wooden bridge to upper right, surrounded by soft rolling mint green grass islands and voluminous jade green rounded trees, whimsical red-capped mushrooms, round stones, tiny yellow wildflowers, a cute little cottage with a coral-red roof on the left lower edge, and a huge old tree house at upper right. Gentle pale mint atmospheric hills in background. Bright wholesome morning light. Flat-ish 2D gouache illustration with tactile grain and softly modeled dimensional forms, professional children's adventure game art, lovely sophisticated muted emerald, seafoam, warm cream, terra cotta, teal palette. Composition: landscape panoramic wide map, open clear central path area to allow HTML game nodes to be overlaid, detailed picturesque tree clusters at left and right edges, small foreground leaves. Full bleed illustration, no framing, no border, absolutely NO TEXT, no letters, no numbers, NO UI, no badges, no coins, no game buttons, no characters. Do not render an interface. Only illustration.
+
+## Character prompt
+
+Use case: illustration-story. Asset type: transparent character artwork for the welcome banner of a children's math adventure game called Numberia. Primary request: a charming original trio of adventurers, no text. A small cheerful orange fox with big triangular ears, cream muzzle and tail tip, olive green neckerchief and tiny tan satchel; beside it a plump small mint-teal baby dragon with small leafy ears and cream belly holding a golden star; behind them a young child explorer with warm brown skin, short dark brown tousled hair, round glasses, sage-green explorer hat, yellow shirt and small green backpack waving hello. The fox is left, explorer in middle back, baby dragon right. The three friends are nestled closely, full bodies, very cute confident curious expressions, tiny moss patch at their feet only. Sophisticated children's picture book hand-painted gouache, tactile paper grain, softly modeled 2D forms, no dark outlines, friendly game mascot design with exquisite professional shapes. Muted sage, jade green, amber orange, warm cream and soft teal. Frontal three-quarter view. Compact horizontal character composition, about 1.5:1 aspect ratio. Isolated on a genuinely transparent alpha background, no scenery, no opaque or checkerboard backdrop, no shadows beyond subtle contact shadow under feet, no border, no words, no logo.
+
