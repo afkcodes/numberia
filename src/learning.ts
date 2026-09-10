@@ -1,11 +1,6 @@
-import {
-  availableSkills,
-  makeProblem,
-  type Grade,
-  type Problem,
-  type Save,
-  type Skill,
-} from './game.ts';
+import { availableSkills } from './game/missions.ts';
+import { makeProblem } from './game/questions.ts';
+import type { Grade, Problem, Save, Skill } from './game/types.ts';
 
 export type ReviewFact = { key: string; problem: Problem; dueAfter: number };
 export type SkillMemory = {

@@ -1,5 +1,7 @@
-import test from 'node:test';
 import assert from 'node:assert/strict';
+import test from 'node:test';
+import { bridgeLesson } from './bridgeLesson.ts';
+import { fruitGrid } from './fruitLayout.ts';
 import {
   availableSkills,
   completedMissions,
@@ -15,20 +17,10 @@ import {
   type Run,
   type Save,
 } from './game.ts';
-import { bridgeLesson } from './bridgeLesson.ts';
-import { fruitGrid } from './fruitLayout.ts';
 import { slideJourney } from './slideJourney.ts';
-import { SQUIRREL_RUN_SPEED, SQUIRREL_LOOP_PAUSE, squirrelJourney } from './squirrelJourney.ts';
+import { SQUIRREL_LOOP_PAUSE, SQUIRREL_RUN_SPEED, squirrelJourney } from './squirrelJourney.ts';
 
 import { chooseRoomItem, freshClubhouse, roomItems } from './clubhouse.ts';
-import {
-  factKey,
-  memoryKey,
-  nextDiscovery,
-  rememberDiscovery,
-  skillMemory,
-  recommendedSkill,
-} from './learning.ts';
 import {
   bridgePieces,
   completedPlay,
@@ -36,6 +28,14 @@ import {
   playModel,
   targetTotal,
 } from './handsOnModel.ts';
+import {
+  factKey,
+  memoryKey,
+  nextDiscovery,
+  recommendedSkill,
+  rememberDiscovery,
+  skillMemory,
+} from './learning.ts';
 
 function seeded(seed: number) {
   let state = seed;
@@ -278,7 +278,7 @@ test('Saved room and learning data reject invalid entries without corrupting val
   const save = readSave(
     JSON.stringify({
       ...defaultSave,
-      gems: 1e999,
+      gems: Infinity,
       clubhouse: {
         owned: ['missing', 'bow'],
         equipped: { rug: 'bow', outfit: 'crown' },
