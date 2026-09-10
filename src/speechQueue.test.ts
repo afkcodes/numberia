@@ -1,5 +1,5 @@
-import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { test } from 'node:test';
 import { SpeechQueue, speechParts } from './speechQueue.ts';
 
 const tick = () => new Promise<void>((resolve) => setImmediate(resolve));

@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
 import { ArrowDown, ArrowRightLeft, Check, RotateCcw, Sparkles, Volume2 } from 'lucide-react';
-import type { Problem } from './game';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useLatest } from './hooks/useLatest';
 import { playSound, speak, stopSpeaking } from './audio';
-import { answerNarration } from './mathNarration';
 import { fruitGrid } from './fruitLayout';
+import type { Problem } from './game';
+import { answerNarration } from './mathNarration';
 
 type Token = { value: number; group: number; local: number; id: number };
 function tokensFor(value: number, group: number, offset: number): Token[] {
@@ -36,60 +37,62 @@ export default function MathGarden({
   const [counted, setCounted] = useState<number[]>([]);
   const [width, setWidth] = useState(400);
   const [demoCycle, setDemoCycle] = useState(0);
-  const [running, setRunning] = useState(false);
+  const [timelineRunning, setRunning] = useState(false);
+  const running = timelineRunning && !solved;
   const [spokenCount, setSpokenCount] = useState<string | null>(null);
   const [activeToken, setActiveToken] = useState<number | null>(null);
   const countedRef = useRef<number[]>([]);
-  const soundRef = useRef(sound);
-  soundRef.current = sound;
+  const soundRef = useLatest(sound);
   const area = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (demonstrate > 0) setDemoCycle((n) => n + 1);
-  }, [demonstrate]);
   const isSubtraction = problem.skill === 'subtraction';
   const isDecimal = problem.skill === 'decimals';
   const isGroups = problem.skill === 'multiplication' || problem.skill === 'division';
   const isFraction = problem.skill === 'fractions';
   const factor = isDecimal ? 10 : 1;
-  const first = tokensFor(problem.a * factor, 0, 0);
-  const second = isSubtraction ? [] : tokensFor(problem.b * factor, 1, first.length);
-  // Young learners see one berry per unit, including a full group of ten.
-  const firstTokens =
-    problem.a <= 10 && !isDecimal
-      ? Array.from({ length: problem.a }, (_, i) => ({ value: 1, group: 0, local: i, id: i }))
-      : first;
-  const secondTokens =
-    !isSubtraction && problem.b <= 10 && !isDecimal
-      ? Array.from({ length: problem.b }, (_, i) => ({
-          value: 1,
-          group: 1,
-          local: i,
-          id: i + firstTokens.length,
-        }))
-      : second.map((t, i) => ({ ...t, id: firstTokens.length + i }));
-  const tokens = [...firstTokens, ...secondTokens];
+  const { firstTokens, secondTokens, tokens } = useMemo(() => {
+    const first = tokensFor(problem.a * factor, 0, 0);
+    const second = isSubtraction ? [] : tokensFor(problem.b * factor, 1, first.length);
+    // Young learners see one berry per unit, including a full group of ten.
+    const firstTokens =
+      problem.a <= 10 && !isDecimal
+        ? Array.from({ length: problem.a }, (_, i) => ({ value: 1, group: 0, local: i, id: i }))
+        : first;
+    const secondTokens =
+      !isSubtraction && problem.b <= 10 && !isDecimal
+        ? Array.from({ length: problem.b }, (_, i) => ({
+            value: 1,
+            group: 1,
+            local: i,
+            id: i + firstTokens.length,
+          }))
+        : second.map((t, i) => ({ ...t, id: firstTokens.length + i }));
+    return { firstTokens, secondTokens, tokens: [...firstTokens, ...secondTokens] };
+  }, [problem, factor, isSubtraction, isDecimal]);
   const individualSubtraction = isSubtraction && problem.a <= 10;
   const multiPlaceSubtraction = isSubtraction && problem.a > 10;
-  const display = (value: number) => (isDecimal ? (value / 10).toFixed(1) : String(value));
+  const display = useCallback(
+    (value: number) => (isDecimal ? (value / 10).toFixed(1) : String(value)),
+    [isDecimal],
+  );
   useEffect(() => {
     const observer = new ResizeObserver((entries) => setWidth(entries[0].contentRect.width));
     if (area.current) observer.observe(area.current);
     return () => observer.disconnect();
   }, []);
   useEffect(() => {
-    if (!demoCycle || solved) {
-      setRunning(false);
-      return;
-    }
+    if ((!demoCycle && !demonstrate) || solved) return;
     const timers: ReturnType<typeof setTimeout>[] = [];
     let canceled = false;
-    setMixed(false);
-    setFinished(false);
-    setCounted([]);
-    countedRef.current = [];
-    setSpokenCount(null);
-    setActiveToken(null);
-    setRunning(true);
+    // Reset the visual sequence on its first frame, then let the count timeline drive it.
+    const firstFrame = requestAnimationFrame(() => {
+      setMixed(false);
+      setFinished(false);
+      setCounted([]);
+      countedRef.current = [];
+      setSpokenCount(null);
+      setActiveToken(null);
+      setRunning(true);
+    });
     stopSpeaking();
     const later = (fn: () => void, ms: number) => timers.push(setTimeout(fn, ms));
     later(() => setMixed(true), 80);
@@ -148,12 +151,25 @@ export default function MathGarden({
     }, start);
     return () => {
       canceled = true;
+      cancelAnimationFrame(firstFrame);
       timers.forEach(clearTimeout);
       stopSpeaking();
     };
     // Each demonstration owns its timeline. Sound changes affect the next count without restarting it.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [demoCycle, solved]);
+  }, [
+    demoCycle,
+    demonstrate,
+    solved,
+    problem,
+    tokens,
+    individualSubtraction,
+    multiPlaceSubtraction,
+    isGroups,
+    isFraction,
+    isDecimal,
+    display,
+    soundRef,
+  ]);
   useEffect(() => () => stopSpeaking(), []);
   const toggle = () => {
     onSupport?.();

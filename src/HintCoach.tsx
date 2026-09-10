@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
 import { ArrowRight, Heart, Play, Volume2, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { speak, stopSpeaking } from './audio';
 import { Character } from './components';
 import type { Problem } from './game';
-import { speak, stopSpeaking } from './audio';
 
 export default function HintCoach({
   problem,
@@ -62,16 +62,15 @@ export default function HintCoach({
                   `Ten tenths make one whole. Line up the dots and add the tenths, then the whole numbers.`,
                   `Let's bring the crates and little berries together. Each little berry is one tenth!`,
                 ];
+  const hintText = steps[step];
   const say = () => {
     if (!sound) return;
-    speak(steps[step]);
+    speak(hintText);
   };
   useEffect(() => {
-    if (sound) say();
+    if (sound) void speak(hintText);
     return () => stopSpeaking();
-    // The voice follows each distinct coaching step, never unrelated game renders.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [step, sound]);
+  }, [hintText, sound]);
   return (
     <aside className="hint-coach" aria-label="Milo’s helping hand">
       <div className="coach-character">

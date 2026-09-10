@@ -1,19 +1,3 @@
-import { useEffect, useRef, type ReactNode } from 'react';
-import { X, Star, Sprout, Sparkles } from 'lucide-react';
-
-export function Logo() {
-  return (
-    <span className="brand">
-      <span className="brand-mark">
-        n<Sprout size={17} strokeWidth={3} />
-      </span>
-      <span>
-        numberia<span className="brand-dot">.</span>
-      </span>
-    </span>
-  );
-}
-
 export function Character({
   name = 'Milo',
   className = '',
@@ -115,77 +99,5 @@ export function Character({
         </g>
       )}
     </svg>
-  );
-}
-
-export function Stars({ count, size = 15 }: { count: number; size?: number }) {
-  return (
-    <span className="stars" aria-label={`${count} out of 3 stars`}>
-      {[1, 2, 3].map((n) => (
-        <Star key={n} size={size} className={n <= count ? 'earned' : ''} />
-      ))}
-    </span>
-  );
-}
-
-export function Modal({
-  title,
-  children,
-  onClose,
-  className = '',
-}: {
-  title: string;
-  children: ReactNode;
-  onClose: () => void;
-  className?: string;
-}) {
-  const ref = useRef<HTMLDialogElement>(null);
-  useEffect(() => {
-    const dialog = ref.current;
-    dialog?.showModal();
-    return () => dialog?.close();
-  }, []);
-  return (
-    <dialog
-      ref={ref}
-      className={`modal ${className}`}
-      aria-label={title}
-      onCancel={onClose}
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
-    >
-      <div className="modal-inner">
-        <button className="icon-button modal-close" aria-label="Close dialog" onClick={onClose}>
-          <X size={21} />
-        </button>
-        {children}
-      </div>
-    </dialog>
-  );
-}
-
-export function EmptyState({
-  title,
-  text,
-  action,
-  onAction,
-}: {
-  title: string;
-  text: string;
-  action: string;
-  onAction: () => void;
-}) {
-  return (
-    <div className="empty-state">
-      <span className="empty-spark">
-        <Sparkles size={32} />
-      </span>
-      <h2>{title}</h2>
-      <p>{text}</p>
-      <button className="button primary" onClick={onAction}>
-        {action}
-      </button>
-    </div>
   );
 }

@@ -1,8 +1,8 @@
-import type { ReactNode } from 'react';
 import { ArrowDown, Check, Hand, Volume2 } from 'lucide-react';
-import { Character } from './components';
-import { bridgeLesson } from './bridgeLesson';
+import type { ReactNode } from 'react';
 import { speak } from './audio';
+import { bridgeLesson } from './bridgeLesson';
+import { Character } from './components';
 import type { Problem } from './game';
 import { bridgePieces, type Placements, type PlayModel, type PlayToken } from './handsOnModel';
 

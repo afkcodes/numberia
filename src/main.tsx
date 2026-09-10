@@ -1,6 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 import App from './App';
+
+// These layers intentionally override earlier styles; keep their order explicit.
 import '../tokens.css';
 import './styles.css';
 import './playful.css';
@@ -10,8 +12,8 @@ import './adventure-extras.css';
 import './tactile-play.css';
 import './home-layout.css';
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
     <App />
-  </React.StrictMode>,
+  </StrictMode>,
 );

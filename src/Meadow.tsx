@@ -1,7 +1,8 @@
+import { Footprints, Leaf, Move, Sparkles } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { Footprints, Leaf, Move, Sparkles } from 'lucide-react';
 import type { Problem } from './game';
+import { useLatest } from './hooks/useLatest';
 import { createPark } from './Park';
 
 // Named scene tokens mirror the warm woodland UI palette.
@@ -51,8 +52,7 @@ export default function Meadow({
 }: MeadowProps) {
   const host = useRef<HTMLDivElement>(null);
   const control = useRef<SceneControl | null>(null);
-  const current = useRef({ problem, round, solved, onAnswer, interactive });
-  current.current = { problem, round, solved, onAnswer, interactive };
+  const current = useLatest({ problem, round, solved, onAnswer, interactive });
   const [ready, setReady] = useState(false);
   const [fallback, setFallback] = useState(false);
   const [labels, setLabels] = useState<{ x: number; y: number }[]>([]);
@@ -67,6 +67,8 @@ export default function Meadow({
         powerPreference: 'low-power',
       });
     } catch {
+      // WebGL availability is only known after attempting to create the external renderer.
+      // oxlint-disable-next-line react/set-state-in-effect
       setFallback(true);
       return;
     }
@@ -472,7 +474,7 @@ export default function Meadow({
       renderer.dispose();
       renderer.domElement.remove();
     };
-  }, [missionIndex]);
+  }, [missionIndex, current]);
   useEffect(() => {
     control.current?.setQuestion(problem);
   }, [problem]);

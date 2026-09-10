@@ -1,5 +1,5 @@
-import type { CSSProperties } from 'react';
 import { ArrowRight, Heart, Star } from 'lucide-react';
+import type { CSSProperties } from 'react';
 import { Character } from './components';
 import type { Skill } from './game';
 

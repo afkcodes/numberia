@@ -1,9 +1,9 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ArrowRight, Check, Gem, Heart, Home, Paintbrush, Sparkles } from 'lucide-react';
-import { Character } from './components';
-import { roomItems, type RoomSlot } from './clubhouse';
-import type { Save } from './game';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { playSound, speak } from './audio';
+import { roomItems, type RoomSlot } from './clubhouse';
+import { Character } from './components';
+import type { Save } from './game';
 import { captureProp } from './propFlight';
 
 export function Decoration({ id }: { id: string }) {

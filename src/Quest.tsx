@@ -1,4 +1,3 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ArrowRight,
   CheckCircle2,
@@ -13,7 +12,11 @@ import {
   Volume2,
   VolumeX,
 } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { playSound, speak, stopSpeaking } from './audio';
+import Celebration from './Celebration';
 import { Character, Modal, Stars } from './components';
+import DiscoveryCelebration from './DiscoveryCelebration';
 import {
   dateKey,
   gradeLabel,
@@ -23,14 +26,11 @@ import {
   type Save,
   type Skill,
 } from './game';
-import Meadow from './Meadow';
 import HandsOn from './HandsOn';
+import HintCoach from './HintCoach';
 import { nextDiscovery, type LearningObservation } from './learning';
 import MathGarden from './MathGarden';
-import HintCoach from './HintCoach';
-import Celebration from './Celebration';
-import DiscoveryCelebration from './DiscoveryCelebration';
-import { playSound, speak, stopSpeaking } from './audio';
+import Meadow from './Meadow';
 
 type QuestProps = {
   save: Save;
@@ -70,9 +70,10 @@ export default function Quest({
   const [unassisted, setUnassisted] = useState(0);
   const [scratch, setScratch] = useState('');
   const helped = useRef(false);
+  const [supportedAnswer, setSupportedAnswer] = useState(false);
   const submitted = useRef(false);
   const answered = useRef(false);
-  const id = useRef(crypto.randomUUID());
+  const [id] = useState(() => crypto.randomUUID());
   const actionRef = useRef<HTMLButtonElement>(null);
   const firstAnswerRef = useRef<HTMLButtonElement>(null);
   // Persistence is the achievement. Help and retries never reduce rewards.
@@ -90,10 +91,11 @@ export default function Quest({
       setSelected(value);
       if (value === problem.answer) {
         answered.current = true;
+        setSupportedAnswer(helped.current);
         setFeedback('correct');
         setHint(false);
         onLearn({
-          id: `${id.current}:${round}`,
+          id: `${id}:${round}`,
           grade: save.grade,
           problem,
           supported: helped.current,
@@ -109,7 +111,7 @@ export default function Quest({
         if (save.sound) playSound('try');
       }
     },
-    [problem, save.sound, save.grade, onLearn, round],
+    [problem, save.sound, save.grade, onLearn, round, id],
   );
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
@@ -140,7 +142,7 @@ export default function Quest({
       if (submitted.current) return;
       submitted.current = true;
       onComplete({
-        id: id.current,
+        id,
         date: dateKey(),
         grade: save.grade,
         mission: missionIndex,
@@ -163,6 +165,7 @@ export default function Quest({
       setShowMagic(0);
       setScratch('');
       helped.current = false;
+      setSupportedAnswer(false);
       answered.current = false;
     }
   };
@@ -364,7 +367,7 @@ export default function Quest({
                   outfit={save.clubhouse.equipped.outfit}
                   equation={problem.equation}
                   answer={formatAnswer(problem.answer)}
-                  helped={helped.current}
+                  helped={supportedAnswer}
                   last={round === 4}
                   handsOn={handsOn}
                   onNext={advance}
@@ -502,7 +505,7 @@ export default function Quest({
                   <div className="positive-feedback">
                     <CheckCircle2 size={20} />
                     <span>
-                      {helped.current
+                      {supportedAnswer
                         ? 'You tried again and figured it out. Amazing!'
                         : 'That’s it! You found the magic.'}
                     </span>

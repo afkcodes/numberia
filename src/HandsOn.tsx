@@ -1,5 +1,9 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEvent } from 'react';
 import { ArrowDown, Check, Hand, Plus, RotateCcw, Sparkles, Undo2, Volume2 } from 'lucide-react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEvent } from 'react';
+import { playSound, speak, stopSpeaking } from './audio';
+import { bridgeLesson } from './bridgeLesson';
+import { Berry } from './components/Berry';
+import { useLatest } from './hooks/useLatest';
 import type { Problem } from './game';
 import {
   completedPlay,
@@ -9,71 +13,11 @@ import {
   type Placements,
   type PlayToken,
 } from './handsOnModel';
-import { playSound, speak, stopSpeaking } from './audio';
 import { answerNarration } from './mathNarration';
-import { captureProp } from './propFlight';
 import { BridgeScene, PicnicScene } from './MathPlayScenes';
+import { captureProp } from './propFlight';
 import './tactile-play.css';
-import { bridgeLesson } from './bridgeLesson';
 
-export function Berry({ group = 0, plank = false }: { group?: number; plank?: boolean }) {
-  return (
-    <svg
-      preserveAspectRatio={plank ? 'none' : 'xMidYMid meet'}
-      viewBox={plank ? '0 0 32 84' : '0 0 48 48'}
-      aria-hidden="true"
-    >
-      {plank ? (
-        <>
-          <rect
-            x="2"
-            y="2"
-            width="28"
-            height="80"
-            rx="5"
-            fill="var(--color-toy-yellow)"
-            stroke="var(--color-gold-ink)"
-            strokeWidth="2"
-          />
-          <path
-            d="M10 12Q16 32 10 54T13 76M23 8Q18 22 23 42T21 75"
-            stroke="var(--color-gold)"
-            strokeWidth="2"
-            fill="none"
-          />
-          <circle cx="8" cy="9" r="2" fill="var(--color-orange-ink)" />
-          <circle cx="24" cy="75" r="2" fill="var(--color-orange-ink)" />
-        </>
-      ) : (
-        <>
-          <path d="M23 14Q20 3 32 4Q38 4 36 9Q30 15 23 14" fill="var(--color-accent)" />
-          <path
-            d="M24 12C7 6 3 26 11 38C17 47 31 46 38 35C46 22 39 9 24 12"
-            fill={`var(--color-${group ? 'coral' : 'berry'})`}
-          />
-          <ellipse
-            cx="16"
-            cy="19"
-            rx="4"
-            ry="6"
-            fill="var(--color-white)"
-            opacity=".28"
-            transform="rotate(30 16 19)"
-          />
-          <circle cx="19" cy="29" r="2" fill="var(--color-ink)" />
-          <circle cx="31" cy="29" r="2" fill="var(--color-ink)" />
-          <path
-            d="M21 35Q25 39 29 35"
-            stroke="var(--color-ink)"
-            strokeWidth="1.6"
-            fill="none"
-            strokeLinecap="round"
-          />
-        </>
-      )}
-    </svg>
-  );
-}
 const titles = {
   gather: 'Two groups. One happy picnic!',
   bridge: 'Build Pip’s bridge',
@@ -115,9 +59,9 @@ export default function HandsOn({
     positions = useRef<Placements>({});
   const drag = useRef<{ token: PlayToken; x: number; y: number; moved: boolean } | null>(null),
     ignoreClick = useRef(false);
-  const soundRef = useRef(sound),
-    solvedRef = useRef(solved),
-    busyRef = useRef(false),
+  const soundRef = useLatest(sound);
+  const solvedRef = useLatest(solved);
+  const busyRef = useRef(false),
     movingRef = useRef(false);
   const pending = useRef<PendingMove | null>(null),
     flights = useRef<(() => void)[]>([]),
@@ -125,8 +69,6 @@ export default function HandsOn({
   const welcomeTimer = useRef(0);
   const sequence = useRef<{ steps: Step[]; done: () => void } | null>(null),
     demonstrated = useRef(0);
-  soundRef.current = sound;
-  solvedRef.current = solved;
   const totals = Array.from({ length: model.targets }, (_, i) => targetTotal(model, settled, i));
   const remaining = model.tokens.filter((t) => placements[t.id] === undefined);
   const placed = model.tokens.filter((t) => placements[t.id] !== undefined);
@@ -177,8 +119,12 @@ export default function HandsOn({
       if (soundRef.current)
         speak(model.kind === 'bridge' ? bridgeLesson(problem, 0).speech : instruction);
     }, 650);
-    return () => stopActivity();
-  }, []);
+    return () => {
+      stopActivity();
+      // Strict Mode replays mount effects; a pending request must be allowed to start again.
+      demonstrated.current = 0;
+    };
+  }, [instruction, model.kind, problem, soundRef]);
   useEffect(() => {
     if (coaching) clearTimeout(welcomeTimer.current);
   }, [coaching]);
@@ -393,9 +339,9 @@ export default function HandsOn({
     sequence.current = { steps, done };
     runNext();
   }
-  useEffect(() => {
-    if (!demonstrate || demonstrate === demonstrated.current || solved) return;
-    demonstrated.current = demonstrate;
+  const beginDemonstration = useLatest((request: number) => {
+    if (!request || request === demonstrated.current || solved) return;
+    demonstrated.current = request;
     stopActivity();
     setMoving(false);
     setBusy(false);
@@ -421,9 +367,11 @@ export default function HandsOn({
         }),
       100,
     );
-    // The model is fixed for this discovery; sound changes must not restart a demonstration.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [demonstrate, model]);
+  });
+  // A request starts one timeline using the latest committed lesson. Mute does not restart it.
+  useEffect(() => {
+    beginDemonstration.current(demonstrate);
+  }, [demonstrate, model, beginDemonstration]);
 
   const tokenButton = (token: PlayToken) => (
     <button
