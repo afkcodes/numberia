@@ -1,182 +1,1309 @@
 /* The story continues beyond the cards: a soft sky and a growing garden. */
-.storybook-backdrop { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: -1; background: var(--color-gold-pale); }
-.storybook-sky { width: 100%; height: 100%; }
-.storybook-clouds { fill: var(--color-white); opacity: .85; animation: clouds-wander 38s ease-in-out infinite alternate; }
-.storybook-sun { color: var(--color-toy-yellow); }
-.storybook-face { color: var(--color-gold-ink); fill: currentColor; }
-.storybook-hill-far { fill: var(--color-soft-green); }
-.storybook-hill-near { fill: var(--color-mint); }
-.storybook-string, .storybook-stem { stroke: var(--color-toy-green-shadow); stroke-width: 3; fill: none; stroke-linecap: round; }
-.storybook-leaf { fill: var(--color-toy-green-shadow); }
-.storybook-petals { fill: var(--color-toy-peach-shadow); }
-.storybook-flower-heart { fill: var(--color-toy-yellow); }
-.storybook-kite-body { fill: var(--color-toy-lilac-shadow); }
-.storybook-kite-half { fill: var(--color-lilac); }
-.storybook-kite { transform-origin: 1200px 400px; animation: kite-breeze 9s ease-in-out infinite alternate; }
-.storybook-butterfly { animation: butterfly-drift 14s ease-in-out infinite alternate; }
-.app-shell { isolation: isolate; }
-.main-content { position: relative; }
-.grade-picker-trigger { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 44px; padding: 8px 12px; border: 2px solid var(--color-toy-lilac-shadow); box-shadow: 0 3px 0 var(--color-toy-lilac-shadow); font-family: var(--font-display); font-weight: 900; font-size: 14px; cursor: pointer; transition: transform 160ms, box-shadow 160ms; }
-.grade-picker-trigger > svg:last-child { position: static; }
-.grade-picker-trigger:hover { transform: translateY(-2px) rotate(-2deg); }
-.grade-picker-trigger:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--color-toy-lilac-shadow); }
-.grades-modal { width: 690px; background: var(--color-gold-pale); border: 3px solid var(--color-toy-yellow-shadow); border-radius: 30px; }
-.grade-picker-welcome { text-align: center; padding-top: 4px; }
-.grade-picker-welcome > .skill-tag { justify-content: center; }
-.grade-picker-welcome > .character { width: 104px; height: 104px; margin: -8px auto -8px; display: block; animation: mascot-hello 900ms var(--ease-gentle) both; }
-.grade-picker-welcome h1 { font-size: 36px; margin: 9px 0 4px; }
-.grade-picker-welcome p { color: var(--color-muted); font-size: 14px; }
-.grade-picker { border: 0; padding: 0; margin: 24px 0 0; min-width: 0; }
-.grade-picker > legend { display: flex; gap: 8px; align-items: center; font-family: var(--font-display); font-size: 14px; font-weight: 850; padding: 0; margin-bottom: 12px; }
-.grade-cards { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; }
-.grade-card { --grade-paper: var(--color-mint); --grade-edge: var(--color-toy-green-shadow); --grade-ink: var(--color-accent); display: flex; flex-direction: column; align-items: center; text-align: center; background: var(--grade-paper); color: var(--grade-ink); border: 2px solid var(--grade-edge); border-radius: 19px; box-shadow: 0 5px 0 var(--grade-edge); padding: 12px 8px 15px; position: relative; cursor: pointer; transition: transform 180ms, box-shadow 180ms; }
-.grade-yellow { --grade-paper: var(--color-toy-yellow); --grade-edge: var(--color-toy-yellow-shadow); --grade-ink: var(--color-gold-ink); }
-.grade-peach { --grade-paper: var(--color-peach); --grade-edge: var(--color-toy-peach-shadow); --grade-ink: var(--color-orange-ink); }
-.grade-blue { --grade-paper: var(--color-blue); --grade-edge: var(--color-toy-blue-shadow); --grade-ink: var(--color-blue-ink); }
-.grade-lilac { --grade-paper: var(--color-lilac); --grade-edge: var(--color-toy-lilac-shadow); --grade-ink: var(--color-lilac-ink); }
-.grade-rose { --grade-paper: var(--color-error-pale); --grade-edge: var(--color-toy-peach-shadow); --grade-ink: var(--color-orange-ink); }
-.grade-card:hover { transform: translateY(-4px) rotate(-1deg); box-shadow: 0 9px 0 var(--grade-edge); }
-.grade-card:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--grade-edge); }
-.grade-card.is-selected { outline: 3px solid var(--grade-ink); outline-offset: 3px; }
-.grade-card-top { width: 100%; display: flex; align-items: center; justify-content: space-between; padding-inline: 3px; }
-.grade-card-check { display: grid; place-items: center; height: 23px; width: 23px; border: 2px solid var(--grade-edge); border-radius: 50%; background: var(--color-surface); }
-.is-selected .grade-card-check { background: var(--grade-ink); border-color: var(--grade-ink); color: var(--color-white); }
-.grade-card-number { font-family: var(--font-display); font-weight: 1000; font-size: 49px; line-height: 1.1; margin: -8px 0 3px; text-shadow: 0 3px 0 var(--color-surface); }
-.grade-card > strong { font-family: var(--font-display); font-weight: 900; font-size: 17px; }
-.grade-card-title { font-size: 11px; font-weight: 750; margin-top: 4px; }
-.grade-card > small { font-size: 9px; margin-top: 5px; }
-.grade-picker-footnote { display: flex; align-items: center; justify-content: center; gap: 7px; margin: 24px 0 0; color: var(--color-muted); font-size: 11px; text-align: center; }
-.grade-picker-compact { margin: 20px 0; }
-.grade-picker-compact .grade-card { padding: 8px; border-radius: 13px; }
-.grade-picker-compact .grade-card-number { font-size: 31px; margin-top: -3px; }
-.grade-picker-compact .grade-card > strong { font-size: 12px; }
-.grade-picker-compact .grade-card-top > svg { width: 16px; }
-.grade-picker-compact .grade-card-check { width: 18px; height: 18px; }
-.grade-picker-compact .grade-card-check > svg { width: 12px; }
-.counting-bubble { display: inline-flex; justify-content: center; align-items: center; gap: 8px; min-height: 40px; padding: 6px 14px; border-radius: 15px; background: var(--color-lilac); color: var(--color-lilac-ink); font: 900 15px var(--font-display); margin: 9px auto 2px; }
-.counting-bubble > strong { font-size: 26px; animation: counted-number-pop 300ms var(--ease-gentle) both; }
-.garden-counting-status { text-align: center; }
-.fruit-count-label { position: absolute; top: -12px; left: 9px; min-width: 22px; padding: 2px 4px; background: var(--color-lilac-ink); border: 2px solid var(--color-white); color: var(--color-white); border-radius: 9px; font: 900 12px var(--font-display); z-index: 4; animation: counted-number-pop 300ms both; }
-.fruit-token.is-counting-now .berry-body { outline: 4px solid var(--color-toy-yellow); outline-offset: 3px; transform: scale(1.13); }
-.math-garden.is-counting .mix-button { background: var(--color-lilac); border-color: var(--color-toy-lilac-shadow); box-shadow: 0 3px 0 var(--color-toy-lilac-shadow); color: var(--color-lilac-ink); }
-@keyframes clouds-wander { to { transform: translateX(70px); } }
-@keyframes kite-breeze { to { rotate: 7deg; } }
-@keyframes butterfly-drift { 50% { transform: translate(-19px,-35px); } to { transform: translate(-50px,14px); } }
-@keyframes counted-number-pop { from { opacity: .5; transform: translateY(6px) scale(.7); } 65% { transform: translateY(-2px) scale(1.2); } to { opacity: 1; transform: none; } }
-.landing-wildlife { container-type: inline-size; position: fixed; inset: 86px 0 0 224px; pointer-events: none; overflow: hidden; z-index: -1; }
-.wildlife-ground { position: absolute; width: 100%; height: 69px; bottom: 0; }
-.wildlife-tree { width: 190px; height: 190px; position: absolute; bottom: -5px; left: 0; }
-.wildlife-sun { width: 88px; height: 88px; position: absolute; right: 5px; top: 1px; }
-.wildlife-nuts { position: absolute; width: 66px; height: 49px; bottom: 0; right: 13px; }
-.squirrel-traveler { --nut-run: calc(100cqw - 187px); position: absolute; bottom: 5px; left: 79px; width: 67px; height: 64px; z-index: 2; animation: squirrel-gathers 26s linear infinite, squirrel-hides 26s linear infinite; }
-.squirrel-facing { width: 100%; height: 100%; animation: squirrel-turns 26s steps(1) infinite, squirrel-activity 26s steps(1) infinite; }
-.wildlife-canopy { z-index: 3; }
-.squirrel-back-leg { transform-origin: 48px 72px; animation: squirrel-stride 280ms ease-in-out infinite alternate; animation-play-state: var(--gait-play, running); }
-.squirrel-front-leg { transform-origin: 64px 72px; animation: squirrel-stride 280ms ease-in-out infinite alternate-reverse; animation-play-state: var(--gait-play, running); }
-.squirrel-front-paw { transform-origin: 64px 64px; animation: squirrel-paws 280ms ease-in-out infinite alternate; animation-play-state: var(--gait-play, running); }
-.squirrel-hop { animation: squirrel-hop 320ms ease-in-out infinite alternate; transform-origin: 50% 95%; }
-.squirrel-tail { transform-origin: 46px 73px; animation: squirrel-tail 850ms ease-in-out infinite alternate; }
-.squirrel-carried-nut { animation: squirrel-holds-nut 26s steps(1) infinite; }
-.wildlife-bee { position: absolute; width: 30px; height: 24px; }
-.bee-one { left: 131px; top: 33px; animation: bee-meanders 8s ease-in-out infinite; }
-.bee-two { left: 28px; top: 7px; width: 24px; animation: bee-meanders 11s -4s ease-in-out infinite reverse; }
-.bee-three { right: 162px; top: 69px; width: 25px; animation: bee-meanders 13s -6s ease-in-out infinite; }
-.bee-wings { transform-box: fill-box; transform-origin: center bottom; animation: bee-wings 90ms ease-in-out infinite alternate; }
-@keyframes squirrel-gathers { 0%,4% { transform: translate(4px,-58px) rotate(68deg); } 13% { transform: translate(0,0) rotate(0); } 41%,48% { transform: translate(var(--nut-run),0); } 50% { transform: translate(var(--nut-run),3px); } 79% { transform: translate(0,0); } 91%,100% { transform: translate(4px,-58px) rotate(68deg); } }
-@keyframes squirrel-turns { 0%,49% { transform: scaleX(1); } 50%,100% { transform: scaleX(-1); } }
-@keyframes squirrel-hides { 0%,4%,95%,100% { opacity: 0; } 8%,89% { opacity: 1; } }
-@keyframes squirrel-stride { from { transform: rotate(-28deg) translateX(-2px); } to { transform: rotate(29deg) translateX(2px); } }
-@keyframes squirrel-paws { from { transform: rotate(-12deg); } to { transform: rotate(9deg); } }
-@keyframes squirrel-activity { 0%,40% { --gait-play: running; } 41%,49% { --gait-play: paused; } 50%,92% { --gait-play: running; } 93%,100% { --gait-play: paused; } }
-@keyframes squirrel-holds-nut { 0%,46% { opacity: 0; } 47%,92% { opacity: 1; } 93%,100% { opacity: 0; } }
-@keyframes squirrel-hop { to { transform: translateY(-3px) rotate(2deg); } }
-@keyframes squirrel-tail { to { transform: rotate(6deg); } }
-@keyframes bee-meanders { 0%,100% { transform: translate(0,0) rotate(-8deg); } 25% { transform: translate(22px,-9px) rotate(7deg); } 50% { transform: translate(39px,10px) rotate(-5deg); } 75% { transform: translate(-9px,16px) rotate(9deg); } }
-@keyframes bee-wings { to { transform: scaleY(.35); } }
-@media (max-width: 767px) { .grade-picker-trigger { min-height: 41px; font-size: 12px; padding: 7px 9px; gap: 6px; }.grade-picker-trigger > svg { width: 16px; }.storybook-sky { width: 170%; max-width: none; margin-left: -70%; }.grade-picker-welcome h1 { font-size: 29px; }.grade-picker-welcome > .character { width: 85px; height: 85px; }.grades-modal .modal-inner { padding: 24px 20px; }.grade-cards { gap: 13px 11px; }.grade-card { border-radius: 14px; padding: 10px 5px 12px; }.grade-card-number { font-size: 39px; }.grade-card > strong { font-size: 13px; }.grade-card-title { font-size: 9px; }.grade-card > small { font-size: 8px; line-height: 1.5; }.grade-card-top > svg { width: 17px; }.grade-picker-footnote { font-size: 10px; line-height: 1.6; align-items: flex-start; }.grade-picker-footnote svg { flex-shrink: 0; margin-top: 2px; } }
-@media (max-width: 430px) { .grade-cards:not(.grade-picker-compact .grade-cards) { grid-template-columns: repeat(2,minmax(0,1fr)); }.grade-picker-welcome .skill-tag { font-size: 7px; }.grade-card { padding-top: 7px; }.grade-card-title { margin-top: 2px; }.grade-card > small { margin-top: 3px; }.grade-picker-welcome p { font-size: 12px; }.grade-picker-welcome > .character { width: 70px; height: 70px; }.grade-card-number { font-size: 36px; }.grade-picker { margin-top: 16px; } }
-@media (max-width: 767px) { .landing-wildlife { inset: 76px 0 0; }.wildlife-tree { width: 122px; height: 122px; }.wildlife-sun { width: 74px; height: 74px; right: 13px; top: 0; }.squirrel-traveler { width: 51px; height: 49px; left: 45px; --nut-run: calc(100cqw - 133px); }.wildlife-nuts { right: 6px; width: 53px; height: 40px; }.bee-one { left: 100px; top: 22px; width: 25px; }.bee-two { left: 19px; width: 21px; }.bee-three { display: none; } }
-@media (prefers-reduced-motion: reduce) { .landing-wildlife * { animation: none !important; }.squirrel-carried-nut { opacity: 1; } }
-@media (prefers-reduced-motion: reduce) { .storybook-backdrop *, .grade-card, .grade-picker-welcome .character, .counting-bubble > strong, .fruit-count-label { animation: none !important; transition: none !important; }.grade-card:hover, .grade-picker-trigger:hover { transform: none; } }
+.storybook-backdrop {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+  background: var(--color-gold-pale);
+}
+.storybook-sky {
+  width: 100%;
+  height: 100%;
+}
+.storybook-clouds {
+  fill: var(--color-white);
+  opacity: 0.85;
+  animation: clouds-wander 38s ease-in-out infinite alternate;
+}
+.storybook-sun {
+  color: var(--color-toy-yellow);
+}
+.storybook-face {
+  color: var(--color-gold-ink);
+  fill: currentColor;
+}
+.storybook-hill-far {
+  fill: var(--color-soft-green);
+}
+.storybook-hill-near {
+  fill: var(--color-mint);
+}
+.storybook-string,
+.storybook-stem {
+  stroke: var(--color-toy-green-shadow);
+  stroke-width: 3;
+  fill: none;
+  stroke-linecap: round;
+}
+.storybook-leaf {
+  fill: var(--color-toy-green-shadow);
+}
+.storybook-petals {
+  fill: var(--color-toy-peach-shadow);
+}
+.storybook-flower-heart {
+  fill: var(--color-toy-yellow);
+}
+.storybook-kite-body {
+  fill: var(--color-toy-lilac-shadow);
+}
+.storybook-kite-half {
+  fill: var(--color-lilac);
+}
+.storybook-kite {
+  transform-origin: 1200px 400px;
+  animation: kite-breeze 9s ease-in-out infinite alternate;
+}
+.storybook-butterfly {
+  animation: butterfly-drift 14s ease-in-out infinite alternate;
+}
+.app-shell {
+  isolation: isolate;
+}
+.main-content {
+  position: relative;
+}
+.grade-picker-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 2px solid var(--color-toy-lilac-shadow);
+  box-shadow: 0 3px 0 var(--color-toy-lilac-shadow);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    transform 160ms,
+    box-shadow 160ms;
+}
+.grade-picker-trigger > svg:last-child {
+  position: static;
+}
+.grade-picker-trigger:hover {
+  transform: translateY(-2px) rotate(-2deg);
+}
+.grade-picker-trigger:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--color-toy-lilac-shadow);
+}
+.grades-modal {
+  width: 690px;
+  background: var(--color-gold-pale);
+  border: 3px solid var(--color-toy-yellow-shadow);
+  border-radius: 30px;
+}
+.grade-picker-welcome {
+  text-align: center;
+  padding-top: 4px;
+}
+.grade-picker-welcome > .skill-tag {
+  justify-content: center;
+}
+.grade-picker-welcome > .character {
+  width: 104px;
+  height: 104px;
+  margin: -8px auto -8px;
+  display: block;
+  animation: mascot-hello 900ms var(--ease-gentle) both;
+}
+.grade-picker-welcome h1 {
+  font-size: 36px;
+  margin: 9px 0 4px;
+}
+.grade-picker-welcome p {
+  color: var(--color-muted);
+  font-size: 14px;
+}
+.grade-picker {
+  border: 0;
+  padding: 0;
+  margin: 24px 0 0;
+  min-width: 0;
+}
+.grade-picker > legend {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 850;
+  padding: 0;
+  margin-bottom: 12px;
+}
+.grade-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.grade-card {
+  --grade-paper: var(--color-mint);
+  --grade-edge: var(--color-toy-green-shadow);
+  --grade-ink: var(--color-accent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--grade-paper);
+  color: var(--grade-ink);
+  border: 2px solid var(--grade-edge);
+  border-radius: 19px;
+  box-shadow: 0 5px 0 var(--grade-edge);
+  padding: 12px 8px 15px;
+  position: relative;
+  cursor: pointer;
+  transition:
+    transform 180ms,
+    box-shadow 180ms;
+}
+.grade-yellow {
+  --grade-paper: var(--color-toy-yellow);
+  --grade-edge: var(--color-toy-yellow-shadow);
+  --grade-ink: var(--color-gold-ink);
+}
+.grade-peach {
+  --grade-paper: var(--color-peach);
+  --grade-edge: var(--color-toy-peach-shadow);
+  --grade-ink: var(--color-orange-ink);
+}
+.grade-blue {
+  --grade-paper: var(--color-blue);
+  --grade-edge: var(--color-toy-blue-shadow);
+  --grade-ink: var(--color-blue-ink);
+}
+.grade-lilac {
+  --grade-paper: var(--color-lilac);
+  --grade-edge: var(--color-toy-lilac-shadow);
+  --grade-ink: var(--color-lilac-ink);
+}
+.grade-rose {
+  --grade-paper: var(--color-error-pale);
+  --grade-edge: var(--color-toy-peach-shadow);
+  --grade-ink: var(--color-orange-ink);
+}
+.grade-card:hover {
+  transform: translateY(-4px) rotate(-1deg);
+  box-shadow: 0 9px 0 var(--grade-edge);
+}
+.grade-card:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 var(--grade-edge);
+}
+.grade-card.is-selected {
+  outline: 3px solid var(--grade-ink);
+  outline-offset: 3px;
+}
+.grade-card-top {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 3px;
+}
+.grade-card-check {
+  display: grid;
+  place-items: center;
+  height: 23px;
+  width: 23px;
+  border: 2px solid var(--grade-edge);
+  border-radius: 50%;
+  background: var(--color-surface);
+}
+.is-selected .grade-card-check {
+  background: var(--grade-ink);
+  border-color: var(--grade-ink);
+  color: var(--color-white);
+}
+.grade-card-number {
+  font-family: var(--font-display);
+  font-weight: 1000;
+  font-size: 49px;
+  line-height: 1.1;
+  margin: -8px 0 3px;
+  text-shadow: 0 3px 0 var(--color-surface);
+}
+.grade-card > strong {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 17px;
+}
+.grade-card-title {
+  font-size: 11px;
+  font-weight: 750;
+  margin-top: 4px;
+}
+.grade-card > small {
+  font-size: 9px;
+  margin-top: 5px;
+}
+.grade-picker-footnote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin: 24px 0 0;
+  color: var(--color-muted);
+  font-size: 11px;
+  text-align: center;
+}
+.grade-picker-compact {
+  margin: 20px 0;
+}
+.grade-picker-compact .grade-card {
+  padding: 8px;
+  border-radius: 13px;
+}
+.grade-picker-compact .grade-card-number {
+  font-size: 31px;
+  margin-top: -3px;
+}
+.grade-picker-compact .grade-card > strong {
+  font-size: 12px;
+}
+.grade-picker-compact .grade-card-top > svg {
+  width: 16px;
+}
+.grade-picker-compact .grade-card-check {
+  width: 18px;
+  height: 18px;
+}
+.grade-picker-compact .grade-card-check > svg {
+  width: 12px;
+}
+.counting-bubble {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 6px 14px;
+  border-radius: 15px;
+  background: var(--color-lilac);
+  color: var(--color-lilac-ink);
+  font: 900 15px var(--font-display);
+  margin: 9px auto 2px;
+}
+.counting-bubble > strong {
+  font-size: 26px;
+  animation: counted-number-pop 300ms var(--ease-gentle) both;
+}
+.garden-counting-status {
+  text-align: center;
+}
+.fruit-count-label {
+  position: absolute;
+  top: -12px;
+  left: 9px;
+  min-width: 22px;
+  padding: 2px 4px;
+  background: var(--color-lilac-ink);
+  border: 2px solid var(--color-white);
+  color: var(--color-white);
+  border-radius: 9px;
+  font: 900 12px var(--font-display);
+  z-index: 4;
+  animation: counted-number-pop 300ms both;
+}
+.fruit-token.is-counting-now .berry-body {
+  outline: 4px solid var(--color-toy-yellow);
+  outline-offset: 3px;
+  transform: scale(1.13);
+}
+.math-garden.is-counting .mix-button {
+  background: var(--color-lilac);
+  border-color: var(--color-toy-lilac-shadow);
+  box-shadow: 0 3px 0 var(--color-toy-lilac-shadow);
+  color: var(--color-lilac-ink);
+}
+@keyframes clouds-wander {
+  to {
+    transform: translateX(70px);
+  }
+}
+@keyframes kite-breeze {
+  to {
+    rotate: 7deg;
+  }
+}
+@keyframes butterfly-drift {
+  50% {
+    transform: translate(-19px, -35px);
+  }
+  to {
+    transform: translate(-50px, 14px);
+  }
+}
+@keyframes counted-number-pop {
+  from {
+    opacity: 0.5;
+    transform: translateY(6px) scale(0.7);
+  }
+  65% {
+    transform: translateY(-2px) scale(1.2);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.landing-wildlife {
+  container-type: inline-size;
+  position: fixed;
+  inset: 86px 0 0 224px;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: -1;
+}
+.wildlife-ground {
+  position: absolute;
+  width: 100%;
+  height: 69px;
+  bottom: 0;
+}
+.wildlife-tree {
+  width: 190px;
+  height: 190px;
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+}
+.wildlife-sun {
+  width: 88px;
+  height: 88px;
+  position: absolute;
+  right: 5px;
+  top: 1px;
+}
+.wildlife-nuts {
+  position: absolute;
+  width: 66px;
+  height: 49px;
+  bottom: 0;
+  right: 13px;
+}
+.squirrel-traveler {
+  --nut-run: calc(100cqw - 187px);
+  position: absolute;
+  bottom: 5px;
+  left: 79px;
+  width: 67px;
+  height: 64px;
+  z-index: 2;
+  animation:
+    squirrel-gathers 26s linear infinite,
+    squirrel-hides 26s linear infinite;
+}
+.squirrel-facing {
+  width: 100%;
+  height: 100%;
+  animation:
+    squirrel-turns 26s steps(1) infinite,
+    squirrel-activity 26s steps(1) infinite;
+}
+.wildlife-canopy {
+  z-index: 3;
+}
+.squirrel-back-leg {
+  transform-origin: 48px 72px;
+  animation: squirrel-stride 280ms ease-in-out infinite alternate;
+  animation-play-state: var(--gait-play, running);
+}
+.squirrel-front-leg {
+  transform-origin: 64px 72px;
+  animation: squirrel-stride 280ms ease-in-out infinite alternate-reverse;
+  animation-play-state: var(--gait-play, running);
+}
+.squirrel-front-paw {
+  transform-origin: 64px 64px;
+  animation: squirrel-paws 280ms ease-in-out infinite alternate;
+  animation-play-state: var(--gait-play, running);
+}
+.squirrel-hop {
+  animation: squirrel-hop 320ms ease-in-out infinite alternate;
+  transform-origin: 50% 95%;
+}
+.squirrel-tail {
+  transform-origin: 46px 73px;
+  animation: squirrel-tail 850ms ease-in-out infinite alternate;
+}
+.squirrel-carried-nut {
+  animation: squirrel-holds-nut 26s steps(1) infinite;
+}
+.wildlife-bee {
+  position: absolute;
+  width: 30px;
+  height: 24px;
+}
+.bee-one {
+  left: 131px;
+  top: 33px;
+  animation: bee-meanders 8s ease-in-out infinite;
+}
+.bee-two {
+  left: 28px;
+  top: 7px;
+  width: 24px;
+  animation: bee-meanders 11s -4s ease-in-out infinite reverse;
+}
+.bee-three {
+  right: 162px;
+  top: 69px;
+  width: 25px;
+  animation: bee-meanders 13s -6s ease-in-out infinite;
+}
+.bee-wings {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: bee-wings 90ms ease-in-out infinite alternate;
+}
+@keyframes squirrel-gathers {
+  0%,
+  4% {
+    transform: translate(4px, -58px) rotate(68deg);
+  }
+  13% {
+    transform: translate(0, 0) rotate(0);
+  }
+  41%,
+  48% {
+    transform: translate(var(--nut-run), 0);
+  }
+  50% {
+    transform: translate(var(--nut-run), 3px);
+  }
+  79% {
+    transform: translate(0, 0);
+  }
+  91%,
+  100% {
+    transform: translate(4px, -58px) rotate(68deg);
+  }
+}
+@keyframes squirrel-turns {
+  0%,
+  49% {
+    transform: scaleX(1);
+  }
+  50%,
+  100% {
+    transform: scaleX(-1);
+  }
+}
+@keyframes squirrel-hides {
+  0%,
+  4%,
+  95%,
+  100% {
+    opacity: 0;
+  }
+  8%,
+  89% {
+    opacity: 1;
+  }
+}
+@keyframes squirrel-stride {
+  from {
+    transform: rotate(-28deg) translateX(-2px);
+  }
+  to {
+    transform: rotate(29deg) translateX(2px);
+  }
+}
+@keyframes squirrel-paws {
+  from {
+    transform: rotate(-12deg);
+  }
+  to {
+    transform: rotate(9deg);
+  }
+}
+@keyframes squirrel-activity {
+  0%,
+  40% {
+    --gait-play: running;
+  }
+  41%,
+  49% {
+    --gait-play: paused;
+  }
+  50%,
+  92% {
+    --gait-play: running;
+  }
+  93%,
+  100% {
+    --gait-play: paused;
+  }
+}
+@keyframes squirrel-holds-nut {
+  0%,
+  46% {
+    opacity: 0;
+  }
+  47%,
+  92% {
+    opacity: 1;
+  }
+  93%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes squirrel-hop {
+  to {
+    transform: translateY(-3px) rotate(2deg);
+  }
+}
+@keyframes squirrel-tail {
+  to {
+    transform: rotate(6deg);
+  }
+}
+@keyframes bee-meanders {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-8deg);
+  }
+  25% {
+    transform: translate(22px, -9px) rotate(7deg);
+  }
+  50% {
+    transform: translate(39px, 10px) rotate(-5deg);
+  }
+  75% {
+    transform: translate(-9px, 16px) rotate(9deg);
+  }
+}
+@keyframes bee-wings {
+  to {
+    transform: scaleY(0.35);
+  }
+}
+@media (max-width: 767px) {
+  .grade-picker-trigger {
+    min-height: 41px;
+    font-size: 12px;
+    padding: 7px 9px;
+    gap: 6px;
+  }
+  .grade-picker-trigger > svg {
+    width: 16px;
+  }
+  .storybook-sky {
+    width: 170%;
+    max-width: none;
+    margin-left: -70%;
+  }
+  .grade-picker-welcome h1 {
+    font-size: 29px;
+  }
+  .grade-picker-welcome > .character {
+    width: 85px;
+    height: 85px;
+  }
+  .grades-modal .modal-inner {
+    padding: 24px 20px;
+  }
+  .grade-cards {
+    gap: 13px 11px;
+  }
+  .grade-card {
+    border-radius: 14px;
+    padding: 10px 5px 12px;
+  }
+  .grade-card-number {
+    font-size: 39px;
+  }
+  .grade-card > strong {
+    font-size: 13px;
+  }
+  .grade-card-title {
+    font-size: 9px;
+  }
+  .grade-card > small {
+    font-size: 8px;
+    line-height: 1.5;
+  }
+  .grade-card-top > svg {
+    width: 17px;
+  }
+  .grade-picker-footnote {
+    font-size: 10px;
+    line-height: 1.6;
+    align-items: flex-start;
+  }
+  .grade-picker-footnote svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+}
+@media (max-width: 430px) {
+  .grade-cards:not(.grade-picker-compact .grade-cards) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .grade-picker-welcome .skill-tag {
+    font-size: 7px;
+  }
+  .grade-card {
+    padding-top: 7px;
+  }
+  .grade-card-title {
+    margin-top: 2px;
+  }
+  .grade-card > small {
+    margin-top: 3px;
+  }
+  .grade-picker-welcome p {
+    font-size: 12px;
+  }
+  .grade-picker-welcome > .character {
+    width: 70px;
+    height: 70px;
+  }
+  .grade-card-number {
+    font-size: 36px;
+  }
+  .grade-picker {
+    margin-top: 16px;
+  }
+}
+@media (max-width: 767px) {
+  .landing-wildlife {
+    inset: 76px 0 0;
+  }
+  .wildlife-tree {
+    width: 122px;
+    height: 122px;
+  }
+  .wildlife-sun {
+    width: 74px;
+    height: 74px;
+    right: 13px;
+    top: 0;
+  }
+  .squirrel-traveler {
+    width: 51px;
+    height: 49px;
+    left: 45px;
+    --nut-run: calc(100cqw - 133px);
+  }
+  .wildlife-nuts {
+    right: 6px;
+    width: 53px;
+    height: 40px;
+  }
+  .bee-one {
+    left: 100px;
+    top: 22px;
+    width: 25px;
+  }
+  .bee-two {
+    left: 19px;
+    width: 21px;
+  }
+  .bee-three {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .landing-wildlife * {
+    animation: none !important;
+  }
+  .squirrel-carried-nut {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .storybook-backdrop *,
+  .grade-card,
+  .grade-picker-welcome .character,
+  .counting-bubble > strong,
+  .fruit-count-label {
+    animation: none !important;
+    transition: none !important;
+  }
+  .grade-card:hover,
+  .grade-picker-trigger:hover {
+    transform: none;
+  }
+}
 
-@media (min-width: 768px) and (max-width: 1190px) { .landing-wildlife { left: 200px; } }
+@media (min-width: 768px) and (max-width: 1190px) {
+  .landing-wildlife {
+    left: 200px;
+  }
+}
 
-.welcome-art .wildlife-sun { position: absolute; top: 12px; left: 12px; right: auto; width: 83px; height: 83px; z-index: 0; }
-.bee-one { top: auto; bottom: 144px; }
-.bee-two { top: auto; bottom: 176px; }
-.bee-three { top: auto; bottom: 95px; }
-@media (max-width: 767px) { .welcome-art .wildlife-sun { width: 64px; height: 64px; top: -7px; left: 10px; }.bee-one { top: auto; bottom: 105px; }.bee-two { top: auto; bottom: 122px; } }
+.welcome-art .wildlife-sun {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: auto;
+  width: 83px;
+  height: 83px;
+  z-index: 0;
+}
+.bee-one {
+  top: auto;
+  bottom: 144px;
+}
+.bee-two {
+  top: auto;
+  bottom: 176px;
+}
+.bee-three {
+  top: auto;
+  bottom: 95px;
+}
+@media (max-width: 767px) {
+  .welcome-art .wildlife-sun {
+    width: 64px;
+    height: 64px;
+    top: -7px;
+    left: 10px;
+  }
+  .bee-one {
+    top: auto;
+    bottom: 105px;
+  }
+  .bee-two {
+    top: auto;
+    bottom: 122px;
+  }
+}
 
-.welcome-banner > .wildlife-sun { position: absolute; right: 16px; top: 10px; width: 79px; height: 79px; z-index: 3; pointer-events: none; }
-.welcome-art .hello-sticker { top: 100px; }
-@media (max-width: 767px) { .welcome-banner > .wildlife-sun { width: 62px; height: 62px; right: 13px; top: 13px; }.welcome-art .hello-sticker { top: 8px; } }
+.welcome-banner > .wildlife-sun {
+  position: absolute;
+  right: 16px;
+  top: 10px;
+  width: 79px;
+  height: 79px;
+  z-index: 3;
+  pointer-events: none;
+}
+.welcome-art .hello-sticker {
+  top: 100px;
+}
+@media (max-width: 767px) {
+  .welcome-banner > .wildlife-sun {
+    width: 62px;
+    height: 62px;
+    right: 13px;
+    top: 13px;
+  }
+  .welcome-art .hello-sticker {
+    top: 8px;
+  }
+}
 /* Leave room for the complete fruit and its counting badge inside each tray. */
-.math-garden .fruit-token { width: 40px; height: 42px; }
-.fruit-bowl.bowl-away { left: 71%; width: 27%; background: var(--color-peach); border-color: var(--color-toy-peach-shadow); border-style: dashed; }
-.fruit-bowl.bowl-away > span { color: var(--color-orange-ink); font-size: 9px; }
+.math-garden .fruit-token {
+  width: 40px;
+  height: 42px;
+}
+.fruit-bowl.bowl-away {
+  left: 71%;
+  width: 27%;
+  background: var(--color-peach);
+  border-color: var(--color-toy-peach-shadow);
+  border-style: dashed;
+}
+.fruit-bowl.bowl-away > span {
+  color: var(--color-orange-ink);
+  font-size: 9px;
+}
 
-.squirrel-thigh, .squirrel-shin { transform-origin: 0 0; animation-duration: 560ms; animation-timing-function: linear; animation-iteration-count: infinite; animation-play-state: var(--gait-play, running); }
-.squirrel-thigh { animation-name: squirrel-leg-cycle; }
-.squirrel-shin { animation-name: squirrel-knee-cycle; }
-.squirrel-thigh.front.near, .squirrel-shin.front.near { animation-delay: -280ms; }
-.squirrel-thigh.hind.far, .squirrel-shin.hind.far { animation-delay: -140ms; }
-.squirrel-thigh.front.far, .squirrel-shin.front.far { animation-delay: -420ms; }
-.squirrel-hop { animation-duration: 280ms; animation-play-state: var(--gait-play, running); }
-@keyframes squirrel-leg-cycle { 0%,100% { transform: rotate(-23deg); } 42% { transform: rotate(27deg); } 68% { transform: rotate(8deg); } }
-@keyframes squirrel-knee-cycle { 0%,42%,100% { transform: rotate(3deg); } 68% { transform: rotate(-38deg); } }
-@media (prefers-reduced-motion: reduce) { .squirrel-thigh, .squirrel-shin { animation: none; } }
+.squirrel-thigh,
+.squirrel-shin {
+  transform-origin: 0 0;
+  animation-duration: 560ms;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-play-state: var(--gait-play, running);
+}
+.squirrel-thigh {
+  animation-name: squirrel-leg-cycle;
+}
+.squirrel-shin {
+  animation-name: squirrel-knee-cycle;
+}
+.squirrel-thigh.front.near,
+.squirrel-shin.front.near {
+  animation-delay: -280ms;
+}
+.squirrel-thigh.hind.far,
+.squirrel-shin.hind.far {
+  animation-delay: -140ms;
+}
+.squirrel-thigh.front.far,
+.squirrel-shin.front.far {
+  animation-delay: -420ms;
+}
+.squirrel-hop {
+  animation-duration: 280ms;
+  animation-play-state: var(--gait-play, running);
+}
+@keyframes squirrel-leg-cycle {
+  0%,
+  100% {
+    transform: rotate(-23deg);
+  }
+  42% {
+    transform: rotate(27deg);
+  }
+  68% {
+    transform: rotate(8deg);
+  }
+}
+@keyframes squirrel-knee-cycle {
+  0%,
+  42%,
+  100% {
+    transform: rotate(3deg);
+  }
+  68% {
+    transform: rotate(-38deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .squirrel-thigh,
+  .squirrel-shin {
+    animation: none;
+  }
+}
 
 /* One shared clock controls travel, stopping, facing, paws, and hiding. */
-.squirrel-traveler, .squirrel-facing, .squirrel-hop, .squirrel-thigh, .squirrel-shin, .squirrel-carried-nut { animation: none !important; }
-.squirrel-traveler, .squirrel-facing { transform-origin: 55% 70%; }
-.squirrel-facing { overflow: visible; }
-.map-card { background: var(--color-mint); border: 2px solid var(--color-toy-green-shadow); box-shadow: 0 6px 0 var(--color-toy-green-shadow); }
-.map-card-header { background: var(--color-mint); border-bottom-color: var(--color-toy-green-shadow); }
-.map-card-header .world-icon { background: var(--color-cream); border-color: var(--color-toy-green-shadow); }
-.map-footer { background: var(--color-soft-green); border-top-color: var(--color-toy-green-shadow); }
-.mission-card { background: var(--color-gold-pale); border-color: var(--color-toy-yellow-shadow); box-shadow: 0 6px 0 var(--color-toy-yellow-shadow); }
-.mission-skill { background: var(--color-mint); border: 1px solid var(--color-toy-green-shadow); }
-.mission-mascot .mascot-disc { background: var(--color-peach); }
-.map-trail-buddy { position: absolute; width: 79px; height: 81px; bottom: calc(100% - 10px); left: 50%; transform: translateX(-50%); z-index: 4; pointer-events: none; }
-.map-trail-buddy > .character { position: absolute; width: 79px; height: 79px; bottom: 3px; filter: drop-shadow(0 3px 0 var(--color-cream)); animation: trail-buddy-bounce 3.4s ease-in-out infinite; transform-origin: center bottom; }
-.buddy-trail-shadow { position: absolute; width: 39px; height: 8px; bottom: 2px; left: 20px; border-radius: 50%; background: var(--color-map-caption); opacity: .22; }
-.buddy-trail-spark { position: absolute; right: -3px; top: 12px; font-size: 21px; color: var(--color-toy-yellow); text-shadow: 0 1px 0 var(--color-gold-ink); animation: world-twinkle 4s ease-in-out infinite; }
-.worlds-modal { width: 860px; background: var(--color-gold-pale); border: 3px solid var(--color-toy-yellow-shadow); border-radius: 28px; }
-.world-picker-welcome { text-align: center; }
-.world-picker-welcome > .character { width: 85px; height: 85px; margin: -9px auto 1px; }
-.world-picker-welcome > .skill-tag { justify-content: center; }
-.world-picker-welcome h1 { margin: 10px 0 7px; font-size: 34px; }
-.world-picker-welcome > p { color: var(--color-muted); font-size: 14px; }
-.world-picker-cards { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 17px; margin-top: 26px; }
-.world-choice.world-passport { display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 0; overflow: hidden; margin: 0; border-radius: 20px; border: 2px solid var(--color-toy-green-shadow); box-shadow: 0 5px 0 var(--color-toy-green-shadow); background: var(--color-mint); text-align: left; white-space: normal; min-width: 0; }
-button.world-passport:hover { transform: translateY(-4px) rotate(-1deg); box-shadow: 0 9px 0 var(--color-toy-green-shadow); }
-.world-choice.cove-passport { background: var(--color-blue); border-color: var(--color-toy-blue-shadow); box-shadow: 0 5px 0 var(--color-toy-blue-shadow); }
-.world-choice.peaks-passport { background: var(--color-lilac); border-color: var(--color-toy-lilac-shadow); box-shadow: 0 5px 0 var(--color-toy-lilac-shadow); }
-.world-passport-art { position: relative; height: 153px; flex-shrink: 0; overflow: hidden; }
-.world-passport-art > img, .world-passport-art > svg { width: 100%; height: 100%; object-fit: cover; }
-.world-passport-art > img { object-position: 32% 60%; }
-.world-passport-number { position: absolute; top: 10px; left: 11px; display: grid; place-items: center; width: 31px; height: 32px; border-radius: 10px; background: var(--color-cream); color: var(--color-gold-ink); font: 950 14px var(--font-display); box-shadow: 0 3px 0 var(--color-toy-yellow-shadow); transform: rotate(-7deg); }
-.world-ready-sticker { display: flex; align-items: center; gap: 5px; position: absolute; bottom: 11px; right: 9px; padding: 6px 9px; border-radius: 8px; background: var(--color-cream); color: var(--color-accent); font: 900 10px var(--font-display); transform: rotate(-5deg); }
-.world-passport-copy { padding: 18px 16px; display: flex; flex-direction: column; flex: 1; }
-.world-passport-copy > h2 { font-size: 25px; line-height: 1.05; letter-spacing: -.4px; }
-.world-passport-copy > p { font-size: 11px; line-height: 1.7; margin-top: 10px; min-height: 39px; color: var(--color-muted); }
-.world-chapter-stars { display: flex; align-items: center; gap: 5px; margin: 14px 0; color: var(--color-gold-ink); }
-.world-chapter-stars > span { font: 850 10px var(--font-display); color: var(--color-accent); margin-left: auto; }
-.world-enter { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: auto; background: var(--color-toy-yellow); color: var(--color-gold-ink); border: 1px solid var(--color-toy-yellow-shadow); box-shadow: 0 3px 0 var(--color-toy-yellow-shadow); border-radius: 11px; padding: 10px; font: 950 12px var(--font-display); }
-.world-dreaming { display: flex; align-items: center; justify-content: center; gap: 5px; padding: 11px 0 4px; margin-top: auto; font: 850 10px var(--font-display); color: var(--color-muted); }
-.world-picker-footnote { margin-top: 25px; display: flex; align-items: center; justify-content: center; gap: 7px; font-size: 11px; color: var(--color-muted); text-align: center; }
-@keyframes trail-buddy-bounce { 0%,60%,100% { transform: translateY(0) rotate(-3deg); } 68% { transform: translateY(-7px) rotate(3deg); } 78% { transform: translateY(0) rotate(-3deg); } 86% { transform: translateY(-4px) rotate(2deg); } }
-@keyframes world-twinkle { 0%,100% { opacity: .55; } 50% { opacity: 1; } }
-@media (max-width: 767px) { .map-trail-buddy { width: 65px; height: 69px; }.map-trail-buddy > .character { width: 65px; height: 65px; }.buddy-trail-shadow { left: 16px; width: 32px; }.buddy-trail-spark { font-size: 17px; }.world-picker-cards { grid-template-columns: 1fr; gap: 17px; margin-top: 20px; }.world-choice.world-passport { display: grid; grid-template-columns: 37% minmax(0,1fr); }.world-passport-art { height: 100%; min-height: 171px; }.world-passport-copy { padding: 16px; }.world-passport-copy > h2 { font-size: 24px; }.world-passport-copy > h2 > br { display: none; }.world-passport-copy > p { margin-top: 7px; font-size: 11px; min-height: 0; }.world-chapter-stars { margin: 10px 0; }.world-passport-art > svg { position: absolute; width: 175%; max-width: none; left: -36%; }.world-ready-sticker { font-size: 8px; right: 5px; bottom: 12px; padding: 5px; }.world-ready-sticker svg { width: 11px; }.world-dreaming { justify-content: flex-start; font-size: 9px; margin-top: 10px; }.world-picker-welcome h1 { font-size: 29px; }.world-picker-welcome > p { font-size: 12px; }.world-picker-welcome > .character { width: 68px; height: 68px; }.world-picker-footnote { align-items: flex-start; font-size: 10px; line-height: 1.6; }.world-picker-footnote svg { margin-top: 2px; } }
-@media (prefers-reduced-motion: reduce) { .map-trail-buddy > .character, .buddy-trail-spark, .world-twinkle { animation: none; } }
-.welcome-banner { margin-right: 105px; }
-.main-content > .wildlife-sun { position: absolute; right: 39px; top: 32px; width: 83px; height: 83px; z-index: 1; pointer-events: none; }
-.welcome-art .hello-sticker { top: 23px; }
-@media (max-width: 1190px) and (min-width: 768px) { .welcome-banner { margin-right: 83px; }.main-content > .wildlife-sun { right: 24px; width: 69px; height: 69px; } }
-@media (max-width: 767px) { .welcome-banner { margin-right: 0; margin-top: 61px; }.main-content > .wildlife-sun { top: 9px; right: 22px; width: 65px; height: 65px; }.welcome-art .hello-sticker { top: 8px; } }
+.squirrel-traveler,
+.squirrel-facing,
+.squirrel-hop,
+.squirrel-thigh,
+.squirrel-shin,
+.squirrel-carried-nut {
+  animation: none !important;
+}
+.squirrel-traveler,
+.squirrel-facing {
+  transform-origin: 55% 70%;
+}
+.squirrel-facing {
+  overflow: visible;
+}
+.map-card {
+  background: var(--color-mint);
+  border: 2px solid var(--color-toy-green-shadow);
+  box-shadow: 0 6px 0 var(--color-toy-green-shadow);
+}
+.map-card-header {
+  background: var(--color-mint);
+  border-bottom-color: var(--color-toy-green-shadow);
+}
+.map-card-header .world-icon {
+  background: var(--color-cream);
+  border-color: var(--color-toy-green-shadow);
+}
+.map-footer {
+  background: var(--color-soft-green);
+  border-top-color: var(--color-toy-green-shadow);
+}
+.mission-card {
+  background: var(--color-gold-pale);
+  border-color: var(--color-toy-yellow-shadow);
+  box-shadow: 0 6px 0 var(--color-toy-yellow-shadow);
+}
+.mission-skill {
+  background: var(--color-mint);
+  border: 1px solid var(--color-toy-green-shadow);
+}
+.mission-mascot .mascot-disc {
+  background: var(--color-peach);
+}
+.map-trail-buddy {
+  position: absolute;
+  width: 79px;
+  height: 81px;
+  bottom: calc(100% - 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  pointer-events: none;
+}
+.map-trail-buddy > .character {
+  position: absolute;
+  width: 79px;
+  height: 79px;
+  bottom: 3px;
+  filter: drop-shadow(0 3px 0 var(--color-cream));
+  animation: trail-buddy-bounce 3.4s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+.buddy-trail-shadow {
+  position: absolute;
+  width: 39px;
+  height: 8px;
+  bottom: 2px;
+  left: 20px;
+  border-radius: 50%;
+  background: var(--color-map-caption);
+  opacity: 0.22;
+}
+.buddy-trail-spark {
+  position: absolute;
+  right: -3px;
+  top: 12px;
+  font-size: 21px;
+  color: var(--color-toy-yellow);
+  text-shadow: 0 1px 0 var(--color-gold-ink);
+  animation: world-twinkle 4s ease-in-out infinite;
+}
+.worlds-modal {
+  width: 860px;
+  background: var(--color-gold-pale);
+  border: 3px solid var(--color-toy-yellow-shadow);
+  border-radius: 28px;
+}
+.world-picker-welcome {
+  text-align: center;
+}
+.world-picker-welcome > .character {
+  width: 85px;
+  height: 85px;
+  margin: -9px auto 1px;
+}
+.world-picker-welcome > .skill-tag {
+  justify-content: center;
+}
+.world-picker-welcome h1 {
+  margin: 10px 0 7px;
+  font-size: 34px;
+}
+.world-picker-welcome > p {
+  color: var(--color-muted);
+  font-size: 14px;
+}
+.world-picker-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 17px;
+  margin-top: 26px;
+}
+.world-choice.world-passport {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  margin: 0;
+  border-radius: 20px;
+  border: 2px solid var(--color-toy-green-shadow);
+  box-shadow: 0 5px 0 var(--color-toy-green-shadow);
+  background: var(--color-mint);
+  text-align: left;
+  white-space: normal;
+  min-width: 0;
+}
+button.world-passport:hover {
+  transform: translateY(-4px) rotate(-1deg);
+  box-shadow: 0 9px 0 var(--color-toy-green-shadow);
+}
+.world-choice.cove-passport {
+  background: var(--color-blue);
+  border-color: var(--color-toy-blue-shadow);
+  box-shadow: 0 5px 0 var(--color-toy-blue-shadow);
+}
+.world-choice.peaks-passport {
+  background: var(--color-lilac);
+  border-color: var(--color-toy-lilac-shadow);
+  box-shadow: 0 5px 0 var(--color-toy-lilac-shadow);
+}
+.world-passport-art {
+  position: relative;
+  height: 153px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.world-passport-art > img,
+.world-passport-art > svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.world-passport-art > img {
+  object-position: 32% 60%;
+}
+.world-passport-number {
+  position: absolute;
+  top: 10px;
+  left: 11px;
+  display: grid;
+  place-items: center;
+  width: 31px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--color-cream);
+  color: var(--color-gold-ink);
+  font: 950 14px var(--font-display);
+  box-shadow: 0 3px 0 var(--color-toy-yellow-shadow);
+  transform: rotate(-7deg);
+}
+.world-ready-sticker {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  position: absolute;
+  bottom: 11px;
+  right: 9px;
+  padding: 6px 9px;
+  border-radius: 8px;
+  background: var(--color-cream);
+  color: var(--color-accent);
+  font: 900 10px var(--font-display);
+  transform: rotate(-5deg);
+}
+.world-passport-copy {
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.world-passport-copy > h2 {
+  font-size: 25px;
+  line-height: 1.05;
+  letter-spacing: -0.4px;
+}
+.world-passport-copy > p {
+  font-size: 11px;
+  line-height: 1.7;
+  margin-top: 10px;
+  min-height: 39px;
+  color: var(--color-muted);
+}
+.world-chapter-stars {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 14px 0;
+  color: var(--color-gold-ink);
+}
+.world-chapter-stars > span {
+  font: 850 10px var(--font-display);
+  color: var(--color-accent);
+  margin-left: auto;
+}
+.world-enter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: auto;
+  background: var(--color-toy-yellow);
+  color: var(--color-gold-ink);
+  border: 1px solid var(--color-toy-yellow-shadow);
+  box-shadow: 0 3px 0 var(--color-toy-yellow-shadow);
+  border-radius: 11px;
+  padding: 10px;
+  font: 950 12px var(--font-display);
+}
+.world-dreaming {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 11px 0 4px;
+  margin-top: auto;
+  font: 850 10px var(--font-display);
+  color: var(--color-muted);
+}
+.world-picker-footnote {
+  margin-top: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 11px;
+  color: var(--color-muted);
+  text-align: center;
+}
+@keyframes trail-buddy-bounce {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0) rotate(-3deg);
+  }
+  68% {
+    transform: translateY(-7px) rotate(3deg);
+  }
+  78% {
+    transform: translateY(0) rotate(-3deg);
+  }
+  86% {
+    transform: translateY(-4px) rotate(2deg);
+  }
+}
+@keyframes world-twinkle {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@media (max-width: 767px) {
+  .map-trail-buddy {
+    width: 65px;
+    height: 69px;
+  }
+  .map-trail-buddy > .character {
+    width: 65px;
+    height: 65px;
+  }
+  .buddy-trail-shadow {
+    left: 16px;
+    width: 32px;
+  }
+  .buddy-trail-spark {
+    font-size: 17px;
+  }
+  .world-picker-cards {
+    grid-template-columns: 1fr;
+    gap: 17px;
+    margin-top: 20px;
+  }
+  .world-choice.world-passport {
+    display: grid;
+    grid-template-columns: 37% minmax(0, 1fr);
+  }
+  .world-passport-art {
+    height: 100%;
+    min-height: 171px;
+  }
+  .world-passport-copy {
+    padding: 16px;
+  }
+  .world-passport-copy > h2 {
+    font-size: 24px;
+  }
+  .world-passport-copy > h2 > br {
+    display: none;
+  }
+  .world-passport-copy > p {
+    margin-top: 7px;
+    font-size: 11px;
+    min-height: 0;
+  }
+  .world-chapter-stars {
+    margin: 10px 0;
+  }
+  .world-passport-art > svg {
+    position: absolute;
+    width: 175%;
+    max-width: none;
+    left: -36%;
+  }
+  .world-ready-sticker {
+    font-size: 8px;
+    right: 5px;
+    bottom: 12px;
+    padding: 5px;
+  }
+  .world-ready-sticker svg {
+    width: 11px;
+  }
+  .world-dreaming {
+    justify-content: flex-start;
+    font-size: 9px;
+    margin-top: 10px;
+  }
+  .world-picker-welcome h1 {
+    font-size: 29px;
+  }
+  .world-picker-welcome > p {
+    font-size: 12px;
+  }
+  .world-picker-welcome > .character {
+    width: 68px;
+    height: 68px;
+  }
+  .world-picker-footnote {
+    align-items: flex-start;
+    font-size: 10px;
+    line-height: 1.6;
+  }
+  .world-picker-footnote svg {
+    margin-top: 2px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .map-trail-buddy > .character,
+  .buddy-trail-spark,
+  .world-twinkle {
+    animation: none;
+  }
+}
+.welcome-banner {
+  margin-right: 105px;
+}
+.main-content > .wildlife-sun {
+  position: absolute;
+  right: 39px;
+  top: 32px;
+  width: 83px;
+  height: 83px;
+  z-index: 1;
+  pointer-events: none;
+}
+.welcome-art .hello-sticker {
+  top: 23px;
+}
+@media (max-width: 1190px) and (min-width: 768px) {
+  .welcome-banner {
+    margin-right: 83px;
+  }
+  .main-content > .wildlife-sun {
+    right: 24px;
+    width: 69px;
+    height: 69px;
+  }
+}
+@media (max-width: 767px) {
+  .welcome-banner {
+    margin-right: 0;
+    margin-top: 61px;
+  }
+  .main-content > .wildlife-sun {
+    top: 9px;
+    right: 22px;
+    width: 65px;
+    height: 65px;
+  }
+  .welcome-art .hello-sticker {
+    top: 8px;
+  }
+}
 
-.map-trail-buddy.buddy-at-canopy { bottom: 11px; left: -29px; }
+.map-trail-buddy.buddy-at-canopy {
+  bottom: 11px;
+  left: -29px;
+}
 
-.topbar { background: var(--color-cream); border-bottom: 2px solid color-mix(in oklch, var(--color-toy-yellow-shadow) 38%, var(--color-cream)); box-shadow: 0 3px 0 var(--color-gold-pale); }
-.topbar .sound-button, .topbar .mobile-menu-button { background: var(--color-soft-green); color: var(--color-accent); border: 1px solid var(--color-toy-green-shadow); border-radius: 12px; box-shadow: 0 2px 0 var(--color-toy-green-shadow); }
-.topbar .profile-avatar { border-color: var(--color-cream); }
+.topbar {
+  background: var(--color-cream);
+  border-bottom: 2px solid
+    color-mix(in oklch, var(--color-toy-yellow-shadow) 38%, var(--color-cream));
+  box-shadow: 0 3px 0 var(--color-gold-pale);
+}
+.topbar .sound-button,
+.topbar .mobile-menu-button {
+  background: var(--color-soft-green);
+  color: var(--color-accent);
+  border: 1px solid var(--color-toy-green-shadow);
+  border-radius: 12px;
+  box-shadow: 0 2px 0 var(--color-toy-green-shadow);
+}
+.topbar .profile-avatar {
+  border-color: var(--color-cream);
+}
