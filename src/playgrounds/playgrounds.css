@@ -1,0 +1,532 @@
+/* Chapter skins share the same readable math surfaces and predictable controls. */
+.quest-modal {
+  --world-header: #e3cef6;
+  --world-surface: #f2e4fc;
+  --world-ink: #583376;
+  --world-edge: #aa7dcc;
+  --world-hill: #b8d787;
+  --world-hill-front: #8fc16f;
+  --world-tree: #60a873;
+}
+.quest-modal.playground-bridge {
+  --world-header: #b5e5df;
+  --world-surface: #e0f4ec;
+  --world-ink: #205e62;
+  --world-edge: #64b4ad;
+  --world-hill: #b0d696;
+  --world-hill-front: #91c57d;
+  --world-tree: #4eaa8b;
+}
+.quest-modal.playground-picnic {
+  --world-header: #ffd5aa;
+  --world-surface: #ffedce;
+  --world-ink: #80472a;
+  --world-edge: #e5a16b;
+  --world-hill: #bfda8d;
+  --world-hill-front: #9bc575;
+  --world-tree: #68a66b;
+}
+.quest-modal.playground-firefly {
+  --world-header: #293f62;
+  --world-surface: #e7e8fa;
+  --world-ink: #ffe7a0;
+  --world-edge: #688fba;
+  --world-hill: #328b86;
+  --world-hill-front: #286f7e;
+  --world-tree: #48a29b;
+}
+.quest-modal.playground-wishing {
+  --world-header: #f4d3e1;
+  --world-surface: #fff0f1;
+  --world-ink: #75405c;
+  --world-edge: #d6a3bb;
+  --world-hill: #b9d898;
+  --world-hill-front: #91c38d;
+  --world-tree: #65af8d;
+}
+.quest-modal .quest-illustration {
+  background: var(--world-header);
+  overflow: hidden;
+}
+.chapter-illustration {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.quest-modal .quest-illustration > .character {
+  position: absolute;
+  left: auto;
+  right: 6%;
+  bottom: 24px;
+  width: 135px;
+  height: 150px;
+  transform: rotate(5deg);
+}
+.quest-modal .arena-world,
+.quest-modal .arena-world-heading,
+.quest-modal .arena-world .meadow-controls,
+.quest-modal .arena-world-footer {
+  background: var(--world-header);
+}
+.quest-modal .arena-world-heading,
+.quest-modal .arena-world-kicker,
+.quest-modal .arena-world .meadow-controls,
+.quest-modal .arena-world-footer,
+.quest-modal .arena-world-footer button {
+  color: var(--world-ink);
+}
+.quest-modal .arena-world-heading {
+  border-bottom: 1px solid color-mix(in srgb, var(--world-edge) 60%, transparent);
+}
+.quest-modal .arena-world-kicker {
+  font-size: 12px;
+  letter-spacing: 0.07em;
+  text-transform: none;
+  opacity: 0.95;
+}
+.quest-modal .arena-world-heading h1 {
+  color: inherit;
+  text-wrap: balance;
+}
+.quest-modal .world-equation-pill {
+  color: #3f5d49;
+}
+.quest-modal .arena-question {
+  border-left-color: var(--world-edge);
+  min-width: 0;
+}
+.is-mixed .fruit-token.will-remove .berry-body {
+  transform: scale(var(--away-scale, 1));
+}
+.quest-modal .arena-world .meadow-controls {
+  font-size: 12px;
+  border-color: var(--world-edge);
+}
+.quest-modal .orb-label {
+  box-shadow:
+    0 4px 0 #b59145,
+    0 0 0 5px #fff6d96b,
+    0 5px 16px #263d3024;
+}
+.quest-modal .playground-pocket {
+  position: absolute;
+  left: 18px;
+  bottom: 16px;
+  z-index: 3;
+  display: grid;
+  gap: 7px;
+  justify-items: start;
+  max-width: min(330px, 49%);
+  pointer-events: none;
+}
+.playground-toy {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 10px 15px;
+  border: 2px solid var(--world-edge);
+  border-radius: 17px 17px 17px 6px;
+  background: #fff7e2;
+  color: #3f5d49;
+  font: 800 13px var(--font-display);
+  box-shadow: 0 3px 0 var(--world-edge);
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    transform 160ms,
+    box-shadow 160ms;
+}
+.playground-toy:hover {
+  transform: translateY(-3px) rotate(-1deg);
+}
+.playground-toy:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--world-edge);
+}
+.playground-toy:focus-visible {
+  outline: 3px solid #e9ac36;
+  outline-offset: 4px;
+}
+.playground-toy svg {
+  flex: 0 0 auto;
+}
+.playground-toy-response {
+  display: block;
+  max-width: 320px;
+  border-radius: 8px;
+  padding: 5px 9px;
+  font-size: 12px;
+  line-height: 1.4;
+  background: #fff8e9e8;
+  color: #405e4e;
+  box-shadow: 0 1px 4px #263d300d;
+}
+.quest-modal .arena-world .restored-count {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  align-items: flex-start;
+  right: 18px;
+  bottom: 16px;
+  max-width: 45%;
+  padding: 10px 13px;
+  border: 1.5px solid var(--world-edge);
+  border-radius: 16px 16px 6px 16px;
+  background: #fff7e7f5;
+  color: #405b48;
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--world-edge) 75%, transparent);
+  font-size: 12px;
+}
+.restoration-lights {
+  display: flex;
+  gap: 5px;
+}
+.restoration-lights > span {
+  display: grid;
+  place-items: center;
+  width: 23px;
+  height: 23px;
+  border: 1px solid #d9d9c7;
+  border-radius: 50%;
+  background: #ebece0;
+  color: #8b9a86;
+}
+.restoration-lights > .is-lit {
+  background: #f9d477;
+  border-color: #d6a841;
+  color: #82592d;
+  animation: lantern-pop 650ms cubic-bezier(0.2, 1.5, 0.4, 1) both;
+}
+.ambient-meadow .playground-pocket,
+.ambient-meadow .restored-count {
+  display: none !important;
+}
+.quest-modal .meadow-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px;
+  background: var(--world-header);
+  color: var(--world-ink);
+}
+.quest-modal .meadow-fallback .chapter-illustration {
+  max-height: 58%;
+  flex-shrink: 1;
+}
+.quest-modal .meadow-fallback p {
+  margin: 0;
+  max-width: 350px;
+  font-size: 14px;
+}
+@keyframes lantern-pop {
+  0% {
+    transform: scale(0.6);
+  }
+  65% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@media (max-width: 1100px), (max-height: 760px) {
+  .quest-modal .playground-pocket {
+    left: 12px;
+    bottom: 12px;
+  }
+  .playground-toy-response {
+    display: none;
+  }
+  .quest-modal .arena-world .restored-count {
+    right: 12px;
+    bottom: 12px;
+    padding: 8px 10px;
+    gap: 4px;
+  }
+  .restoration-lights > span {
+    width: 19px;
+    height: 19px;
+  }
+}
+@media (max-width: 700px) {
+  .quest-modal .arena-world-kicker {
+    font-size: 11px;
+    letter-spacing: 0.01em;
+  }
+  .quest-modal .arena-world-heading h1 {
+    font-size: 23px;
+  }
+  .quest-modal .arena-world .meadow-controls {
+    font-size: 11px;
+  }
+  .quest-modal .playground-pocket {
+    left: 8px;
+    bottom: 8px;
+    max-width: 50%;
+  }
+  .playground-toy {
+    min-height: 40px;
+    padding: 7px 10px;
+    gap: 5px;
+    font-size: 12px;
+  }
+  .playground-toy svg {
+    width: 15px;
+  }
+  .quest-modal .arena-world .restored-count {
+    bottom: 8px;
+    right: 8px;
+    max-width: 43%;
+    font-size: 11px;
+    padding: 7px 9px;
+  }
+  .restoration-lights {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .playground-toy {
+    transition: none;
+  }
+  .playground-toy:hover {
+    transform: none;
+  }
+  .restoration-lights > .is-lit {
+    animation: none;
+  }
+}
+
+/* Keep help and answers within reach; compact screens have a dedicated counting panel. */
+.quest-modal .arena-layout:not(.with-hands-on) .arena-question {
+  padding: 16px 23px;
+}
+.quest-modal .arena-layout:not(.with-hands-on) .discovery-modes {
+  margin-bottom: 13px;
+}
+.quest-modal .arena-layout:not(.with-hands-on) .discovery-modes button {
+  min-height: 42px;
+  flex-direction: row;
+  gap: 7px;
+  font-size: 12px;
+}
+.quest-modal .arena-layout:not(.with-hands-on) .arena-question-top {
+  display: none;
+}
+.quest-modal .arena-layout:not(.with-hands-on) .equation {
+  margin: 10px 0 12px;
+}
+.quest-modal .arena-layout:not(.with-hands-on) .choose-answer-label {
+  margin: 12px 0 8px;
+}
+.quest-modal .arena-layout:not(.with-hands-on) .answer-options {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+.quest-modal .arena-layout:not(.with-hands-on) .answer-option {
+  min-height: 54px;
+}
+.quest-modal .arena-layout:not(.with-hands-on) .feedback-area {
+  min-height: 35px;
+  margin-top: 8px;
+}
+.quest-modal .arena-layout:not(.with-hands-on) .play-actions {
+  margin-top: 8px;
+}
+.quest-modal .arena-layout:not(.with-hands-on) .milo-help-button {
+  min-height: 45px;
+}
+.math-support-open {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1.5px solid #aa7dcc;
+  border-bottom-width: 3px;
+  border-radius: 12px;
+  background: #eee5f5;
+  color: #614772;
+  font: 850 13px var(--font-display);
+}
+.math-support-open > span {
+  font: 11px var(--font-body);
+}
+.modal.math-support-modal {
+  width: min(480px, calc(100% - 12px));
+  max-width: calc(100vw - 12px);
+  max-height: calc(100dvh - 20px);
+  background: #fff3d8;
+}
+.modal.math-support-modal .modal-inner {
+  padding: 16px 10px 10px;
+}
+.math-support-modal h2 {
+  font: 900 23px var(--font-display);
+  margin: 0 35px 8px 0;
+}
+.math-support-modal .math-garden {
+  margin-bottom: 8px;
+  padding: 9px 8px;
+}
+.math-support-modal .modal-close {
+  top: 12px;
+  right: 12px;
+}
+.math-support-modal .garden-counting-status {
+  margin-block: 0;
+  height: 32px;
+  display: grid;
+  place-items: center;
+}
+.math-support-modal .math-garden:has(.garden-counting-status) .garden-result {
+  display: none;
+}
+.math-support-modal .garden-result {
+  min-height: 28px;
+  padding: 3px 0;
+}
+.math-support-modal .counting-bubble {
+  min-height: 28px;
+  margin: 0;
+  padding: 2px 10px;
+  font-size: 13px;
+}
+.math-support-modal .counting-bubble > strong {
+  font-size: 22px;
+  line-height: 24px;
+}
+.math-support-modal .button {
+  min-height: 42px;
+}
+@media (max-width: 1000px) {
+  .quest-modal .arena-layout:not(.with-hands-on) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    overflow: hidden;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .arena-world {
+    height: auto;
+    min-height: 0;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .meadow-scene {
+    min-height: 0;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .arena-world-heading {
+    padding: 10px 16px 7px;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .arena-world-heading h1 {
+    font-size: 22px;
+    margin-top: 0;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .arena-world-footer,
+  .quest-modal .arena-layout:not(.with-hands-on) .meadow-controls {
+    display: none;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .arena-question {
+    padding: 10px 16px;
+    max-width: none;
+    width: 100%;
+    overflow: visible;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .discovery-modes {
+    margin-bottom: 7px;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .discovery-modes button {
+    min-height: 36px;
+    padding: 5px;
+    font-size: 12px;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .question-label h2 {
+    font-size: 19px;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .question-label {
+    min-height: 26px;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .equation {
+    font-size: 29px;
+    margin: 5px 0 8px;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .answer-blank {
+    min-height: 40px;
+    min-width: 43px;
+    font-size: 27px;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .choose-answer-label {
+    display: none;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .answer-options {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .answer-option {
+    min-height: 46px;
+    font-size: 26px;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .feedback-area {
+    margin-top: 4px;
+    min-height: 27px;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .play-actions {
+    margin-top: 4px;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .play-actions .button {
+    min-height: 40px;
+    max-width: none;
+    padding-block: 5px;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .milo-help-button .character {
+    height: 30px;
+    width: 30px;
+  }
+  .quest-modal .orb-label {
+    width: 32px;
+    min-width: 32px;
+    height: 34px;
+    min-height: 34px;
+    font-size: 21px;
+    border-width: 2px;
+    border-radius: 10px;
+  }
+  .math-support-open {
+    min-height: 36px;
+    padding-block: 5px;
+  }
+}
+@media (max-width: 500px) and (max-height: 700px) {
+  .quest-modal .arena-layout:not(.with-hands-on) .arena-world-heading {
+    padding: 5px 12px;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .arena-world-heading h1 {
+    font-size: 17px;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .world-equation-pill {
+    display: none;
+  }
+  .quest-modal .arena-layout:not(.with-hands-on) .arena-question {
+    padding: 7px 12px;
+  }
+  .quest-modal .arena-world .restored-count {
+    padding: 5px 7px;
+    font-size: 10px;
+  }
+  .playground-toy {
+    font-size: 10px;
+    min-height: 34px;
+    padding: 6px 8px;
+  }
+  .quest-modal .orb-label {
+    width: 28px;
+    min-width: 28px;
+    height: 30px;
+    min-height: 30px;
+    font-size: 18px;
+  }
+}

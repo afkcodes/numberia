@@ -39,11 +39,13 @@ The adventure map is keyed by grade and current chapter, so chapter selection re
 
 ## Animation and styling
 
+Each chapter scene is composed by `src/playgrounds/createPlayground.ts`. Landmark builders own their objects and update functions; `Meadow` owns the renderer, frame loop, input, observers, and cleanup. Progress comes from the question engine through `restore(count)` and never awards rewards inside the scene. Materials and geometry are shared and disposed when the chapter closes. Reduced-motion updates show all earned pieces without decorative movement.
+
 Each discovery owns its animation timeline. Sound and solved-state callbacks read committed values through `useLatest`; muting does not rebuild the Three.js scene or restart a demonstration. Clean up animation frames, timers, observers, listeners, and narration when an activity closes. React state drives rendered feedback; refs hold imperative handles and immediate event guards.
 
 Two narrow lint exceptions synchronize UI with external systems: reporting browser storage failures and reporting unavailable WebGL after renderer creation. They include inline explanations. Do not suppress effect dependencies to make a timeline run once.
 
-Keep the stylesheet imports in `src/main.tsx` in their documented order. Base styles load first, then the playful theme and arena layers, followed by the home layout. Preserve class names and DOM relationships when extracting components: the responsive CSS relies on them. Test the home page and bridge on small screens after layout changes, including after adding a plank and after a correct answer.
+Keep the stylesheet imports in `src/main.tsx` in their documented order. Base styles load first, then the playful theme and arena layers, followed by the home layout and scoped chapter playground styles. Preserve class names and DOM relationships when extracting components: the responsive CSS relies on them. Test the home page and bridge on small screens after layout changes, including after adding a plank and after a correct answer.
 
 ## Commits
 

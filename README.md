@@ -29,6 +29,16 @@ Open the local URL printed by Vite. `npm run build` creates the production site 
 
 Synthesized sound effects only play following interaction and can be muted. Motion respects the system’s reduced-motion setting. A device without WebGL can play using the same answer controls and learning activities.
 
+Each map stop opens its own Three.js playground:
+
+- **Moonberry Meadow:** a cottage garden, berry beds, butterflies, and five moonberry lanterns.
+- **Pebble Bridge:** a flowing river, waterwheel, jumping fish, and Pip’s bridge, which grows with each discovery. Pip crosses when all five pieces are ready.
+- **Picnic Hollow:** the lively playground, a striped canopy, balloons, a picnic bell, and five baskets to pack for the forest friends.
+- **Firefly Falls:** a moonlit waterfall, glowing mushrooms, Lumi, drifting fireflies, and five lanterns to light.
+- **The Wishing Tree:** an ancient tree with curling roots, a tiny door, a wishing well, and five golden leaves to wake.
+
+The scenery remembers discoveries throughout the chapter, including when switching between exploring and building. Optional play buttons animate each landmark. Chapter colors, storybook introductions, and a lightweight illustrated WebGL fallback share the same theme. On compact screens, **Count with Milo** gives the existing visual math activity its own focused panel, keeping the playground and answer buttons visible.
+
 ## Scope
 
 Whispering Woods has five playable chapters. Crystal Cove and Starlight Peaks are explicitly marked future adventures. This is a working local prototype, with browser-local saving and JSON progress export. There is no account system, server, cross-device synchronization, or online multiplayer.
@@ -47,7 +57,7 @@ These sources support instructional approaches; they do not establish that this 
 npm run check
 ```
 
-Twenty-nine tests cover saved clubhouse migration, duplicate/insufficient gem purchases, per-grade learning memory, spaced fact review, supported answers, physical answer models for every skill, bridge quantities, contextual bridge explanations, speech ordering and cancellation, error recovery, and spoken decimals and fractions. Browser checks verify pointer and keyboard placement, counting after props land, demonstrations, complete bridge geometry, stable playground size during celebrations, room delivery, and widths from 320 to 2048px. Regression tests also check fruit containment at multiple tray widths, the slide return path, and the squirrel’s pauses, facing, and climbing sequence. Engine tests exercise all supported grade/skill combinations over 10,000 generated questions, distinct valid choices, arithmetic correctness, grade-specific progression, duplicate reward protection, local-calendar streaks, and malformed-save recovery. Browser checks also cover 3D answer collection, retry coaching, animated demonstrations, completed missions, rewards, daily claims, companion unlocks, profile changes, and responsive layouts.
+Thirty-five tests cover saved clubhouse migration, duplicate/insufficient gem purchases, per-grade learning memory, spaced fact review, supported answers, physical answer models for every skill, bridge quantities, contextual bridge explanations, speech ordering and cancellation, error recovery, and spoken decimals and fractions. Browser checks verify pointer and keyboard placement, counting after props land, demonstrations, complete bridge geometry, stable playground size during celebrations, room delivery, and widths from 320 to 2048px. Regression tests also check fruit containment at multiple tray widths, the slide return path, and the squirrel’s pauses, facing, and climbing sequence. Engine tests exercise all supported grade/skill combinations over 10,000 generated questions, distinct valid choices, arithmetic correctness, grade-specific progression, duplicate reward protection, local-calendar streaks, and malformed-save recovery. Browser checks also cover 3D answer collection, retry coaching, animated demonstrations, completed missions, rewards, daily claims, companion unlocks, profile changes, and responsive layouts.
 
 Oxfmt handles formatting; Oxlint checks correctness, React hooks, and dependency cycles. See [the development guide](docs/development.md) for commands and module responsibilities.
 
@@ -64,7 +74,8 @@ Oxfmt handles formatting; Oxlint checks correctness, React hooks, and dependency
 - `src/MathPlayScenes.tsx`, `src/bridgeLesson.ts`, and `src/propFlight.ts`: picnic and bridge scenes, contextual teaching, and measured prop travel.
 - `src/DiscoveryCelebration.tsx` and `src/tactile-play.css`: compact discovery celebrations and responsive hands-on scene styles.
 - `src/learning.ts`: persistent per-skill challenge, warm-ups, and supported-fact review.
-- `src/Meadow.tsx`: interactive Three.js woodland, movement, crystals, particles, and restored objects.
+- `src/Meadow.tsx`: Three.js lifecycle, movement, answer collection, camera, and particles.
+- `src/playgrounds/`: chapter themes, scene sculpting, five landmarks, restoration, storybook art, and compact math support.
 - `src/Park.ts`, `src/ParkCharacters.ts`, and `src/slideJourney.ts`: full park, articulated children and cat, and a clear route around the slide.
 - `src/GradePicker.tsx` and `src/WorldPicker.tsx`: themed level and world selection.
 - `src/LandingWildlife.tsx`, `src/StorybookBackdrop.tsx`, and `src/squirrelJourney.ts`: ambient scenery and synchronized squirrel story.

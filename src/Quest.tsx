@@ -31,6 +31,9 @@ import HintCoach from './HintCoach';
 import { nextDiscovery, type LearningObservation } from './learning';
 import MathGarden from './MathGarden';
 import Meadow from './Meadow';
+import ChapterIllustration from './playgrounds/ChapterIllustration';
+import MathSupport from './playgrounds/MathSupport';
+import { playgroundTheme } from './playgrounds/themes';
 
 type QuestProps = {
   save: Save;
@@ -56,6 +59,7 @@ export default function Quest({
   onClubhouse,
 }: QuestProps) {
   const mission = missions[missionIndex];
+  const theme = playgroundTheme(missionIndex);
   const skill = practiceSkill || missionSkill(save.grade, missionIndex);
   const [stage, setStage] = useState<'intro' | 'play' | 'reward'>('intro');
   const [round, setRound] = useState(0);
@@ -67,6 +71,7 @@ export default function Quest({
   const [selected, setSelected] = useState<number | null>(null);
   const [hint, setHint] = useState(false);
   const [showMagic, setShowMagic] = useState(0);
+  const [mathSupportOpen, setMathSupportOpen] = useState(false);
   const [unassisted, setUnassisted] = useState(0);
   const [scratch, setScratch] = useState('');
   const helped = useRef(false);
@@ -118,6 +123,7 @@ export default function Quest({
       if (
         stage !== 'play' ||
         handsOn ||
+        (event.target as HTMLElement).closest('.math-support-modal') ||
         ['TEXTAREA', 'INPUT'].includes((event.target as HTMLElement).tagName)
       )
         return;
@@ -163,6 +169,7 @@ export default function Quest({
       setFeedback(null);
       setHint(false);
       setShowMagic(0);
+      setMathSupportOpen(false);
       setScratch('');
       helped.current = false;
       setSupportedAnswer(false);
@@ -177,13 +184,16 @@ export default function Quest({
     <Modal
       title={practiceSkill ? `${skill} practice` : mission.title}
       onClose={onClose}
-      className={`quest-modal ${stage}`}
+      className={`quest-modal playground-${theme.id} ${stage}`}
     >
       {stage === 'intro' && (
         <>
           <div className="quest-illustration">
-            <div className="quest-art-shade" />
-            <Character name={save.companion} outfit={save.clubhouse.equipped.outfit} />
+            <ChapterIllustration id={theme.id} />
+            <Character
+              name={practiceSkill ? save.companion : mission.companion}
+              outfit={save.clubhouse.equipped.outfit}
+            />
             <span className="scene-spark one">
               <Sparkles />
             </span>
@@ -279,23 +289,17 @@ export default function Quest({
           >
             <section
               className={`arena-world ${feedback === 'correct' ? 'world-celebrates' : ''}`}
-              aria-label="Your playable woodland"
+              aria-label={`Your playable ${theme.name}`}
             >
               <div className="arena-world-heading">
                 <div>
                   <span className="arena-world-kicker">
                     <LeafIcon />
-                    YOUR LITTLE WORLD OF WONDER
+                    {theme.invitation}
                   </span>
                   <h1>
                     {feedback === 'correct'
-                      ? [
-                          'You made magic!',
-                          'Look at you grow!',
-                          'The forest is cheering!',
-                          'One more little adventure!',
-                          'You brought it to life!',
-                        ][round]
+                      ? theme.discoveries[round]
                       : practiceSkill
                         ? 'Let curiosity lead the way.'
                         : mission.action}
@@ -304,7 +308,7 @@ export default function Quest({
                 <button
                   className="world-equation-pill"
                   onClick={readAloud}
-                  aria-label="Hear the meadow question"
+                  aria-label="Hear the playground question"
                 >
                   <span>HELP MILO FIND</span>
                   <strong>
@@ -321,6 +325,7 @@ export default function Quest({
                   missionIndex={missionIndex}
                   onAnswer={answer}
                   interactive={!handsOn}
+                  sound={save.sound}
                 />
                 {handsOn && (
                   <div className="hands-on-surface">
@@ -355,6 +360,7 @@ export default function Quest({
                   onClose={() => setHint(false)}
                   onDemonstrate={() => {
                     setShowMagic((n) => n + 1);
+                    setMathSupportOpen(true);
                     setHint(false);
                   }}
                 />
@@ -434,16 +440,22 @@ export default function Quest({
               </div>
               {!handsOn && (
                 <>
-                  <MathGarden
-                    key={round}
-                    problem={problem}
-                    sound={save.sound}
-                    demonstrate={showMagic}
-                    solved={feedback === 'correct'}
-                    onSupport={() => {
-                      helped.current = true;
-                    }}
-                  />
+                  <MathSupport
+                    open={mathSupportOpen && feedback !== 'correct'}
+                    onOpen={() => setMathSupportOpen(true)}
+                    onClose={() => setMathSupportOpen(false)}
+                  >
+                    <MathGarden
+                      key={round}
+                      problem={problem}
+                      sound={save.sound}
+                      demonstrate={showMagic}
+                      solved={feedback === 'correct'}
+                      onSupport={() => {
+                        helped.current = true;
+                      }}
+                    />
+                  </MathSupport>
                   <div className="choose-answer-label">What do you think, adventurer?</div>
                   <div className="answer-options">
                     {problem.choices.map((choice, i) => (

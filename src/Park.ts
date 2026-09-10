@@ -1,24 +1,24 @@
 import * as THREE from 'three';
-import { createCat, createChild } from './ParkCharacters';
-import { slideJourney } from './slideJourney';
+import { createCat, createChild } from './ParkCharacters.ts';
+import { slideJourney } from './slideJourney.ts';
 
 const colors = {
-  grass: 0x95bc7e,
-  lawn: 0xa5c986,
-  path: 0xe8d9aa,
-  water: 0x65bfc0,
+  grass: 0x8dc866,
+  lawn: 0xa6d475,
+  path: 0xffdf97,
+  water: 0x44c5be,
   ripple: 0xbae8dd,
   wood: 0x9a704c,
   woodLight: 0xc39a65,
   cream: 0xffefcf,
   ink: 0x35413c,
-  green: 0x487d57,
-  sage: 0x74a264,
+  green: 0x308354,
+  sage: 0x69b45b,
   teal: 0x5ba6a0,
-  coral: 0xdc907a,
-  yellow: 0xf0ce68,
-  lilac: 0xa094c7,
-  pink: 0xe4adc0,
+  coral: 0xee886e,
+  yellow: 0xffcf57,
+  lilac: 0xb38adc,
+  pink: 0xf0a4c4,
   white: 0xfff9ea,
 };
 

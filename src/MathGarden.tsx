@@ -218,7 +218,15 @@ export default function MathGarden({
     individualSubtraction ? 0.62 : 0.94,
     individualSubtraction ? problem.answer : tokens.length,
   );
-  const awayGrid = fruitGrid(width, 0.71, 0.27, individualSubtraction ? problem.b : 0);
+  // Taken-away berries are a small visual record; full-size berries stay available to count.
+  const awayTokenSize = width < 340 ? 20 : 28;
+  const awayGrid = fruitGrid(
+    width,
+    0.71,
+    0.27,
+    individualSubtraction ? problem.b : 0,
+    awayTokenSize,
+  );
   const boardHeight = Math.max(
     169,
     firstGrid.height,
@@ -354,7 +362,7 @@ export default function MathGarden({
               const end = removed ? awayGrid.at(index - problem.answer) : combinedGrid.at(index);
               const startX = start.x,
                 startY = start.y,
-                endX = end.x,
+                endX = removed ? end.x - (40 - awayTokenSize) / 2 : end.x,
                 endY = end.y;
               const ordinal = counted.includes(token.id)
                 ? counted
@@ -376,6 +384,7 @@ export default function MathGarden({
                       '--fruit-end-x': `${endX}px`,
                       '--fruit-end-y': `${endY}px`,
                       '--fruit-delay': `${index * 38}ms`,
+                      '--away-scale': awayTokenSize / 40,
                     } as React.CSSProperties
                   }
                 >

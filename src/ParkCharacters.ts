@@ -310,11 +310,13 @@ export function createCat(material: Material) {
       dark,
       head,
     );
-  const furCanvas = document.createElement('canvas');
-  furCanvas.width = 512;
-  furCanvas.height = 256;
-  const brush = furCanvas.getContext('2d');
-  if (brush) {
+  const furCanvas = typeof document === 'undefined' ? null : document.createElement('canvas');
+  if (furCanvas) {
+    furCanvas.width = 512;
+    furCanvas.height = 256;
+  }
+  const brush = furCanvas?.getContext('2d');
+  if (brush && furCanvas) {
     brush.fillStyle = '#ffffff';
     brush.fillRect(0, 0, 512, 256);
     brush.strokeStyle = '#b1b8bd';

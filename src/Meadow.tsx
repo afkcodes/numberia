@@ -1,31 +1,22 @@
 import { Footprints, Leaf, Move, Sparkles } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
+import { playSound, speak } from './audio';
 import type { Problem } from './game';
 import { useLatest } from './hooks/useLatest';
-import { createPark } from './Park';
+import { createPlayground } from './playgrounds/createPlayground';
+import { playgroundTheme, restorationCount } from './playgrounds/themes';
+import ChapterIllustration from './playgrounds/ChapterIllustration';
 
 // Named scene tokens mirror the warm woodland UI palette.
 const palette = {
-  sky: 0xe3efdb,
-  grass: 0xaec782,
-  grassEdge: 0x71965a,
-  forest: 0x38785b,
-  sage: 0x699765,
-  mint: 0x93b77c,
-  trunk: 0x92714a,
   cream: 0xfff1d4,
   orange: 0xe79950,
   ear: 0xb8653c,
   ink: 0x263d30,
   scarf: 0x3e7750,
-  water: 0x70bbb7,
-  waterLight: 0xb5e0d2,
   gold: 0xebc763,
-  stone: 0xaeb49a,
-  berry: 0xc57b77,
   white: 0xffffff,
-  path: 0xdcd2a5,
 };
 type MeadowProps = {
   problem: Problem;
@@ -34,12 +25,14 @@ type MeadowProps = {
   missionIndex: number;
   onAnswer: (value: number) => void;
   interactive?: boolean;
+  sound?: boolean;
 };
 type SceneControl = {
   setQuestion: (problem: Problem) => void;
   restore: (count: number) => void;
   choose: (index: number) => void;
   setSolved: (solved: boolean) => void;
+  interact: () => void;
 };
 
 export default function Meadow({
@@ -49,13 +42,17 @@ export default function Meadow({
   missionIndex,
   onAnswer,
   interactive = true,
+  sound = false,
 }: MeadowProps) {
+  const theme = playgroundTheme(missionIndex);
+  const restored = restorationCount(round + (solved ? 1 : 0));
   const host = useRef<HTMLDivElement>(null);
   const control = useRef<SceneControl | null>(null);
   const current = useLatest({ problem, round, solved, onAnswer, interactive });
   const [ready, setReady] = useState(false);
   const [fallback, setFallback] = useState(false);
   const [labels, setLabels] = useState<{ x: number; y: number }[]>([]);
+  const [toyPlayed, setToyPlayed] = useState(false);
   useEffect(() => {
     const container = host.current;
     if (!container) return;
@@ -77,20 +74,32 @@ export default function Meadow({
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.setClearColor(palette.sky);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
+    const theme = playgroundTheme(missionIndex);
+    renderer.setClearColor(theme.sky);
     renderer.domElement.setAttribute(
       'aria-label',
-      'Milo’s lively park, with children playing, swings, a slide, butterflies, and a roaming cat. Tap an answer or use arrow keys to walk.',
+      `${theme.name}. ${theme.description} Tap an answer or use arrow keys to walk.`,
     );
     renderer.domElement.setAttribute('tabindex', '0');
     container.prepend(renderer.domElement);
     const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(palette.sky, 40, 80);
+    scene.fog = new THREE.Fog(theme.sky, 30, 65);
     const camera = new THREE.OrthographicCamera(-10, 10, 6, -6, 0.1, 100);
     camera.position.set(8, 17, 20);
-    camera.lookAt(-0.6, 0.4, 0);
-    scene.add(new THREE.HemisphereLight(palette.cream, palette.forest, 2.5));
-    const sun = new THREE.DirectionalLight(palette.cream, 3);
+    camera.lookAt(-0.6, theme.id === 'wishing' ? 1.6 : 0.8, theme.id === 'wishing' ? -1.2 : -0.6);
+    scene.add(
+      new THREE.HemisphereLight(
+        theme.night ? 0xb9cde9 : 0xfff9ed,
+        theme.foliage[0],
+        theme.night ? 1.8 : 2,
+      ),
+    );
+    const sun = new THREE.DirectionalLight(
+      theme.night ? 0xc4d8ff : 0xfff4e1,
+      theme.night ? 1.7 : 2.4,
+    );
     sun.position.set(-8, 16, 8);
     sun.castShadow = true;
     sun.shadow.mapSize.set(1024, 1024);
@@ -125,45 +134,8 @@ export default function Meadow({
       pos: [number, number, number],
       parent: THREE.Object3D = scene,
     ) => mesh(new THREE.SphereGeometry(r, 24, 16), color, pos, parent);
-    const park = createPark(scene, material);
+    const park = createPlayground(scene, material, missionIndex);
     const ground = park.ground;
-    // Each correct answer restores one physical part of the chapter's landmark.
-    const landmark = new THREE.Group();
-    landmark.position.set(4.95, 0, -4.8);
-    scene.add(landmark);
-    const pieces: THREE.Object3D[] = [];
-    for (let i = 0; i < 5; i++) {
-      let part: THREE.Object3D;
-      if (missionIndex === 1) {
-        part = mesh(
-          new THREE.BoxGeometry(0.58, 0.17, 1.35),
-          palette.trunk,
-          [-1.2 + i * 0.6, 0.15, 0],
-          landmark,
-        );
-      } else {
-        part = new THREE.Group();
-        part.position.set((i - 2) * 0.47, 0.5 + Math.sin(i) * 0.2, 0);
-        landmark.add(part);
-        if (missionIndex === 4) {
-          const leaf = sphere(0.4, palette.mint, [0, 0, 0], part);
-          leaf.scale.set(0.7, 1.6, 0.7);
-        } else {
-          const star = mesh(
-            new THREE.OctahedronGeometry(0.29),
-            missionIndex === 0 ? palette.berry : palette.gold,
-            [0, 0, 0],
-            part,
-          );
-          star.rotation.z = 0.2;
-        }
-      }
-      part.visible = false;
-      pieces.push(part);
-    }
-    if (missionIndex !== 1) {
-      mesh(new THREE.CylinderGeometry(0.8, 0.7, 0.65, 12), palette.trunk, [0, 0.25, 0], landmark);
-    }
     const fox = new THREE.Group();
     fox.position.set(0, 0, 3.4);
     scene.add(fox);
@@ -217,12 +189,12 @@ export default function Meadow({
       mesh(new THREE.CylinderGeometry(0.56, 0.67, 0.23, 12), palette.cream, [0, 0.1, 0], group);
       const ring = mesh(
         new THREE.TorusGeometry(0.51, 0.055, 5, 24),
-        palette.gold,
+        theme.accent,
         [0, 0.24, 0],
         group,
       );
       ring.rotation.x = Math.PI / 2;
-      const orb = mesh(new THREE.OctahedronGeometry(0.36, 0), palette.gold, [0, 0.79, 0], group);
+      const orb = mesh(new THREE.OctahedronGeometry(0.36, 0), theme.accent, [0, 0.79, 0], group);
       orb.userData.answerIndex = i;
       orbs.push(orb);
       return group;
@@ -301,8 +273,8 @@ export default function Meadow({
         if (hit) {
           target = hit.point.clone();
           target.y = 0;
-          target.x = THREE.MathUtils.clamp(target.x, -13, 12);
-          target.z = THREE.MathUtils.clamp(target.z, -10, 10);
+          target.x = THREE.MathUtils.clamp(target.x, -6.4, 3.2);
+          target.z = THREE.MathUtils.clamp(target.z, -3.4, 4.9);
           chosen = null;
         }
       }
@@ -330,11 +302,7 @@ export default function Meadow({
     window.addEventListener('keydown', down);
     window.addEventListener('keyup', up);
     document.addEventListener('visibilitychange', visibility);
-    const restore = (count: number) => {
-      pieces.forEach((part, i) => {
-        part.visible = i < count;
-      });
-    };
+    const restore = park.restore;
     control.current = {
       setQuestion: (p) => {
         question = p;
@@ -348,6 +316,7 @@ export default function Meadow({
         });
       },
       restore,
+      interact: park.interact,
       choose: (i) => {
         if (!solvedState) {
           target = orbPositions[i].clone();
@@ -398,8 +367,8 @@ export default function Meadow({
       if (walking) {
         direction.normalize();
         fox.position.addScaledVector(direction, dt * 4.8);
-        fox.position.x = THREE.MathUtils.clamp(fox.position.x, -13, 12);
-        fox.position.z = THREE.MathUtils.clamp(fox.position.z, -10, 10);
+        fox.position.x = THREE.MathUtils.clamp(fox.position.x, -6.4, 3.2);
+        fox.position.z = THREE.MathUtils.clamp(fox.position.z, -3.4, 4.9);
         fox.rotation.y = Math.atan2(direction.x, direction.z);
         if (!reducedMotion.matches) {
           fox.position.y = Math.abs(Math.sin(time * 14)) * 0.08;
@@ -429,8 +398,8 @@ export default function Meadow({
           orbs[i].position.y = 0.79 + Math.sin(time * 1.8 + i) * 0.08;
           orbs[i].rotation.y = time * 0.4;
         });
-        park.update(time);
       }
+      park.update(time, !reducedMotion.matches);
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
         p.age += dt;
@@ -464,9 +433,12 @@ export default function Meadow({
       renderer.domElement.removeEventListener('pointerdown', pointer);
       renderer.domElement.removeEventListener('blur', blur);
       renderer.domElement.removeEventListener('webglcontextlost', contextLost);
+      const geometries = new Set<THREE.BufferGeometry>();
       scene.traverse((object) => {
-        if (object instanceof THREE.Mesh) object.geometry.dispose();
+        if (object instanceof THREE.Mesh) geometries.add(object.geometry);
       });
+      geometries.forEach((geometry) => geometry.dispose());
+      park.dispose();
       materials.forEach((m) => {
         m.map?.dispose();
         m.dispose();
@@ -489,26 +461,28 @@ export default function Meadow({
       canvas.setAttribute(
         'aria-label',
         interactive
-          ? 'Milo’s lively park. Tap an answer or use arrow keys to walk.'
-          : 'A lively woodland park with playing children and animals.',
+          ? `${theme.name}. ${theme.description} Tap an answer or use arrow keys to walk.`
+          : `${theme.name}. ${theme.description}`,
       );
     }
-  }, [interactive, ready]);
+  }, [interactive, ready, theme]);
   return (
     <div className={`meadow-wrap ${interactive ? '' : 'ambient-meadow'}`}>
       <div ref={host} className={`meadow-scene ${fallback ? 'scene-fallback' : ''}`}>
         {!ready && !fallback && (
           <div className="meadow-loading">
             <Leaf size={24} />
-            Bringing your park to life…
+            Opening {theme.name}…
           </div>
         )}
         {fallback ? (
           <div className="meadow-fallback">
-            <Sparkles size={35} />
-            <strong>Your magic is still growing.</strong>
-            <p>Use the answer buttons below to restore the forest.</p>
-            <span>{round + (solved ? 1 : 0)} of 5 pieces restored</span>
+            <ChapterIllustration id={theme.id} />
+            <strong>Welcome to {theme.name}.</strong>
+            <p>Try the answer buttons. Your discoveries still bring this world to life!</p>
+            <span>
+              {restored} of 5 {theme.progressNoun}
+            </span>
           </div>
         ) : (
           ready && (
@@ -534,10 +508,42 @@ export default function Meadow({
                       : problem.choices[i]}
                 </button>
               ))}
-              <span className="restored-count">
-                <Sparkles size={14} />
-                {round + (solved ? 1 : 0)}/5 magic restored
-              </span>
+              <div className="playground-pocket">
+                <button
+                  className="playground-toy"
+                  onClick={() => {
+                    control.current?.interact();
+                    setToyPlayed(true);
+                    if (sound) {
+                      playSound('open');
+                      speak(theme.toyResponse);
+                    }
+                  }}
+                  aria-label={theme.toyLabel}
+                >
+                  <Sparkles size={18} />
+                  <span>{theme.toyLabel}</span>
+                </button>
+                <span className="playground-toy-response" role="status">
+                  {toyPlayed ? theme.toyResponse : 'A little extra wonder. Give it a tap!'}
+                </span>
+              </div>
+              <div
+                className="restored-count"
+                role="status"
+                aria-label={`${restored} of 5 ${theme.progressNoun}`}
+              >
+                <span className="restoration-lights" aria-hidden="true">
+                  {[0, 1, 2, 3, 4].map((i) => (
+                    <span key={i} className={i < restored ? 'is-lit' : ''}>
+                      <Sparkles size={13} />
+                    </span>
+                  ))}
+                </span>
+                <span>
+                  <strong>{restored}/5</strong> {theme.progressNoun}
+                </span>
+              </div>
             </>
           )
         )}
