@@ -28,6 +28,28 @@ for (const [index, theme] of playgroundThemes.entries()) {
     const world = createPlayground(scene, material, index);
     try {
       assert.equal(world.pieces.filter((piece) => piece.visible).length, 0);
+      if (theme.id === 'wishing') {
+        assert.equal(world.interactionTargets.length, 2);
+        const fountain = scene.getObjectByName('wishing-star-fountain')!;
+        assert.ok(
+          new THREE.Box3().setFromObject(fountain).max.x < -7,
+          'The fountain stays clear of Milo’s walking area',
+        );
+        world.interact();
+        world.update(0.8);
+        const wish = scene.getObjectByName('travelling-wish')!;
+        assert.equal(wish.visible, true);
+        const start = wish.position.clone();
+        world.update(2);
+        assert.ok(wish.position.distanceTo(start) > 1, 'The wish travels toward the tree');
+        world.update(4);
+        assert.equal(wish.visible, false);
+        assert.equal(
+          world.pieces.filter((piece) => piece.visible).length,
+          0,
+          'Playing with the fountain never awards a discovery',
+        );
+      }
       // Restoration comes from the question engine, including a return from the building view.
       for (const count of [1, 2, 2, 3, 4, 5]) {
         world.restore(count);
@@ -39,6 +61,11 @@ for (const [index, theme] of playgroundThemes.entries()) {
       }
       world.interact();
       for (let frame = 0; frame < 180; frame++) world.update(15 + frame / 30);
+      if (theme.id === 'wishing')
+        assert.ok(
+          scene.getObjectByName('wishing-tree-door')!.rotation.y < -1,
+          'The door opens after all five discoveries',
+        );
       scene.updateMatrixWorld(true);
       scene.traverse((object) => {
         assert.ok(

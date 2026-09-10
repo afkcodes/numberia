@@ -3,17 +3,17 @@ import { createCat, createChild } from './ParkCharacters.ts';
 import { slideJourney } from './slideJourney.ts';
 
 const colors = {
-  grass: 0x8dc866,
-  lawn: 0xa6d475,
-  path: 0xffdf97,
-  water: 0x44c5be,
+  grass: 0x488d40,
+  lawn: 0x65a24a,
+  path: 0xe0b778,
+  water: 0x25b6af,
   ripple: 0xbae8dd,
   wood: 0x9a704c,
   woodLight: 0xc39a65,
   cream: 0xffefcf,
   ink: 0x35413c,
-  green: 0x308354,
-  sage: 0x69b45b,
+  green: 0x246c42,
+  sage: 0x459845,
   teal: 0x5ba6a0,
   coral: 0xee886e,
   yellow: 0xffcf57,

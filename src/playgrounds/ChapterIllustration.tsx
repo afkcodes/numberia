@@ -147,6 +147,16 @@ export default function ChapterIllustration({ id }: { id: PlaygroundId }) {
           />
           <path d="M204 181v-25a13 13 0 0 1 26 0v25" fill="#edca87" />
           <circle cx="223" cy="166" r="2" fill="#956f49" />
+          <path
+            d="M205 129q4 4 8 0m12 0q4 4 8 0M212 139q7 6 14 0"
+            stroke="#775133"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          />
+          <ellipse cx="103" cy="183" rx="27" ry="8" fill="#ebc7da" />
+          <ellipse cx="103" cy="180" rx="20" ry="5" fill="#80d4bb" />
+          <path d="M103 147l4 8 10 1-7 7 2 10-9-5-9 5 2-10-7-7 10-1Z" fill="#ffd064" />
+          <path d="M118 148q27-30 55-13" stroke="#fff0bd" strokeWidth="2" strokeDasharray="3 5" />
           {[
             [154, 84],
             [185, 63],

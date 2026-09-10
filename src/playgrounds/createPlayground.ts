@@ -1,13 +1,8 @@
 import * as THREE from 'three';
 import { createPark } from '../Park.ts';
 import { createCat, createChild } from '../ParkCharacters.ts';
-import {
-  fireflyFalls,
-  moonberryGarden,
-  pebbleRiver,
-  picnicParty,
-  wishingTree,
-} from './landmarks.ts';
+import { fireflyFalls, moonberryGarden, pebbleRiver, picnicParty } from './landmarks.ts';
+import { wishingGarden } from './wishingGarden.ts';
 import { sculptWorld, type MaterialFactory } from './sculpt.ts';
 import { playgroundTheme, restorationCount } from './themes.ts';
 
@@ -26,7 +21,7 @@ export function createPlayground(
   ground.castShadow = false;
   ground.name = `${theme.id}-walkable-ground`;
 
-  if (!picnic) {
+  if (!picnic && theme.id !== 'wishing') {
     // A broad garden walk continues beyond the camera, with a clear space for math.
     const clearing = s.disk(6.8, theme.path, [-1, -0.095, 0.7]);
     clearing.scale.y = 0.8;
@@ -68,7 +63,7 @@ export function createPlayground(
     bridge: () => pebbleRiver(s, theme.water),
     picnic: () => picnicParty(s),
     firefly: () => fireflyFalls(s, theme.water),
-    wishing: () => wishingTree(s),
+    wishing: () => wishingGarden(s),
   };
   const landmark = builders[theme.id]();
   const originalScales = landmark.pieces.map((piece) => piece.scale.clone());
@@ -94,9 +89,9 @@ export function createPlayground(
   if (child) {
     scene.add(child.group);
     child.group.position.set(
-      theme.id === 'bridge' ? 1.5 : -5.8,
+      theme.id === 'bridge' ? 1.5 : theme.id === 'wishing' ? 5.8 : -5.8,
       0,
-      theme.id === 'bridge' ? -5.6 : -4.4,
+      theme.id === 'bridge' ? -5.6 : theme.id === 'wishing' ? -5.7 : -4.4,
     );
     child.group.rotation.y = 0.5;
     if (theme.id === 'moonberry') {
@@ -188,11 +183,13 @@ export function createPlayground(
   update(0, false);
   return {
     ground,
+    interactionTargets: landmark.interactionTargets ?? [],
     pieces: landmark.pieces,
     restore,
     update,
     interact: () => {
       interactionAt = lastTime;
+      landmark.interact?.(lastTime);
     },
     dispose: s.dispose,
   };

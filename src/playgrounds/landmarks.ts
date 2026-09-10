@@ -4,6 +4,8 @@ import type { Point, WorldSculpt } from './sculpt.ts';
 export type Landmark = {
   pieces: THREE.Object3D[];
   update: (time: number, restored: number, excitement: number) => void;
+  interactionTargets?: THREE.Object3D[];
+  interact?: (time: number) => void;
 };
 
 const cream = 0xffefd0;
@@ -468,114 +470,6 @@ export function fireflyFalls(s: WorldSculpt, water: number): Landmark {
       lumi.position.y = 1.8 + Math.sin(time * 1.9) * 0.17;
       wings.forEach((wing, i) => {
         wing.rotation.y = Math.sin(time * 20) * 0.4 * (i ? 1 : -1);
-      });
-    },
-  };
-}
-
-export function wishingTree(s: WorldSculpt): Landmark {
-  const tree = s.group([0.6, 0, -7]);
-  tree.name = 'the-ancient-wishing-tree';
-  s.mesh(new THREE.CylinderGeometry(0.7, 1.3, 4.6, 16), 0x9d7d61, [0, 2.2, 0], tree);
-  for (let i = 0; i < 7; i++) {
-    const angle = (i * Math.PI * 2) / 7;
-    s.line(
-      [
-        [0, 1.15, 0],
-        [Math.sin(angle) * 1.2, 0.2, Math.cos(angle)],
-        [Math.sin(angle) * 2, 0.08, Math.cos(angle) * 1.7],
-      ],
-      0.23,
-      0x9d7d61,
-      tree,
-    );
-  }
-  const crownColors = [0x56ac7d, 0x8cc980, 0xb4d78b, 0x74c59b, 0xc2dd8e];
-  for (let i = 0; i < 5; i++) {
-    const x = (i - 2) * 1.5,
-      y = 4.55 + (2 - Math.abs(i - 2)) * 0.65;
-    s.line(
-      [
-        [0, 2.2, 0],
-        [x * 0.5, y - 1.2, 0],
-        [x, y, 0],
-      ],
-      0.23,
-      0x9d7d61,
-      tree,
-    );
-    s.oval([1.8, 1.25, 1.65], crownColors[i], [x, y + 0.3, -0.1], tree);
-    for (let j = 0; j < 3; j++)
-      s.oval(
-        [0.14, 0.11, 0.1],
-        j % 2 ? 0xf9adad : 0xffe4cd,
-        [x + Math.sin(j * 2 + i) * 1.25, y + Math.cos(j) * 0.65, 1.4],
-        tree,
-      );
-  }
-  const door = s.group([0, 0.06, 1.15], tree);
-  s.box([0.9, 1.05, 0.13], 0xd9b06c, [0, 0.55, 0], door);
-  s.oval([0.45, 0.47, 0.075], 0xd9b06c, [0, 1.05, 0], door);
-  for (const x of [-0.25, 0, 0.25]) s.box([0.018, 1.1, 0.02], 0xb88e56, [x, 0.68, 0.08], door);
-  s.oval([0.065, 0.065, 0.06], 0xffdf85, [0.27, 0.62, 0.14], door, true);
-  s.oval([0.25, 0.24, 0.08], 0xffe9a3, [0, 2.28, 0.99], tree, true);
-  s.line(
-    [
-      [-0.27, 2.26, 1.06],
-      [0, 2.53, 1.06],
-      [0.27, 2.26, 1.06],
-      [0, 2.03, 1.06],
-      [-0.27, 2.26, 1.06],
-    ],
-    0.05,
-    0xc29b66,
-    tree,
-  );
-  const pieces = Array.from({ length: 5 }, (_, i) => {
-    const x = (i - 2) * 1.43,
-      y = 4.1 + (2 - Math.abs(i - 2)) * 0.55;
-    s.line(
-      [
-        [x, y + 0.6, 1.05],
-        [x, y + 0.1, 1.3],
-      ],
-      0.018,
-      0xe5c38d,
-      tree,
-    );
-    s.leaf(0x779b80, [x, y, 1.38], 0.8, tree);
-    return s.leaf(0xffcc4f, [x, y, 1.49], 0.82, tree, true);
-  });
-  for (let i = 0; i < 9; i++)
-    s.oval([0.45, 0.09, 0.34], i % 2 ? 0xe1d5b5 : 0xd4c8aa, [
-      -5.8 + i * 0.68,
-      0.02,
-      -4.3 - Math.sin((i / 8) * Math.PI) * 0.5,
-    ]);
-  const wishingWell = s.group([-6.6, 0, -3.7]);
-  s.post(0.75, 0.7, 0xc9c5ae, [0, 0.35, 0], wishingWell);
-  s.post(0.57, 0.04, 0x92c6c1, [0, 0.72, 0], wishingWell);
-  for (const x of [-0.7, 0.7]) s.post(0.065, 1.8, wood, [x, 0.9, 0], wishingWell);
-  s.mesh(new THREE.ConeGeometry(1.15, 0.7, 4), 0x91b7a4, [0, 2.05, 0], wishingWell).rotation.y =
-    Math.PI / 4;
-  const wishes = Array.from({ length: 20 }, (_, i) =>
-    s.leaf(i % 2 ? 0xffde92 : 0xf2c8c0, [0, 0, 0], 0.1, undefined, true),
-  );
-  return {
-    pieces,
-    update(time, restored, excitement) {
-      pieces.forEach((piece, i) => {
-        piece.rotation.z = -0.45 + Math.sin(time * 1.15 + i) * 0.13;
-      });
-      wishes.forEach((wish, i) => {
-        const angle = time * 0.25 + i * 2.399;
-        wish.visible = i < 5 + restored * 3 || excitement > 0;
-        wish.position.set(
-          0.6 + Math.sin(angle) * (2.5 + excitement),
-          0.5 + ((time * 0.22 + excitement * 0.9 + i * 0.3) % 6),
-          -6 + Math.cos(angle) * 1.7,
-        );
-        wish.rotation.y = angle;
       });
     },
   };

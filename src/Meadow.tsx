@@ -48,11 +48,19 @@ export default function Meadow({
   const restored = restorationCount(round + (solved ? 1 : 0));
   const host = useRef<HTMLDivElement>(null);
   const control = useRef<SceneControl | null>(null);
-  const current = useLatest({ problem, round, solved, onAnswer, interactive });
   const [ready, setReady] = useState(false);
   const [fallback, setFallback] = useState(false);
   const [labels, setLabels] = useState<{ x: number; y: number }[]>([]);
   const [toyPlayed, setToyPlayed] = useState(false);
+  const playWithWorld = () => {
+    control.current?.interact();
+    setToyPlayed(true);
+    if (sound) {
+      playSound('open');
+      speak(theme.toyResponse);
+    }
+  };
+  const current = useLatest({ problem, round, solved, onAnswer, interactive, playWithWorld });
   useEffect(() => {
     const container = host.current;
     if (!container) return;
@@ -75,8 +83,8 @@ export default function Meadow({
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
     const theme = playgroundTheme(missionIndex);
+    renderer.toneMappingExposure = theme.night ? 1.1 : 0.95;
     renderer.setClearColor(theme.sky);
     renderer.domElement.setAttribute(
       'aria-label',
@@ -91,14 +99,14 @@ export default function Meadow({
     camera.lookAt(-0.6, theme.id === 'wishing' ? 1.6 : 0.8, theme.id === 'wishing' ? -1.2 : -0.6);
     scene.add(
       new THREE.HemisphereLight(
-        theme.night ? 0xb9cde9 : 0xfff9ed,
-        theme.foliage[0],
-        theme.night ? 1.8 : 2,
+        theme.night ? 0xb9cde9 : 0xdcecff,
+        theme.night ? theme.foliage[0] : 0xb1b9a1,
+        theme.night ? 1.8 : 1.5,
       ),
     );
     const sun = new THREE.DirectionalLight(
-      theme.night ? 0xc4d8ff : 0xfff4e1,
-      theme.night ? 1.7 : 2.4,
+      theme.night ? 0xc4d8ff : 0xfff1dc,
+      theme.night ? 1.7 : 2.1,
     );
     sun.position.set(-8, 16, 8);
     sun.castShadow = true;
@@ -109,6 +117,12 @@ export default function Meadow({
     sun.shadow.camera.bottom = -14;
     sun.shadow.normalBias = 0.04;
     scene.add(sun);
+    if (!theme.night) {
+      // Soft sky fill keeps faces readable underneath the forest canopy.
+      const fill = new THREE.DirectionalLight(0xe4efff, 0.55);
+      fill.position.set(8, 8, 16);
+      scene.add(fill);
+    }
     const materials = new Map<number, THREE.MeshStandardMaterial>();
     const material = (color: number) => {
       if (!materials.has(color))
@@ -268,6 +282,11 @@ export default function Meadow({
         const index = hits[0].object.userData.answerIndex;
         target = orbPositions[index].clone();
         chosen = index;
+      } else if (
+        park.interactionTargets.length &&
+        raycaster.intersectObjects(park.interactionTargets, true).length
+      ) {
+        current.current.playWithWorld();
       } else {
         const hit = raycaster.intersectObject(ground)[0];
         if (hit) {
@@ -316,7 +335,12 @@ export default function Meadow({
         });
       },
       restore,
-      interact: park.interact,
+      interact: () => {
+        target = null;
+        chosen = null;
+        keys.clear();
+        park.interact();
+      },
       choose: (i) => {
         if (!solvedState) {
           target = orbPositions[i].clone();
@@ -511,21 +535,18 @@ export default function Meadow({
               <div className="playground-pocket">
                 <button
                   className="playground-toy"
-                  onClick={() => {
-                    control.current?.interact();
-                    setToyPlayed(true);
-                    if (sound) {
-                      playSound('open');
-                      speak(theme.toyResponse);
-                    }
-                  }}
+                  onClick={playWithWorld}
                   aria-label={theme.toyLabel}
                 >
                   <Sparkles size={18} />
                   <span>{theme.toyLabel}</span>
                 </button>
                 <span className="playground-toy-response" role="status">
-                  {toyPlayed ? theme.toyResponse : 'A little extra wonder. Give it a tap!'}
+                  {toyPlayed
+                    ? theme.toyResponse
+                    : theme.id === 'wishing'
+                      ? 'Tap the tree or star fountain to send a wish.'
+                      : 'A little extra wonder. Give it a tap!'}
                 </span>
               </div>
               <div

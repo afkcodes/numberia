@@ -35,7 +35,7 @@ Each map stop opens its own Three.js playground:
 - **Pebble Bridge:** a flowing river, waterwheel, jumping fish, and Pip’s bridge, which grows with each discovery. Pip crosses when all five pieces are ready.
 - **Picnic Hollow:** the lively playground, a striped canopy, balloons, a picnic bell, and five baskets to pack for the forest friends.
 - **Firefly Falls:** a moonlit waterfall, glowing mushrooms, Lumi, drifting fireflies, and five lanterns to light.
-- **The Wishing Tree:** an ancient tree with curling roots, a tiny door, a wishing well, and five golden leaves to wake.
+- **The Wishing Tree:** a friendly sleeping tree in a blossom garden, with an owl, hanging lights, and a star fountain. Tap the tree or fountain to send a wish into its heart. Discoveries return five golden leaves and light five garden lanterns; the final discovery wakes the tree and opens its little door.
 
 The scenery remembers discoveries throughout the chapter, including when switching between exploring and building. Optional play buttons animate each landmark. Chapter colors, storybook introductions, and a lightweight illustrated WebGL fallback share the same theme. On compact screens, **Count with Milo** gives the existing visual math activity its own focused panel, keeping the playground and answer buttons visible.
 
