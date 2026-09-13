@@ -25,10 +25,12 @@ test('Profile and grade actions preserve earned progress without mutating the pr
   next = saveReducer(next, { type: 'explorer-renamed', name: '  River  ' });
   next = saveReducer(next, { type: 'pet-renamed', name: 'Biscuit' });
   next = saveReducer(next, { type: 'sound-toggled' });
+  next = saveReducer(next, { type: 'world-changed', world: 'crystal' });
   assert.equal(next.grade, 5);
   assert.equal(next.name, 'River');
   assert.equal(next.clubhouse.petName, 'Biscuit');
   assert.equal(next.sound, false);
+  assert.equal(next.world, 'crystal');
   assert.equal(next.xp, 100);
   assert.equal(next.gems, 15);
   assert.deepEqual(next.runs, original.runs);

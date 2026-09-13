@@ -89,13 +89,97 @@ for (const [index, theme] of playgroundThemes.entries()) {
           'Decorations stay still with reduced motion',
         ),
       );
-      if (theme.id === 'bridge')
+      if (theme.id === 'bridge' || theme.id === 'crystal-bridge')
         assert.ok(
           scene.getObjectByName('pip-the-bridge-builder')!.position.x < 3,
           'Pip reaches the safe bank even without animation',
         );
+      if (theme.id === 'bridge') {
+        const wheel = scene.getObjectByName('pebble-waterwheel')!;
+        scene.updateMatrixWorld(true);
+        const obstacles = [
+          scene.getObjectByName('pebble-mill-building')!,
+          scene.getObjectByName('pips-growing-bridge')!,
+          ...scene.getObjectByName('pebble-bank-stones')!.children,
+        ].map((object) => new THREE.Box3().setFromObject(object, true));
+        const wheelBounds = new THREE.Box3();
+        const initialRotation = wheel.quaternion.clone();
+        // Exercise the animation over more than one revolution, including paddle corners.
+        for (let frame = 0; frame <= 240; frame++) {
+          world.update(40 + frame / 10);
+          wheelBounds.setFromObject(wheel, true);
+          for (const obstacle of obstacles)
+            assert.equal(
+              wheelBounds.intersectsBox(obstacle),
+              false,
+              'The rotating waterwheel clears the mill, bridge, and bank stones',
+            );
+        }
+        assert.ok(wheel.quaternion.angleTo(initialRotation) > 0.1, 'The waterwheel still turns');
+      }
       world.restore(0);
       assert.equal(world.pieces.filter((piece) => piece.visible).length, 0);
+      if (world.activity) {
+        const activity = world.activity;
+        assert.equal(activity.choices.length, 4);
+        const snapshot = (root: THREE.Object3D) => {
+          root.updateWorldMatrix(true, true);
+          const parts: { visible: boolean; transform: number[] }[] = [];
+          root.traverse((part) =>
+            parts.push({ visible: part.visible, transform: part.matrixWorld.elements.slice() }),
+          );
+          return parts;
+        };
+        world.update(70);
+        const labelPositions = activity.choices.map(({ anchor }) =>
+          anchor.getWorldPosition(new THREE.Vector3()).toArray(),
+        );
+        world.update(71);
+        assert.deepEqual(
+          activity.choices.map(({ anchor }) =>
+            anchor.getWorldPosition(new THREE.Vector3()).toArray(),
+          ),
+          labelPositions,
+          'Number targets stay still while boats and lanterns bob',
+        );
+        world.update(72, false);
+        const atRest = activity.choices.map(({ root }) => snapshot(root));
+        for (let choice = 0; choice < 4; choice++) {
+          activity.select(choice, false);
+          world.update(75, false);
+          assert.deepEqual(
+            activity.choices.map(({ root }) => snapshot(root)),
+            atRest,
+            'A retry never sends away a toy or reveals its treasure',
+          );
+          activity.select(choice, true);
+          world.update(78, false);
+          assert.notDeepEqual(
+            snapshot(activity.choices[choice].root),
+            atRest[choice],
+            'Every answer toy has a completed action even with reduced motion',
+          );
+          for (let other = 0; other < 4; other++)
+            if (other !== choice)
+              assert.deepEqual(
+                snapshot(activity.choices[other].root),
+                atRest[other],
+                'Only the chosen toy reacts',
+              );
+          assert.equal(
+            world.pieces.filter((piece) => piece.visible).length,
+            0,
+            'Animation cannot award a discovery independently of the learning engine',
+          );
+          activity.reset();
+          world.update(80, false);
+          assert.deepEqual(
+            activity.choices.map(({ root }) => snapshot(root)),
+            atRest,
+            'A new question restores the answer toys for another try',
+          );
+        }
+      }
     } finally {
       const geometries = new Set<THREE.BufferGeometry>();
       scene.traverse((object) => {

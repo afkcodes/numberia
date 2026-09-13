@@ -7,6 +7,7 @@ import { useLatest } from './hooks/useLatest';
 import { createPlayground } from './playgrounds/createPlayground';
 import { playgroundTheme, restorationCount } from './playgrounds/themes';
 import ChapterIllustration from './playgrounds/ChapterIllustration';
+import { crystalInstructions } from './playgrounds/crystalActivity';
 
 // Named scene tokens mirror the warm woodland UI palette.
 const palette = {
@@ -26,6 +27,7 @@ type MeadowProps = {
   onAnswer: (value: number) => void;
   interactive?: boolean;
   sound?: boolean;
+  selected?: number | null;
 };
 type SceneControl = {
   setQuestion: (problem: Problem) => void;
@@ -33,6 +35,7 @@ type SceneControl = {
   choose: (index: number) => void;
   setSolved: (solved: boolean) => void;
   interact: () => void;
+  reactToAnswer: (value: number) => void;
 };
 
 export default function Meadow({
@@ -43,20 +46,26 @@ export default function Meadow({
   onAnswer,
   interactive = true,
   sound = false,
+  selected = null,
 }: MeadowProps) {
   const theme = playgroundTheme(missionIndex);
+  const activityCopy =
+    theme.id in crystalInstructions
+      ? crystalInstructions[theme.id as keyof typeof crystalInstructions]
+      : null;
   const restored = restorationCount(round + (solved ? 1 : 0));
   const host = useRef<HTMLDivElement>(null);
   const control = useRef<SceneControl | null>(null);
   const [ready, setReady] = useState(false);
   const [fallback, setFallback] = useState(false);
   const [labels, setLabels] = useState<{ x: number; y: number }[]>([]);
+  const labelElements = useRef<(HTMLButtonElement | null)[]>([]);
   const [toyPlayed, setToyPlayed] = useState(false);
   const playWithWorld = () => {
     control.current?.interact();
     setToyPlayed(true);
     if (sound) {
-      playSound('open');
+      playSound(theme.id === 'crystal-garden' ? 'chime' : 'open');
       speak(theme.toyResponse);
     }
   };
@@ -149,9 +158,15 @@ export default function Meadow({
       parent: THREE.Object3D = scene,
     ) => mesh(new THREE.SphereGeometry(r, 24, 16), color, pos, parent);
     const park = createPlayground(scene, material, missionIndex);
+    const activity = park.activity;
+    if (activity) {
+      camera.position.set(...activity.camera);
+      camera.lookAt(...activity.lookAt);
+    }
     const ground = park.ground;
     const fox = new THREE.Group();
-    fox.position.set(0, 0, 3.4);
+    const foxHome = new THREE.Vector3(...(activity?.home ?? [0, 0, 3.4]));
+    fox.position.copy(foxHome);
     scene.add(fox);
     const body = sphere(0.48, palette.orange, [0, 0.58, 0], fox);
     body.scale.set(0.8, 1, 1.15);
@@ -189,30 +204,45 @@ export default function Meadow({
       [0.24, -0.24],
     ])
       legs.push(mesh(new THREE.CapsuleGeometry(0.11, 0.2, 6, 14), palette.ear, [x, 0.21, z], fox));
-    const orbPositions = [
+    const orbPositions = activity?.choices.map(({ root }) => root.position.clone()) ?? [
       new THREE.Vector3(-5, 0, 0.9),
       new THREE.Vector3(-3.2, 0, -2.6),
       new THREE.Vector3(0, 0, -3.1),
       new THREE.Vector3(2.5, 0, -0.8),
     ];
     const orbs: THREE.Mesh[] = [];
-    const orbGroups = orbPositions.map((p, i) => {
-      const group = new THREE.Group();
-      group.position.copy(p);
-      scene.add(group);
-      mesh(new THREE.CylinderGeometry(0.56, 0.67, 0.23, 12), palette.cream, [0, 0.1, 0], group);
-      const ring = mesh(
-        new THREE.TorusGeometry(0.51, 0.055, 5, 24),
-        theme.accent,
-        [0, 0.24, 0],
-        group,
-      );
-      ring.rotation.x = Math.PI / 2;
-      const orb = mesh(new THREE.OctahedronGeometry(0.36, 0), theme.accent, [0, 0.79, 0], group);
-      orb.userData.answerIndex = i;
-      orbs.push(orb);
-      return group;
-    });
+    const orbGroups = activity
+      ? []
+      : orbPositions.map((p, i) => {
+          const group = new THREE.Group();
+          group.position.copy(p);
+          scene.add(group);
+          mesh(new THREE.CylinderGeometry(0.56, 0.67, 0.23, 12), palette.cream, [0, 0.1, 0], group);
+          const ring = mesh(
+            new THREE.TorusGeometry(0.51, 0.055, 5, 24),
+            theme.accent,
+            [0, 0.24, 0],
+            group,
+          );
+          ring.rotation.x = Math.PI / 2;
+          const orb = mesh(
+            new THREE.OctahedronGeometry(0.36, 0),
+            theme.accent,
+            [0, 0.79, 0],
+            group,
+          );
+          orb.userData.answerIndex = i;
+          orbs.push(orb);
+          return group;
+        });
+    const answerTargets: THREE.Object3D[] = activity
+      ? activity.choices.map(({ root }, i) => {
+          root.traverse((part) => {
+            part.userData.answerIndex = i;
+          });
+          return root;
+        })
+      : orbs;
     const particles: { mesh: THREE.Mesh; velocity: THREE.Vector3; age: number }[] = [];
     let target: THREE.Vector3 | null = null;
     let chosen: number | null = null;
@@ -249,16 +279,17 @@ export default function Meadow({
       if (!w || !h) return;
       renderer.setSize(w, h);
       const aspect = w / h;
-      const view = Math.max(8.8, 11.4 / aspect);
+      const view = activity ? Math.max(7.4, 10.5 / aspect) : Math.max(8.8, 11.4 / aspect);
       camera.left = -view * aspect;
       camera.right = view * aspect;
       camera.top = view;
       camera.bottom = -view;
       camera.updateProjectionMatrix();
       setLabels(
-        orbPositions.map((p) => {
+        orbPositions.map((p, i) => {
           const v = p.clone();
           v.y = 1.8;
+          activity?.choices[i].anchor.getWorldPosition(v);
           v.project(camera);
           return { x: (v.x * 0.5 + 0.5) * 100, y: (-v.y * 0.5 + 0.5) * 100 };
         }),
@@ -277,17 +308,21 @@ export default function Meadow({
         ),
         camera,
       );
-      const hits = raycaster.intersectObjects(orbs);
+      if (!current.current.interactive) return;
+      const hits = raycaster.intersectObjects(answerTargets, true);
       if (hits.length && !solvedState) {
         const index = hits[0].object.userData.answerIndex;
-        target = orbPositions[index].clone();
-        chosen = index;
+        if (activity) current.current.onAnswer(question.choices[index]);
+        else {
+          target = orbPositions[index].clone();
+          chosen = index;
+        }
       } else if (
         park.interactionTargets.length &&
         raycaster.intersectObjects(park.interactionTargets, true).length
       ) {
         current.current.playWithWorld();
-      } else {
+      } else if (!activity) {
         const hit = raycaster.intersectObject(ground)[0];
         if (hit) {
           target = hit.point.clone();
@@ -301,6 +336,7 @@ export default function Meadow({
     };
     const down = (e: KeyboardEvent) => {
       if (
+        !activity &&
         ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd'].includes(e.key) &&
         document.activeElement === renderer.domElement
       ) {
@@ -329,12 +365,16 @@ export default function Meadow({
         chosen = null;
         target = null;
         cooldown = 0.8;
-        fox.position.set(0, 0, 3.4);
+        fox.position.copy(foxHome);
+        activity?.reset();
         orbs.forEach((orb) => {
           orb.visible = true;
         });
       },
       restore,
+      reactToAnswer: (value) => {
+        activity?.select(question.choices.indexOf(value), value === question.answer);
+      },
       interact: () => {
         target = null;
         chosen = null;
@@ -342,9 +382,12 @@ export default function Meadow({
         park.interact();
       },
       choose: (i) => {
-        if (!solvedState) {
-          target = orbPositions[i].clone();
-          chosen = i;
+        if (!solvedState && current.current.interactive) {
+          if (activity) current.current.onAnswer(question.choices[i]);
+          else {
+            target = orbPositions[i].clone();
+            chosen = i;
+          }
           renderer.domElement.focus({ preventScroll: true });
         }
       },
@@ -360,6 +403,7 @@ export default function Meadow({
       },
     };
     restore(current.current.round + (current.current.solved ? 1 : 0));
+    const labelPoint = new THREE.Vector3();
     const animate = () => {
       if (disposed) return;
       frame = requestAnimationFrame(animate);
@@ -401,7 +445,7 @@ export default function Meadow({
           });
         }
       } else {
-        fox.position.y *= 0.8;
+        fox.position.y = foxHome.y + (fox.position.y - foxHome.y) * 0.8;
         legs.forEach((leg) => {
           leg.rotation.x *= 0.8;
         });
@@ -424,6 +468,15 @@ export default function Meadow({
         });
       }
       park.update(time, !reducedMotion.matches);
+      if (activity) {
+        activity.choices.forEach(({ anchor }, i) => {
+          const element = labelElements.current[i];
+          if (!element) return;
+          anchor.getWorldPosition(labelPoint).project(camera);
+          element.style.left = `${(labelPoint.x * 0.5 + 0.5) * 100}%`;
+          element.style.top = `${(-labelPoint.y * 0.5 + 0.5) * 100}%`;
+        });
+      }
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
         p.age += dt;
@@ -479,19 +532,24 @@ export default function Meadow({
     control.current?.restore(round + (solved ? 1 : 0));
   }, [round, solved]);
   useEffect(() => {
+    if (selected !== null) control.current?.reactToAnswer(selected);
+  }, [selected, solved, ready]);
+  useEffect(() => {
     const canvas = host.current?.querySelector('canvas');
     if (canvas) {
       canvas.tabIndex = interactive ? 0 : -1;
       canvas.setAttribute(
         'aria-label',
         interactive
-          ? `${theme.name}. ${theme.description} Tap an answer or use arrow keys to walk.`
+          ? `${theme.name}. ${theme.description} ${activityCopy?.action ?? 'Tap an answer or use arrow keys to walk.'}`
           : `${theme.name}. ${theme.description}`,
       );
     }
-  }, [interactive, ready, theme]);
+  }, [interactive, ready, theme, activityCopy]);
   return (
-    <div className={`meadow-wrap ${interactive ? '' : 'ambient-meadow'}`}>
+    <div
+      className={`meadow-wrap ${activityCopy ? `crystal-activity activity-${theme.id}` : ''} ${interactive ? '' : 'ambient-meadow'}`}
+    >
       <div ref={host} className={`meadow-scene ${fallback ? 'scene-fallback' : ''}`}>
         {!ready && !fallback && (
           <div className="meadow-loading">
@@ -513,11 +571,16 @@ export default function Meadow({
             <>
               <span className="meadow-mission-label">
                 <Leaf size={13} />
-                {solved ? 'A little more magic!' : 'Find the answer. Follow the magic.'}
+                {solved
+                  ? (activityCopy?.success ?? 'A little more magic!')
+                  : (activityCopy?.action ?? 'Find the answer. Follow the magic.')}
               </span>
               {labels.map((point, i) => (
                 <button
                   key={`${problem.equation}-${i}`}
+                  ref={(element) => {
+                    labelElements.current[i] = element;
+                  }}
                   className={`orb-label ${solved && problem.choices[i] === problem.answer ? 'orb-correct' : ''}`}
                   style={{ left: `${point.x}%`, top: `${point.y}%` }}
                   onClick={() => control.current?.choose(i)}
@@ -525,11 +588,14 @@ export default function Meadow({
                   tabIndex={-1}
                   aria-hidden="true"
                 >
-                  {problem.denominator
-                    ? `${problem.choices[i]}/${problem.denominator}`
-                    : problem.skill === 'decimals'
-                      ? problem.choices[i].toFixed(1)
-                      : problem.choices[i]}
+                  <span>
+                    {problem.denominator
+                      ? `${problem.choices[i]}/${problem.denominator}`
+                      : problem.skill === 'decimals'
+                        ? problem.choices[i].toFixed(1)
+                        : problem.choices[i]}
+                  </span>
+                  {activityCopy && <small>{activityCopy.object}</small>}
                 </button>
               ))}
               <div className="playground-pocket">
@@ -572,11 +638,13 @@ export default function Meadow({
       <div className="meadow-controls">
         <span>
           <Footprints size={15} />
-          Tap an answer to guide Milo
+          {activityCopy?.detail ?? 'Tap an answer to guide Milo'}
         </span>
         <span>
           <Move size={15} />
-          Click the park + arrow keys to roam
+          {activityCopy
+            ? 'Tap a number · or press 1, 2, 3, 4'
+            : 'Click the park + arrow keys to roam'}
         </span>
       </div>
     </div>

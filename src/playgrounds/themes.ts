@@ -1,4 +1,16 @@
-export type PlaygroundId = 'moonberry' | 'bridge' | 'picnic' | 'firefly' | 'wishing';
+export type CrystalPlaygroundId =
+  | 'crystal-garden'
+  | 'crystal-bridge'
+  | 'shell-shore'
+  | 'glow-cavern'
+  | 'heart-sanctuary';
+export type PlaygroundId =
+  | 'moonberry'
+  | 'bridge'
+  | 'picnic'
+  | 'firefly'
+  | 'wishing'
+  | CrystalPlaygroundId;
 
 export type PlaygroundTheme = {
   id: PlaygroundId;
@@ -137,6 +149,126 @@ export const playgroundThemes: readonly PlaygroundTheme[] = [
     foliage: [0x126c44, 0x309449, 0x74b843],
     accent: 0xffc54d,
     water: 0x1abbb8,
+    night: false,
+  },
+  {
+    id: 'crystal-garden',
+    name: 'Sparkle Springs',
+    invitation: 'Little lights. Big-hearted discoveries.',
+    description:
+      'A terraced crystal amphitheater with four giant musical keys. Tap an answer to wake a note in the garden’s song.',
+    toyLabel: 'Play the crystal chimes',
+    toyResponse: 'Listen to the little crystals! Your garden has a song of its own.',
+    progressNoun: 'singing crystals awake',
+    discoveries: [
+      'One crystal is singing!',
+      'Two bright notes for our garden!',
+      'Three crystals, one happy tune!',
+      'Just one more note to find!',
+      'The whole crystal garden is singing!',
+    ],
+    sky: 0xb8e1ed,
+    grass: 0x287f7f,
+    path: 0xe5c68c,
+    foliage: [0x167b69, 0x39a573, 0x77bc68],
+    accent: 0xaf67e1,
+    water: 0x1bbcc7,
+    night: false,
+  },
+  {
+    id: 'crystal-bridge',
+    name: 'Rainbow Crossing',
+    invitation: 'A little bridge can bring friends together.',
+    description:
+      'An open turquoise lagoon with four sailing rafts. Deliver crystal cargo to build a rainbow crossing for Pip.',
+    toyLabel: 'Send a rainbow ripple',
+    toyResponse: 'Look at the colors dance! Pip can’t wait to cross your rainbow bridge.',
+    progressNoun: 'rainbow bridge pieces',
+    discoveries: [
+      'Your first rainbow piece!',
+      'Two colors are holding hands!',
+      'Halfway to a happy hello!',
+      'Pip is getting ready to cross!',
+      'A rainbow road! Here comes Pip!',
+    ],
+    sky: 0xb5e0ea,
+    grass: 0x358b78,
+    path: 0xe3c58b,
+    foliage: [0x167b69, 0x39a573, 0x77bc68],
+    accent: 0xf18aac,
+    water: 0x16b6c9,
+    night: false,
+  },
+  {
+    id: 'shell-shore',
+    name: 'Seashell Shore',
+    invitation: 'A sunny shore. A place for every friend.',
+    description:
+      'A golden beach with a striped lighthouse, a friendly sea turtle, and treasure shells that open to reveal glowing pearls.',
+    toyLabel: 'Say hello to the turtle',
+    toyResponse: 'Hello, little turtle! There is a place at our picnic for you too.',
+    progressNoun: 'seashell plates ready',
+    discoveries: [
+      'One little picnic plate!',
+      'Treats for two friends!',
+      'Three tasty little discoveries!',
+      'Our beach picnic is nearly ready!',
+      'A seaside feast for everyone!',
+    ],
+    sky: 0xbfe4ef,
+    grass: 0xb99761,
+    path: 0xe6c68d,
+    foliage: [0x197c60, 0x409f68, 0x86b858],
+    accent: 0xff936d,
+    water: 0x1bbecb,
+    night: false,
+  },
+  {
+    id: 'glow-cavern',
+    name: 'Glow Grotto',
+    invitation: 'Even a tiny light can lead the way.',
+    description:
+      'A gentle amethyst cavern with glowing crystal pillars, drifting glowbugs, and five lanterns to light a safe path.',
+    toyLabel: 'Call the little glowbugs',
+    toyResponse: 'Here come the glowbugs! Follow their tiny lights through the crystal grotto.',
+    progressNoun: 'grotto lanterns glowing',
+    discoveries: [
+      'One little light in the grotto!',
+      'Two lanterns to lead the way!',
+      'Three lights for our glowbug friends!',
+      'The crystal cave is twinkling!',
+      'Every glowbug has a light to follow!',
+    ],
+    sky: 0x202e55,
+    grass: 0x35436b,
+    path: 0x788b9e,
+    foliage: [0x315d70, 0x477f8a, 0x6c91a5],
+    accent: 0xcaa0ff,
+    water: 0x247eab,
+    night: true,
+  },
+  {
+    id: 'heart-sanctuary',
+    name: 'Heartlight Haven',
+    invitation: 'Five kind little discoveries. One great big glow.',
+    description:
+      'A rose-quartz temple with four turning mirrors. Send colorful light beams to wake a friendly heart crystal.',
+    toyLabel: 'Send a little kindness',
+    toyResponse: 'A little kindness goes a long way! Watch your wish circle the heart crystal.',
+    progressNoun: 'kindness crystals glowing',
+    discoveries: [
+      'One little kindness crystal!',
+      'Two warm wishes for our friends!',
+      'Three crystals. Feel the cove glowing!',
+      'One more discovery for our heart!',
+      'You woke the heart of Crystal Cove!',
+    ],
+    sky: 0xc2dfe9,
+    grass: 0x317d70,
+    path: 0xe2bd8d,
+    foliage: [0x14765a, 0x37a06c, 0x78b45e],
+    accent: 0xf269ab,
+    water: 0x22b8bd,
     night: false,
   },
 ];

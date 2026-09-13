@@ -157,7 +157,18 @@ export function nextDiscovery(
   turn: number,
   reviewed: string[] = [],
   rng = Math.random,
+  previousAnswerSlot?: number,
 ) {
+  function varyAnswerSlot(problem: Problem): Problem {
+    const slot = problem.choices.indexOf(problem.answer);
+    if (slot < 0 || slot !== previousAnswerSlot) return problem;
+    // A random swap prevents runs in one slot without creating a fixed rotation.
+    const destination =
+      (slot + 1 + Math.floor(rng() * (problem.choices.length - 1))) % problem.choices.length;
+    const choices = [...problem.choices];
+    [choices[slot], choices[destination]] = [choices[destination], choices[slot]];
+    return { ...problem, choices };
+  }
   const memory = skillMemory(save, skill);
   const review =
     turn % 2 === 1
@@ -170,14 +181,14 @@ export function nextDiscovery(
       [choices[i], choices[j]] = [choices[j], choices[i]];
     }
     return {
-      problem: { ...review.problem, choices },
+      problem: varyAnswerSlot({ ...review.problem, choices }),
       reviewKey: review.key,
       welcome: 'A little “again” makes your brain stronger. Let’s try this one together!',
     };
   }
   const level = turn === 0 && memory.completed ? Math.max(0, memory.level - 1) : memory.level;
   return {
-    problem: makeProblem(save.grade, skill, level, rng),
+    problem: varyAnswerSlot(makeProblem(save.grade, skill, level, rng)),
     reviewKey: undefined,
     welcome: memory.completed
       ? 'Welcome back! A little warm-up, then we’ll keep growing where you left off.'

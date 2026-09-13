@@ -1,152 +1,112 @@
-import { ArrowRight, Compass, Heart, Sparkles, Sprout, Star } from 'lucide-react';
+import { ArrowRight, Compass, Gem, Heart, Sparkles, Sprout, Star } from 'lucide-react';
 import { Character } from './components';
+import { completedMissions, worlds, type Save, type WorldId } from './game';
 
-function FutureWorld({ stars = false }: { stars?: boolean }) {
+function ComingWorldsArt() {
   return (
     <svg viewBox="0 0 300 190" aria-hidden="true">
-      <rect width="300" height="190" fill={stars ? 'var(--color-lilac)' : 'var(--color-blue)'} />
-      {stars ? (
-        <>
-          <circle cx="229" cy="43" r="25" fill="var(--color-cream)" />
-          <path d="M0 177L72 73L110 124L175 41L273 177Z" fill="var(--color-toy-lilac-shadow)" />
-          <path d="M133 97L175 41L210 90L181 78L169 89L153 80Z" fill="var(--color-surface)" />
-          <path d="M20 190L126 99L214 190Z" fill="var(--color-toy-blue-shadow)" />
-          <path d="M93 130L126 99L155 129L136 125L127 137L112 125Z" fill="var(--color-cream)" />
-          {[
-            [29, 32],
-            [91, 44],
-            [133, 23],
-            [258, 98],
-            [271, 29],
-          ].map(([x, y], i) => (
-            <path
-              className="world-twinkle"
-              key={i}
-              d={`M${x} ${y - 6}l2 4 5 2-5 2-2 5-2-5-5-2 5-2Z`}
-              fill="var(--color-toy-yellow)"
-              style={{ animationDelay: `${i * 0.7}s` }}
-            />
-          ))}
-        </>
-      ) : (
-        <>
-          <circle cx="230" cy="41" r="25" fill="var(--color-toy-yellow)" />
-          <path
-            d="M0 123Q53 107 107 123T209 125T300 118V190H0Z"
-            fill="var(--color-toy-blue-shadow)"
-          />
-          <ellipse cx="144" cy="155" rx="101" ry="22" fill="var(--color-cream)" />
-          <g stroke="var(--color-lilac-ink)" strokeWidth="2" strokeLinejoin="round">
-            <path d="M104 151L99 82L126 55L155 87L140 154Z" fill="var(--color-toy-lilac-shadow)" />
-            <path d="M126 55L126 155L155 87Z" fill="var(--color-lilac)" />
-            <path
-              d="M153 155L153 106L174 86L196 111L187 155Z"
-              fill="var(--color-toy-peach-shadow)"
-            />
-            <path d="M174 86L174 155L196 111Z" fill="var(--color-peach)" />
-          </g>
-          <path
-            d="M20 150Q33 145 46 150M219 163Q237 155 255 163M220 135Q237 128 249 135"
-            fill="none"
-            stroke="var(--color-surface)"
-            strokeWidth="3"
-            strokeLinecap="round"
-          />
-        </>
-      )}
+      <rect width="300" height="190" fill="#e2eced" />
+      <circle cx="239" cy="38" r="23" fill="#ffda75" />
+      <path d="M0 149Q70 91 155 145T300 127V190H0Z" fill="#b3d3bf" />
+      <path d="M0 172Q94 133 178 169T300 152V190H0Z" fill="#87b9a4" />
+      <g stroke="#739995" strokeWidth="2" strokeLinejoin="round">
+        <path d="M64 58l57-15 58 14 55-15-13 104-52 16-58-15-57 17Z" fill="#fff5d8" />
+        <path d="M121 43l-10 104 58 15 10-105Z" fill="#e0eac6" />
+        <path
+          d="M111 145q5-32 37-35t38-33"
+          fill="none"
+          stroke="#b087c4"
+          strokeWidth="4"
+          strokeDasharray="5 7"
+          strokeLinecap="round"
+        />
+      </g>
+      <path d="M184 65l4 9 10 2-8 6 2 10-8-5-9 5 2-10-7-6 10-2Z" fill="#f0ae3b" />
+      <circle cx="99" cy="144" r="7" fill="#47846d" />
+      <path
+        d="M38 35l3 7 8 3-8 3-3 7-3-7-8-3 8-3Zm222 83 3 7 8 3-8 3-3 7-3-7-8-3 8-3Z"
+        fill="#a478c2"
+        className="world-twinkle"
+      />
     </svg>
   );
 }
 
 export default function WorldPicker({
-  completed,
+  save,
   onExplore,
 }: {
-  completed: number;
-  onExplore: () => void;
+  save: Save;
+  onExplore: (world: WorldId) => void;
 }) {
   return (
     <>
       <div className="world-picker-welcome">
         <Character />
         <span className="skill-tag">
-          <Compass size={15} />A WHOLE WORLD OF WONDER
+          <Compass size={15} />A whole world of wonder
         </span>
         <h1>Where shall we wander?</h1>
-        <p>Little footsteps. Big, beautiful discoveries.</p>
+        <p>Two worlds. Ten little adventures. So much to discover.</p>
       </div>
       <div className="world-picker-cards">
-        <button className="world-choice world-passport woods-passport" onClick={onExplore}>
-          <div className="world-passport-art">
-            <img
-              src="/art/whispering-woods.png"
-              alt="A magical woodland with a winding river and a treehouse"
-            />
-            <span className="world-passport-number">01</span>
-            <span className="world-ready-sticker">
-              <Sprout size={13} />
-              Let’s explore!
-            </span>
-          </div>
-          <div className="world-passport-copy">
-            <h2>
-              Whispering <br />
-              Woods
-            </h2>
-            <p>Milo, moonberries, and a little woodland magic.</p>
-            <div
-              className="world-chapter-stars"
-              aria-label={`${completed} of 5 chapters discovered`}
+        {worlds.map((world) => {
+          const completed = completedMissions(save, world.id).length;
+          const selected = save.world === world.id;
+          const WorldIcon = world.id === 'crystal' ? Gem : Sprout;
+          return (
+            <button
+              key={world.id}
+              className={`world-choice world-passport ${world.id === 'crystal' ? 'cove' : 'woods'}-passport`}
+              onClick={() => onExplore(world.id)}
+              aria-label={`Explore ${world.name}`}
+              aria-pressed={selected}
             >
-              {[0, 1, 2, 3, 4].map((i) => (
-                <Star key={i} size={18} fill={i < completed ? 'currentColor' : 'none'} />
-              ))}
-              <span>{completed}/5</span>
-            </div>
-            <span className="world-enter">
-              Into the woods!
-              <ArrowRight size={18} />
-            </span>
-          </div>
-        </button>
-        <div className="world-choice world-passport cove-passport">
+              <div className="world-passport-art">
+                <img src={world.art} alt={world.artDescription} />
+                <span className="world-passport-number">{world.number}</span>
+                <span className="world-ready-sticker">
+                  <WorldIcon size={13} />
+                  {selected ? 'Your current world' : 'Let’s explore!'}
+                </span>
+              </div>
+              <div className="world-passport-copy">
+                <h2>{world.name}</h2>
+                <p>{world.description}</p>
+                <div
+                  className="world-chapter-stars"
+                  aria-label={`${completed} of 5 chapters discovered`}
+                >
+                  {[0, 1, 2, 3, 4].map((i) => (
+                    <Star key={i} size={18} fill={i < completed ? 'currentColor' : 'none'} />
+                  ))}
+                  <span>{completed}/5</span>
+                </div>
+                <span className="world-enter">
+                  {world.enterLabel}
+                  <ArrowRight size={18} />
+                </span>
+              </div>
+            </button>
+          );
+        })}
+        <article className="world-choice world-passport coming-passport">
           <div className="world-passport-art">
-            <FutureWorld />
-            <span className="world-passport-number">02</span>
+            <ComingWorldsArt />
           </div>
           <div className="world-passport-copy">
-            <h2>
-              Crystal <br />
-              Cove
-            </h2>
-            <p>Sparkly shores and secrets beneath the waves.</p>
+            <h2>More worlds coming</h2>
+            <p>We’re dreaming up new places for your next big little adventure.</p>
             <span className="world-dreaming">
-              <Sparkles size={16} />
-              Still being dreamed up
+              <Sparkles size={17} />
+              The story keeps growing!
             </span>
           </div>
-        </div>
-        <div className="world-choice world-passport peaks-passport">
-          <div className="world-passport-art">
-            <FutureWorld stars />
-            <span className="world-passport-number">03</span>
-          </div>
-          <div className="world-passport-copy">
-            <h2>
-              Starlight <br />
-              Peaks
-            </h2>
-            <p>Follow the fireflies. Reach for something wonderful.</p>
-            <span className="world-dreaming">
-              <Sparkles size={16} />
-              Still being dreamed up
-            </span>
-          </div>
-        </div>
+        </article>
       </div>
       <p className="world-picker-footnote">
         <Heart size={15} />
-        Five chapters are ready in Whispering Woods. More worlds are growing.
+        Pick either world. Your discoveries stay safe when you switch.
       </p>
     </>
   );

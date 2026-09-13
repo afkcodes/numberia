@@ -12,6 +12,8 @@ import {
   Sprout,
   Star,
   TreeDeciduous,
+  Shell,
+  Mountain,
   UtensilsCrossed,
   Volume2,
   VolumeX,
@@ -27,6 +29,7 @@ import {
   gradeLabel,
   missions,
   missionSkill,
+  worldForMission,
   type Run,
   type Save,
   type Skill,
@@ -46,6 +49,11 @@ const chapterIcons = {
   picnic: UtensilsCrossed,
   firefly: MoonStar,
   wishing: TreeDeciduous,
+  'crystal-garden': Gem,
+  'crystal-bridge': Waves,
+  'shell-shore': Shell,
+  'glow-cavern': Mountain,
+  'heart-sanctuary': Heart,
 };
 
 type QuestProps = {
@@ -72,6 +80,9 @@ export default function Quest({
   onClubhouse,
 }: QuestProps) {
   const mission = missions[missionIndex];
+  const world = worldForMission(missionIndex);
+  const chapter = world.chapters.indexOf(missionIndex);
+  const lastChapter = chapter === world.chapters.length - 1;
   const theme = playgroundTheme(missionIndex);
   const ChapterIcon = chapterIcons[theme.id];
   const skill = practiceSkill || missionSkill(save.grade, missionIndex);
@@ -130,7 +141,7 @@ export default function Quest({
         if (save.sound) playSound('try');
       }
     },
-    [problem, save.sound, save.grade, onLearn, round, id],
+    [problem, save.sound, save.grade, onLearn, round, id, setHint],
   );
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
@@ -175,7 +186,14 @@ export default function Quest({
       setStage('reward');
       if (save.sound) playSound('celebrate');
     } else {
-      const next = nextDiscovery(save, skill, round + 1, reviewed.current);
+      const next = nextDiscovery(
+        save,
+        skill,
+        round + 1,
+        reviewed.current,
+        Math.random,
+        problem.choices.indexOf(problem.answer),
+      );
       if (next.reviewKey) reviewed.current.push(next.reviewKey);
       setRound((r) => r + 1);
       setDiscovery(next);
@@ -215,7 +233,9 @@ export default function Quest({
               <Star />
             </span>
             <span className="quest-chapter">
-              {practiceSkill ? 'PRACTICE CAMP' : `WHISPERING WOODS · CHAPTER ${missionIndex + 1}`}
+              {practiceSkill
+                ? 'PRACTICE CAMP'
+                : `${world.name.toUpperCase()} · CHAPTER ${chapter + 1}`}
             </span>
           </div>
           <div className="quest-body">
@@ -340,6 +360,7 @@ export default function Quest({
                   onAnswer={answer}
                   interactive={!handsOn}
                   sound={save.sound}
+                  selected={selected}
                 />
                 {handsOn && (
                   <div className="hands-on-surface">
@@ -615,16 +636,14 @@ export default function Quest({
                 <>
                   You’re a little
                   <br />
-                  <span>woodland hero!</span>
+                  <span>{world.heroTitle}</span>
                 </>
               )}
             </h1>
             <p>
               {practiceSkill
                 ? 'You explored five challenges and kept going. That’s something to be proud of!'
-                : missionIndex === 4
-                  ? 'The wishing tree is awake! You’ve restored Whispering Woods. The whole forest is celebrating YOU.'
-                  : `You did it! ${missionIndex === 0 ? 'The moonberries are glowing again.' : missionIndex === 1 ? 'Pip can cross the stream again.' : missionIndex === 2 ? 'There’s a picnic for every forest friend.' : 'Every little firefly has its light back.'}`}
+                : mission.completion}
             </p>
             <div className="reward-totals">
               <span>
@@ -654,9 +673,11 @@ export default function Quest({
             <button autoFocus className="button primary full reward-continue" onClick={onContinue}>
               {practiceSkill
                 ? 'More math magic!'
-                : missionIndex < 4
+                : !lastChapter
                   ? 'My next adventure!'
-                  : 'Back to my woodland'}
+                  : world.id === 'woods'
+                    ? 'Back to my woodland'
+                    : 'Back to Crystal Cove'}
               <ArrowRight size={23} />
             </button>
             <button className="button secondary full reward-clubhouse" onClick={onClubhouse}>

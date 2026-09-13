@@ -14,7 +14,7 @@ import WelcomeBanner from './features/adventure/WelcomeBanner';
 import BackpackPage from './features/backpack/BackpackPage';
 import Practice from './features/practice/PracticePage';
 import ProgressPage from './features/progress/ProgressPage';
-import { nextMission, type Skill } from './game';
+import { nextMission, worldForMission, type Skill } from './game';
 import LandingWildlife, { SkySun } from './LandingWildlife';
 import StorybookBackdrop from './StorybookBackdrop';
 
@@ -82,7 +82,7 @@ export default function App() {
                 <SkySun />
                 <WelcomeBanner save={save} onStart={() => start()} />
                 <AdventureMap
-                  key={`${save.grade}:${nextMission(save)}`}
+                  key={`${save.world}:${save.grade}:${nextMission(save)}`}
                   save={save}
                   onStart={(i) => start(i)}
                   onWorlds={() => setOverlay('worlds')}
@@ -138,8 +138,12 @@ export default function App() {
             onSoundChange={actions.toggleSound}
             onContinue={() => {
               if (quest.practiceSkill) start(quest.index, quest.practiceSkill);
-              else if (quest.index < 4) start(quest.index + 1);
-              else setQuest(null);
+              else {
+                const chapters = worldForMission(quest.index).chapters;
+                const next = chapters[chapters.indexOf(quest.index) + 1];
+                if (next !== undefined) start(next);
+                else setQuest(null);
+              }
             }}
           />
         </Suspense>
@@ -151,6 +155,7 @@ export default function App() {
         onNavigate={goTo}
         onStartQuest={start}
         onGradeChange={actions.setGrade}
+        onWorldChange={actions.setWorld}
         onNameChange={actions.renameExplorer}
         onClaimDaily={actions.claimDaily}
         onExport={actions.exportProgress}

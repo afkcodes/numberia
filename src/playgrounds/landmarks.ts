@@ -1,7 +1,9 @@
 import * as THREE from 'three';
 import type { Point, WorldSculpt } from './sculpt.ts';
+import type { CrystalActivity } from './crystalActivity.ts';
 
 export type Landmark = {
+  activity?: CrystalActivity;
   pieces: THREE.Object3D[];
   update: (time: number, restored: number, excitement: number) => void;
   interactionTargets?: THREE.Object3D[];
@@ -134,7 +136,7 @@ export function moonberryGarden(s: WorldSculpt): Landmark {
 }
 
 /** Pip has a soft muzzle, separate limbs, and a planted walk cycle. */
-function pipDragon(s: WorldSculpt, position: Point) {
+export function pipDragon(s: WorldSculpt, position: Point) {
   const root = s.group(position);
   root.name = 'pip-the-bridge-builder';
   s.oval([0.43, 0.55, 0.36], 0x76b99c, [0, 0.72, 0], root);
@@ -184,17 +186,23 @@ function pipDragon(s: WorldSculpt, position: Point) {
 }
 
 export function pebbleRiver(s: WorldSculpt, water: number): Landmark {
+  const millPosition: Point = [9.1, 0, -8];
   const river = s.box([3.8, 0.05, 100], water, [5.5, -0.045, 0]);
   river.name = 'pebble-river';
   river.receiveShadow = false;
+  const bankStones = s.group();
+  bankStones.name = 'pebble-bank-stones';
   for (let i = 0; i < 22; i++) {
     const side = i % 2 ? 1 : -1,
       z = -13 + Math.floor(i / 2) * 2.5;
-    s.oval([0.42 + (i % 3) * 0.12, 0.24, 0.37], [0x9daea2, 0xc0c5ad, 0x859d99][i % 3], [
-      5.5 + side * 2,
-      0.1,
-      z,
-    ]);
+    // Keep the waterwheel's intake clear of bank stones.
+    if (side === 1 && Math.abs(z - millPosition[2]) < 1.5) continue;
+    s.oval(
+      [0.42 + (i % 3) * 0.12, 0.24, 0.37],
+      [0x9daea2, 0xc0c5ad, 0x859d99][i % 3],
+      [5.5 + side * 2, 0.1, z],
+      bankStones,
+    );
   }
   const bridge = s.group([5.5, 0, -5.4]);
   bridge.name = 'pips-growing-bridge';
@@ -214,15 +222,24 @@ export function pebbleRiver(s: WorldSculpt, water: number): Landmark {
       );
     return piece;
   });
-  const mill = s.group([9.1, 0, -8]);
-  s.box([2.2, 2.9, 2], 0xead5ae, [0, 1.45, 0], mill);
-  const roof = s.mesh(new THREE.ConeGeometry(1.8, 1.15, 4), 0x688f94, [0, 3.4, 0], mill);
+  const mill = s.group(millPosition);
+  const building = s.group([0, 0, 0], mill);
+  building.name = 'pebble-mill-building';
+  s.box([2.2, 2.9, 2], 0xead5ae, [0, 1.45, 0], building);
+  const roof = s.mesh(new THREE.ConeGeometry(1.8, 1.15, 4), 0x688f94, [0, 3.4, 0], building);
   roof.rotation.y = Math.PI / 4;
-  s.box([0.75, 0.9, 0.08], 0x8dcdd0, [0, 1.8, 1.05], mill);
-  s.box([0.06, 1, 0.1], cream, [0, 1.8, 1.1], mill);
-  s.box([0.8, 0.06, 0.1], cream, [0, 1.8, 1.1], mill);
-  const wheel = s.group([-1.1, 1.35, 0.75], mill);
-  s.mesh(new THREE.TorusGeometry(1.22, 0.12, 8, 32), wood, [0, 0, 0], wheel);
+  s.box([0.75, 0.9, 0.08], 0x8dcdd0, [0, 1.8, 1.05], building);
+  s.box([0.06, 1, 0.1], cream, [0, 1.8, 1.1], building);
+  s.box([0.8, 0.06, 0.1], cream, [0, 1.8, 1.1], building);
+  // Mount perpendicular to the riverbank: the paddles turn beside the wall, not through it.
+  const axle = s.post(0.12, 1.1, wood, [-1.58, 1.3, 0], mill);
+  axle.rotation.z = Math.PI / 2;
+  const wheelMount = s.group([-2.1, 1.3, 0], mill);
+  wheelMount.rotation.y = Math.PI / 2;
+  const wheel = s.group([0, 0, 0], wheelMount);
+  wheel.name = 'pebble-waterwheel';
+  const rim = new THREE.TorusGeometry(1.22, 0.12, 8, 32);
+  for (const z of [-0.26, 0.26]) s.mesh(rim, wood, [0, 0, z], wheel);
   s.mesh(new THREE.TorusGeometry(0.3, 0.1, 6, 16), wood, [0, 0, 0], wheel);
   for (let i = 0; i < 10; i++) {
     const angle = (i * Math.PI) / 5;

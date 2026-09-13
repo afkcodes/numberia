@@ -13,7 +13,9 @@ export default function WelcomeBanner({ save, onStart }: { save: Save; onStart: 
             : 'A big adventure starts small.'}
         </h1>
         <p>
-          The forest is full of stories. And you’re the missing piece.
+          {save.world === 'crystal'
+            ? 'The cove is full of wonders. Let’s bring back its sparkle.'
+            : 'The forest is full of stories. And you’re the missing piece.'}
           <br />
           <span>Ready to make a little magic?</span>
         </p>

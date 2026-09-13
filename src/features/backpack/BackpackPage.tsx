@@ -10,7 +10,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { Character, EmptyState } from '../../components';
-import { missions, type Save } from '../../game';
+import { missions, worldForMission, type Save } from '../../game';
 export default function BackpackPage({
   save,
   onCompanion,
@@ -90,7 +90,10 @@ export default function BackpackPage({
         })}
       </div>
       <h2 className="subsection-title">
-        Treasures from the trail <span>{completed.length} / 5</span>
+        Treasures from the trail{' '}
+        <span>
+          {completed.length} / {missions.length}
+        </span>
       </h2>
       {!completed.length ? (
         <EmptyState
@@ -106,8 +109,10 @@ export default function BackpackPage({
               className={`treasure-card ${completed.includes(i) ? '' : 'is-locked'}`}
               key={m.item}
             >
-              <span className={`treasure-object treasure-${i}`}>
-                {i === 0 ? (
+              <span className={`treasure-object treasure-${i % 5}`}>
+                {i >= 5 ? (
+                  <Gem size={38} />
+                ) : i === 0 ? (
                   <Lightbulb size={38} />
                 ) : i === 1 ? (
                   <Award size={38} />
@@ -120,7 +125,11 @@ export default function BackpackPage({
                 )}
               </span>
               <h3>{m.reward}</h3>
-              <span>{completed.includes(i) ? m.short : `Discover in chapter ${i + 1}`}</span>
+              <span>
+                {completed.includes(i)
+                  ? m.short
+                  : `${worldForMission(i).name} · Chapter ${worldForMission(i).chapters.indexOf(i) + 1}`}
+              </span>
               {completed.includes(i) ? <CheckCircle2 size={17} /> : <LockKeyhole size={17} />}
             </div>
           ))}

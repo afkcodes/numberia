@@ -56,7 +56,7 @@ export default function ProgressPage({
                   <span className={`skill-symbol ${skillDetails[skill].className}`}>
                     {skillDetails[skill].symbol}
                   </span>
-                  <div>
+                  <div className="mastery-copy">
                     <strong>{skill.charAt(0).toUpperCase() + skill.slice(1)}</strong>
                     <span>
                       {!attempts.length

@@ -2,11 +2,18 @@ import type { PlaygroundId } from './themes';
 
 /** Lightweight storybook art also keeps the chapter recognizable without WebGL. */
 export default function ChapterIllustration({ id }: { id: PlaygroundId }) {
+  const crystalWorld = [
+    'crystal-garden',
+    'crystal-bridge',
+    'shell-shore',
+    'glow-cavern',
+    'heart-sanctuary',
+  ].includes(id);
   return (
     <svg className="chapter-illustration" viewBox="0 0 520 220" fill="none" aria-hidden="true">
       <path d="M0 170Q100 110 220 169T520 140V220H0Z" fill="var(--world-hill)" />
       <path d="M0 198Q130 153 290 190T520 171V220H0Z" fill="var(--world-hill-front)" />
-      {[30, 470].map((x) => (
+      {(crystalWorld ? [] : [30, 470]).map((x) => (
         <g key={x}>
           <path d={`M${x} 175v-60`} stroke="#9e805f" strokeWidth="11" strokeLinecap="round" />
           <ellipse cx={x} cy="102" rx="35" ry="46" fill="var(--world-tree)" />
@@ -166,6 +173,96 @@ export default function ChapterIllustration({ id }: { id: PlaygroundId }) {
           ].map(([x, y]) => (
             <path key={x} d={`M${x} ${y - 10}q17 7 0 24q-16-12 0-24`} fill="#f8d888" />
           ))}
+        </g>
+      )}
+      {crystalWorld && (
+        <g>
+          <path
+            d="M0 195Q110 155 247 185T520 174V220H0Z"
+            fill={id === 'glow-cavern' ? '#367eaa' : '#48bfc7'}
+          />
+          {[55, 100, 354, 454].map((x, i) => (
+            <g key={x} transform={`translate(${x} ${i % 2 ? 115 : 145})`}>
+              <path d="M-15 43V-6L0-28 17-6V43Z" fill={i % 2 ? '#de8ebf' : '#a786db'} />
+              <path d="M0-28 17-6V43H0Z" fill={i % 2 ? '#ffc7dc' : '#ceb9f5'} />
+            </g>
+          ))}
+          {id === 'crystal-garden' && (
+            <g>
+              <ellipse cx="223" cy="181" rx="82" ry="20" fill="#eae1bf" />
+              <ellipse cx="223" cy="178" rx="70" ry="14" fill="#55c4c9" />
+              <path d="M197 177V81L223 39 249 81V177Z" fill="#b386df" />
+              <path d="M223 39 249 81V177H223Z" fill="#e1c4fc" />
+              <path d="M176 178V124L190 103 205 124V178Z" fill="#f5a0c2" />
+            </g>
+          )}
+          {id === 'crystal-bridge' && (
+            <g>
+              <path d="M116 173Q220 104 334 173" stroke="#ffead1" strokeWidth="18" />
+              {['#ca91e9', '#f496bd', '#76d8d0', '#ffe18b', '#94b1ef'].map((color, i) => (
+                <path
+                  key={color}
+                  d={`M${135 + i * 40} ${153 - Math.sin((i / 4) * Math.PI) * 20}v31`}
+                  stroke={color}
+                  strokeWidth="26"
+                />
+              ))}
+              <path d="M123 140Q221 72 333 140" stroke="#ecc5ec" strokeWidth="6" />
+            </g>
+          )}
+          {id === 'shell-shore' && (
+            <g>
+              <path d="M133 175V87M302 175V87" stroke="#fff0cc" strokeWidth="7" />
+              <path d="M113 91 154 46H281L321 91Z" fill="#ffe9c1" />
+              {[0, 1, 2, 3].map((i) => (
+                <path key={i} d={`M${154 + i * 32} 46h16l24 45h-25Z`} fill="#f08f81" />
+              ))}
+              <path d="M135 170h169" stroke="#ef9da0" strokeWidth="22" />
+              {[159, 215, 271].map((x) => (
+                <path
+                  key={x}
+                  d={`M${x} 166q-25-27-19-38 11-12 19 1 9-13 19-1 7 12-19 38Z`}
+                  fill="#fff1d6"
+                />
+              ))}
+            </g>
+          )}
+          {id === 'glow-cavern' && (
+            <g>
+              <path
+                d="M127 183V113Q151 35 218 42Q288 43 311 115V183H273V117Q224 65 165 118V183Z"
+                fill="#7384a9"
+              />
+              <path d="M165 183V117Q224 65 273 117V183Z" fill="#252f59" />
+              {[176, 198, 222, 246, 268].map((x, i) => (
+                <g key={x}>
+                  <path
+                    d={`M${x} 91v${22 + Math.abs(i - 2) * 8}`}
+                    stroke="#dbcff5"
+                    strokeWidth="2"
+                  />
+                  <path d={`M${x} ${108 + Math.abs(i - 2) * 8}l7 10-7 12-7-12Z`} fill="#f8d67d" />
+                </g>
+              ))}
+            </g>
+          )}
+          {id === 'heart-sanctuary' && (
+            <g>
+              <ellipse cx="221" cy="184" rx="93" ry="18" fill="#eee0b5" />
+              <path d="M191 178v-30h62v30" fill="#ffedc8" />
+              <path
+                d="M221 151C192 128 157 98 165 74C176 40 207 46 221 65C237 45 269 40 280 74C289 100 251 131 221 151Z"
+                fill="#ef82b5"
+              />
+              <path d="M221 65C237 45 269 40 280 74C289 100 251 131 221 151Z" fill="#ffb0d3" />
+              <path
+                d="M189 67l-9 17M203 63l-4 9"
+                stroke="#ffedf8"
+                strokeWidth="5"
+                strokeLinecap="round"
+              />
+            </g>
+          )}
         </g>
       )}
       {[

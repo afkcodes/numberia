@@ -12,6 +12,7 @@ import './adventure-extras.css';
 import './tactile-play.css';
 import './home-layout.css';
 import './playgrounds/playgrounds.css';
+import './crystal-world.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

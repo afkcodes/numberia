@@ -1,6 +1,7 @@
 import type { ClubhouseSave } from '../clubhouse.ts';
 import type { LearningMemory } from '../learning.ts';
 export type Grade = 0 | 1 | 2 | 3 | 4 | 5;
+export type WorldId = 'woods' | 'crystal';
 export type Skill =
   | 'addition'
   | 'subtraction'
@@ -34,6 +35,7 @@ export type Save = {
   name: string;
   grade: Grade;
   xp: number;
+  world: WorldId;
   gems: number;
   runs: Run[];
   sound: boolean;

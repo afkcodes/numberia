@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import { stopSpeaking } from '../audio';
-import { dateKey, readSave, STORAGE_KEY, type Grade, type Run } from '../game';
+import { dateKey, readSave, STORAGE_KEY, type Grade, type Run, type WorldId } from '../game';
 import type { LearningObservation } from '../learning';
 import { saveReducer } from '../saveReducer';
 
@@ -35,6 +35,7 @@ export function useGameSave() {
   const actions = useMemo(
     () => ({
       setGrade: (grade: Grade) => dispatch({ type: 'grade-changed', grade }),
+      setWorld: (world: WorldId) => dispatch({ type: 'world-changed', world }),
       renameExplorer: (name: string) => dispatch({ type: 'explorer-renamed', name }),
       setCompanion: (companion: string) => dispatch({ type: 'companion-changed', companion }),
       toggleSound: () => dispatch({ type: 'sound-toggled' }),

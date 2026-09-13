@@ -1,6 +1,6 @@
 # Numberia
 
-A story-driven K–5 math game built with React, TypeScript, Vite, and Three.js. Help Milo and his friends bring magic back to Whispering Woods.
+A story-driven K–5 math game built with React, TypeScript, Vite, and Three.js. Help Milo and his friends bring magic back to Whispering Woods and Crystal Cove.
 
 ## Run
 
@@ -13,8 +13,8 @@ Open the local URL printed by Vite. `npm run build` creates the production site 
 
 ## Play
 
-- Choose kindergarten or a grade from 1–5 using the colorful grade cards. Each grade keeps its own chapter progress. The world picker, map, chapter panel, and warm cream header share the same playful theme.
-- Chapters open in **Explore & answer**, the original full-screen playground: tap a numbered crystal to guide Milo toward it, click the ground to explore, or focus the meadow and use arrow keys/WASD. Large answer buttons and number keys 1–4 offer the same answers. Switch to **Build & discover** for optional hands-on activities: gather berries, add missing bridge planks, fill equal picnic baskets, share snacks fairly, or combine fraction pieces and tenths. Your arrangement becomes the answer.
+- Choose kindergarten or a grade from 1–5 using the colorful grade cards. Each grade and world keeps its own chapter progress. Both worlds are available from the world picker; a third card previews more worlds to come. The world picker, map, chapter panel, and warm cream header share the same playful theme.
+- Chapters open in **Explore & answer**, the original full-screen playground: in Whispering Woods, tap a numbered crystal to guide Milo toward it, click the ground to explore, or focus the meadow and use arrow keys/WASD. Crystal Cove uses chapter-specific answer toys instead: musical keys, sailing rafts, hinged shells, flying lanterns, and turning mirrors. Large answer buttons and number keys 1–4 offer the same answers. Switch to **Build & discover** for optional hands-on activities: gather berries, add missing bridge planks, fill equal picnic baskets, share snacks fairly, or combine fraction pieces and tenths. Your arrangement becomes the answer.
 - Berries and planks travel from their tray to their actual destination; totals and spoken counts update when they land. Addition keeps both source groups visible beside Milo’s picnic basket. Bridge lessons explain the goal, distinguish existing brown planks from new golden ones, and explain the result—for example, **5 needed − 1 already here = 4 missing**. Children choose **Let Pip cross!** when the gaps are filled; extra planks can stay in the tray. Each discovery ends with a compact character celebration that keeps the playground in place.
 - The bridge activity fits the available screen with its controls always visible. Its small plank tray refills as children build, and the result replaces the existing explanation instead of adding another panel. Phone layouts condense duplicate headings and labels while retaining the spoken coaching, quantity model, and actions.
 - Touch the berries to hear and see each count, followed by the complete answer. Milo can also count through a demonstration. Berries wrap inside their trays, with a separate tray for quantities taken away. Bring groups together, take berries away, fill or share baskets, combine fraction pieces, or explore place-value crates.
@@ -37,11 +37,21 @@ Each map stop opens its own Three.js playground:
 - **Firefly Falls:** a moonlit waterfall, glowing mushrooms, Lumi, drifting fireflies, and five lanterns to light.
 - **The Wishing Tree:** a friendly sleeping tree in a blossom garden, with an owl, hanging lights, and a star fountain. Tap the tree or fountain to send a wish into its heart. Discoveries return five golden leaves and light five garden lanterns; the final discovery wakes the tree and opens its little door.
 
+Crystal Cove has five different spaces and ways to answer:
+
+- **Sparkle Springs:** a terraced crystal amphitheater. Press a numbered key to wake a note in the garden's song; the conductor's bell plays a short chime melody.
+- **Rainbow Crossing:** an open lagoon with four little sailing rafts. Choose a raft to deliver crystal cargo to Pip's rainbow bridge. Five discoveries complete the crossing.
+- **Seashell Shore:** a sandy coast with waves, a lighthouse, a picnic, and a turtle. Answer shells have working hinges and reveal glowing pearls.
+- **Glow Grotto:** inside an amethyst cavern, lanterns float above a pool. A correct answer sends a lantern up into the cave and lights a permanent guide for the glowbugs.
+- **Heartlight Haven:** a rose-quartz temple with four turning mirrors. Each correct answer sends a colored beam to the heart, with five discoveries completing its glow.
+
+Answer buttons and keyboard choices trigger the same chapter animation. Correct answers move to a randomly chosen different slot between rounds; hints and retries keep the current options in place. Retry feedback offers help without removing discoveries. Idle toys move gently while number labels remain easy to tap; reduced motion preserves the completed action without travel. Very short phone previews use the main answer buttons so duplicate labels cannot cover the scene.
+
 The scenery remembers discoveries throughout the chapter, including when switching between exploring and building. Optional play buttons animate each landmark. Chapter colors, storybook introductions, and a lightweight illustrated WebGL fallback share the same theme. On compact screens, **Count with Milo** gives the existing visual math activity its own focused panel, keeping the playground and answer buttons visible.
 
 ## Scope
 
-Whispering Woods has five playable chapters. Crystal Cove and Starlight Peaks are explicitly marked future adventures. This is a working local prototype, with browser-local saving and JSON progress export. There is no account system, server, cross-device synchronization, or online multiplayer.
+Whispering Woods and Crystal Cove each have five playable chapters. The third world card says “More worlds coming” and is not a locked or playable chapter. Existing woodland saves keep their progress; each world has its own chapter sequence and finale. This is a working local prototype, with browser-local saving and JSON progress export. There is no account system, server, cross-device synchronization, or online multiplayer.
 
 K–2 focuses on addition and subtraction; grades 3–4 add multiplication and division; grade 5 includes same-denominator fractions and tenths. These are starting levels, not a complete standards-aligned curriculum or diagnostic assessment. Hints and retries count toward full achievements; first-answer support information is retained internally to adapt difficulty, not to rank children.
 
@@ -57,7 +67,7 @@ These sources support instructional approaches; they do not establish that this 
 npm run check
 ```
 
-Thirty-five tests cover saved clubhouse migration, duplicate/insufficient gem purchases, per-grade learning memory, spaced fact review, supported answers, physical answer models for every skill, bridge quantities, contextual bridge explanations, speech ordering and cancellation, error recovery, and spoken decimals and fractions. Browser checks verify pointer and keyboard placement, counting after props land, demonstrations, complete bridge geometry, stable playground size during celebrations, room delivery, and widths from 320 to 2048px. Regression tests also check fruit containment at multiple tray widths, the slide return path, and the squirrel’s pauses, facing, and climbing sequence. Engine tests exercise all supported grade/skill combinations over 10,000 generated questions, distinct valid choices, arithmetic correctness, grade-specific progression, duplicate reward protection, local-calendar streaks, and malformed-save recovery. Browser checks also cover 3D answer collection, retry coaching, animated demonstrations, completed missions, rewards, daily claims, companion unlocks, profile changes, and responsive layouts.
+Automated tests cover saved clubhouse migration, duplicate/insufficient gem purchases, per-grade learning memory, spaced fact review, supported answers, physical answer models for every skill, bridge quantities, contextual bridge explanations, speech ordering and cancellation, error recovery, and spoken decimals and fractions. Browser checks verify pointer and keyboard placement, counting after props land, demonstrations, complete bridge geometry, stable playground size during celebrations, room delivery, and widths from 320 to 2048px. Regression tests also check fruit containment at multiple tray widths, the slide return path, and the squirrel’s pauses, facing, and climbing sequence. Engine tests exercise all supported grade/skill combinations over 10,000 generated questions, distinct valid choices, arithmetic correctness, grade-specific progression, duplicate reward protection, local-calendar streaks, and malformed-save recovery. Browser checks also cover 3D answer collection, retry coaching, animated demonstrations, completed missions, rewards, daily claims, companion unlocks, profile changes, and responsive layouts.
 
 Oxfmt handles formatting; Oxlint checks correctness, React hooks, and dependency cycles. See [the development guide](docs/development.md) for commands and module responsibilities.
 
@@ -75,7 +85,7 @@ Oxfmt handles formatting; Oxlint checks correctness, React hooks, and dependency
 - `src/DiscoveryCelebration.tsx` and `src/tactile-play.css`: compact discovery celebrations and responsive hands-on scene styles.
 - `src/learning.ts`: persistent per-skill challenge, warm-ups, and supported-fact review.
 - `src/Meadow.tsx`: Three.js lifecycle, movement, answer collection, camera, and particles.
-- `src/playgrounds/`: chapter themes, scene sculpting, five landmarks, restoration, storybook art, and compact math support.
+- `src/playgrounds/`: chapter themes, scene sculpting, ten chapter environments, Crystal Cove answer toys, restoration, storybook art, and compact math support.
 - `src/Park.ts`, `src/ParkCharacters.ts`, and `src/slideJourney.ts`: full park, articulated children and cat, and a clear route around the slide.
 - `src/GradePicker.tsx` and `src/WorldPicker.tsx`: themed level and world selection.
 - `src/LandingWildlife.tsx`, `src/StorybookBackdrop.tsx`, and `src/squirrelJourney.ts`: ambient scenery and synchronized squirrel story.

@@ -3,6 +3,8 @@ import { createPark } from '../Park.ts';
 import { createCat, createChild } from '../ParkCharacters.ts';
 import { fireflyFalls, moonberryGarden, pebbleRiver, picnicParty } from './landmarks.ts';
 import { wishingGarden } from './wishingGarden.ts';
+import { crystalCove } from './crystalCove.ts';
+import { worldForMission } from '../game/worlds.ts';
 import { sculptWorld, type MaterialFactory } from './sculpt.ts';
 import { playgroundTheme, restorationCount } from './themes.ts';
 
@@ -13,15 +15,25 @@ export function createPlayground(
   missionIndex: number,
 ) {
   const theme = playgroundTheme(missionIndex);
+  const crystalWorld = worldForMission(missionIndex).id === 'crystal';
   const s = sculptWorld(scene, material);
   const picnic = theme.id === 'picnic' ? createPark(scene, material) : null;
   const ground =
-    picnic?.ground ?? s.mesh(new THREE.PlaneGeometry(120, 120), theme.grass, [0, -0.12, 0]);
+    picnic?.ground ??
+    s.mesh(
+      new THREE.PlaneGeometry(120, 120),
+      theme.id === 'crystal-bridge'
+        ? theme.water
+        : theme.id === 'shell-shore'
+          ? theme.path
+          : theme.grass,
+      [0, -0.12, 0],
+    );
   ground.rotation.x = -Math.PI / 2;
   ground.castShadow = false;
   ground.name = `${theme.id}-walkable-ground`;
 
-  if (!picnic && theme.id !== 'wishing') {
+  if (!picnic && theme.id !== 'wishing' && !crystalWorld) {
     // A broad garden walk continues beyond the camera, with a clear space for math.
     const clearing = s.disk(6.8, theme.path, [-1, -0.095, 0.7]);
     clearing.scale.y = 0.8;
@@ -64,6 +76,11 @@ export function createPlayground(
     picnic: () => picnicParty(s),
     firefly: () => fireflyFalls(s, theme.water),
     wishing: () => wishingGarden(s),
+    'crystal-garden': () => crystalCove(s, theme),
+    'crystal-bridge': () => crystalCove(s, theme),
+    'shell-shore': () => crystalCove(s, theme),
+    'glow-cavern': () => crystalCove(s, theme),
+    'heart-sanctuary': () => crystalCove(s, theme),
   };
   const landmark = builders[theme.id]();
   const originalScales = landmark.pieces.map((piece) => piece.scale.clone());
@@ -72,20 +89,21 @@ export function createPlayground(
     piece.visible = false;
   });
 
-  const cat = !picnic ? createCat(material) : null;
+  const cat = !picnic && !crystalWorld ? createCat(material) : null;
   if (cat) {
     scene.add(cat.group);
     cat.group.scale.setScalar(0.85);
   }
-  const child = !picnic
-    ? createChild(
-        material,
-        theme.id === 'bridge' ? 0xe4b56f : theme.id === 'firefly' ? 0xc0a3d5 : 0xe9ac93,
-        0xb57e58,
-        0x544234,
-        1,
-      )
-    : null;
+  const child =
+    !picnic && !crystalWorld
+      ? createChild(
+          material,
+          theme.id === 'bridge' ? 0xe4b56f : theme.id === 'firefly' ? 0xc0a3d5 : 0xe9ac93,
+          0xb57e58,
+          0x544234,
+          1,
+        )
+      : null;
   if (child) {
     scene.add(child.group);
     child.group.position.set(
@@ -111,7 +129,7 @@ export function createPlayground(
     }
   }
   const butterflies =
-    !picnic && !theme.night
+    !picnic && !theme.night && !crystalWorld
       ? Array.from({ length: 5 }, (_, i) => {
           const root = s.group();
           s.oval([0.025, 0.1, 0.025], 0x705944, [0, 0, 0], root);
@@ -147,6 +165,7 @@ export function createPlayground(
     const excitement = animate && interactionAge < 4 ? Math.sin((interactionAge / 4) * Math.PI) : 0;
     picnic?.update(t, animate);
     landmark.update(t, restored, excitement);
+    landmark.activity?.update(time, animate);
     landmark.pieces.forEach((piece, i) => {
       const age = Math.min(1, Math.max(0, (time - appearedAt[i]) / 0.8));
       const bounce =
@@ -182,6 +201,7 @@ export function createPlayground(
   }
   update(0, false);
   return {
+    activity: landmark.activity,
     ground,
     interactionTargets: landmark.interactionTargets ?? [],
     pieces: landmark.pieces,

@@ -1525,14 +1525,14 @@ h3 {
 .activity-row:last-child {
   border-bottom: 0;
 }
-.mastery-row > div:first-of-type {
+.mastery-row > .mastery-copy {
   min-width: 220px;
 }
 .mastery-row strong {
   display: block;
   font-size: 14px;
 }
-.mastery-row > div > span:not(.mastery-bar) {
+.mastery-copy > span {
   display: block;
   font-size: 11px;
   color: var(--color-muted);
@@ -1549,6 +1549,7 @@ h3 {
   height: 9px;
   border-radius: var(--radius-round);
   background: var(--color-rule);
+  overflow: hidden;
 }
 .mastery-bar > span {
   display: block;
@@ -2675,7 +2676,7 @@ textarea {
     font-size: 10px;
     gap: 5px;
   }
-  .mastery-row > div:first-of-type {
+  .mastery-row > .mastery-copy {
     min-width: 180px;
   }
 }
@@ -2901,7 +2902,7 @@ textarea {
   .mastery-row {
     flex-wrap: wrap;
   }
-  .mastery-row > div:first-of-type {
+  .mastery-row > .mastery-copy {
     min-width: 0;
     flex: 1;
   }

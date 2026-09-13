@@ -62,7 +62,7 @@ export function stopSpeaking() {
   narration.stop();
   if ('speechSynthesis' in window) speechSynthesis.cancel();
 }
-export type Sound = 'tap' | 'plank' | 'berry' | 'correct' | 'try' | 'open' | 'celebrate';
+export type Sound = 'tap' | 'plank' | 'berry' | 'chime' | 'correct' | 'try' | 'open' | 'celebrate';
 
 /** Short, synthesized sounds. No downloads, autoplay, or background music. */
 export function playSound(kind: Sound, step = 0) {
@@ -70,30 +70,40 @@ export function playSound(kind: Sound, step = 0) {
     context ??= new AudioContext();
     if (context.state === 'suspended') void context.resume();
     const notes =
-      kind === 'celebrate'
-        ? [523, 659, 784, 1047, 784, 1047, 1319]
-        : kind === 'plank'
-          ? [260, 180]
-          : kind === 'correct'
-            ? [523, 659, 784, 1047]
-            : kind === 'open'
-              ? [392, 523, 659]
-              : kind === 'try'
-                ? [440, 349]
-                : kind === 'berry'
-                  ? [392 * 2 ** ((step % 12) / 12)]
-                  : [610];
+      kind === 'chime'
+        ? [523, 659, 784, 880, 1047]
+        : kind === 'celebrate'
+          ? [523, 659, 784, 1047, 784, 1047, 1319]
+          : kind === 'plank'
+            ? [260, 180]
+            : kind === 'correct'
+              ? [523, 659, 784, 1047]
+              : kind === 'open'
+                ? [392, 523, 659]
+                : kind === 'try'
+                  ? [440, 349]
+                  : kind === 'berry'
+                    ? [392 * 2 ** ((step % 12) / 12)]
+                    : [610];
     const now = context.currentTime;
     notes.forEach((note, i) => {
       const oscillator = context!.createOscillator();
       const gain = context!.createGain();
       oscillator.connect(gain);
       gain.connect(context!.destination);
-      oscillator.type = kind === 'tap' ? 'sine' : 'triangle';
+      oscillator.type = kind === 'tap' || kind === 'chime' ? 'sine' : 'triangle';
       oscillator.frequency.value = note;
-      const start = now + i * (kind === 'celebrate' ? 0.15 : 0.095);
+      const start = now + i * (kind === 'chime' ? 0.22 : kind === 'celebrate' ? 0.15 : 0.095);
       const duration =
-        kind === 'plank' ? 0.08 : kind === 'tap' ? 0.055 : kind === 'berry' ? 0.14 : 0.25;
+        kind === 'chime'
+          ? 0.6
+          : kind === 'plank'
+            ? 0.08
+            : kind === 'tap'
+              ? 0.055
+              : kind === 'berry'
+                ? 0.14
+                : 0.25;
       gain.gain.setValueAtTime(0, start);
       gain.gain.linearRampToValueAtTime(kind === 'tap' ? 0.035 : 0.07, start + 0.008);
       gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);

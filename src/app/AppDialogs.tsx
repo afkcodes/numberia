@@ -2,7 +2,7 @@ import { Heart } from 'lucide-react';
 import { playSound } from '../audio';
 import { Character, Modal } from '../components';
 import DailyQuests from '../features/adventure/DailyQuests';
-import { completedMissions, nextMission, type Grade, type Save, type Skill } from '../game';
+import { nextMission, type Grade, type Save, type Skill, type WorldId } from '../game';
 import GradePicker from '../GradePicker';
 import WorldPicker from '../WorldPicker';
 import HelpDialog from './dialogs/HelpDialog';
@@ -18,6 +18,7 @@ type AppDialogsProps = {
   onNavigate: (page: Page) => void;
   onStartQuest: (index: number, skill?: Skill) => void;
   onGradeChange: (grade: Grade) => void;
+  onWorldChange: (world: WorldId) => void;
   onNameChange: (name: string) => void;
   onClaimDaily: (key: string) => void;
   onExport: () => void;
@@ -30,6 +31,7 @@ export default function AppDialogs({
   onNavigate,
   onStartQuest,
   onGradeChange,
+  onWorldChange,
   onNameChange,
   onClaimDaily,
   onExport,
@@ -84,8 +86,9 @@ export default function AppDialogs({
       return (
         <Modal title="The world of Numberia" onClose={onClose} className="worlds-modal">
           <WorldPicker
-            completed={completedMissions(save).length}
-            onExplore={() => {
+            save={save}
+            onExplore={(world) => {
+              onWorldChange(world);
               onClose();
               onNavigate('adventure');
             }}

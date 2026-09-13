@@ -5,6 +5,7 @@ import {
   ChevronDown,
   Compass,
   Gift,
+  Gem,
   Leaf,
   LockKeyhole,
   Map,
@@ -16,7 +17,14 @@ import {
 import { useState } from 'react';
 import { Character, Stars } from '../../components';
 import { skillDetails } from '../../data/skillDetails';
-import { completedMissions, missions, missionSkill, nextMission, type Save } from '../../game';
+import {
+  completedMissions,
+  getWorld,
+  missions,
+  missionSkill,
+  nextMission,
+  type Save,
+} from '../../game';
 export default function AdventureMap({
   save,
   onStart,
@@ -28,19 +36,32 @@ export default function AdventureMap({
   onWorlds: () => void;
   onDaily: () => void;
 }) {
-  const completed = completedMissions(save);
+  const world = getWorld(save.world);
+  const completed = completedMissions(save, world.id);
   const current = nextMission(save);
   const [selected, setSelected] = useState(current);
   const mission = missions[selected];
-  const positions = [
-    { left: '19%', top: '73%' },
-    { left: '36%', top: '50%' },
-    { left: '57%', top: '51%' },
-    { left: '73%', top: '30%' },
-    { left: '88%', top: '19%' },
-  ];
+  const positions =
+    world.id === 'crystal'
+      ? [
+          { left: '15%', top: '69%' },
+          { left: '37%', top: '48%' },
+          { left: '59%', top: '47%' },
+          { left: '76%', top: '34%' },
+          { left: '88%', top: '16%' },
+        ]
+      : [
+          { left: '19%', top: '73%' },
+          { left: '36%', top: '50%' },
+          { left: '57%', top: '51%' },
+          { left: '73%', top: '30%' },
+          { left: '88%', top: '19%' },
+        ];
   return (
-    <section className="journey-section" aria-label="Your adventure in Whispering Woods">
+    <section
+      className={`journey-section adventure-world-${world.id}`}
+      aria-label={`Your adventure in ${world.name}`}
+    >
       <div className="section-heading journey-heading">
         <div>
           <h2>Your next adventure adds up.</h2>
@@ -66,11 +87,11 @@ export default function AdventureMap({
         <div className="map-card">
           <div className="map-card-header">
             <div className="world-icon">
-              <TreePine size={22} />
+              {world.id === 'crystal' ? <Gem size={22} /> : <TreePine size={22} />}
             </div>
             <div>
-              <span className="world-eyebrow">WORLD 01</span>
-              <h3>Whispering Woods</h3>
+              <span className="world-eyebrow">WORLD {world.number}</span>
+              <h3>{world.name}</h3>
             </div>
             <span className="world-completion">
               {completed.length}
@@ -83,16 +104,14 @@ export default function AdventureMap({
           <div className="world-map">
             <img
               className="map-art"
-              src="/art/whispering-woods.png"
-              alt="A winding trail through an enchanted woodland, over a turquoise stream to a magical treehouse"
+              src={world.art}
+              alt={world.artDescription}
               fetchPriority="high"
             />
             <div className="map-top-note">
               <Leaf size={13} />
               <span>
-                {completed.length === 5
-                  ? 'A little magic, everywhere.'
-                  : 'Every step brings the forest to life.'}
+                {completed.length === 5 ? 'A little magic, everywhere.' : world.invitation}
               </span>
             </div>
             <svg
@@ -103,10 +122,15 @@ export default function AdventureMap({
             >
               <path
                 vectorEffect="non-scaling-stroke"
-                d="M19 73C25 69 24 51 36 50S48 57 57 51S62 36 73 30S81 22 88 19"
+                d={
+                  world.id === 'crystal'
+                    ? 'M15 69C25 65 24 49 37 48S48 51 59 47S70 43 76 34S87 25 88 16'
+                    : 'M19 73C25 69 24 51 36 50S48 57 57 51S62 36 73 30S81 22 88 19'
+                }
               />
             </svg>
-            {missions.map((m, i) => {
+            {world.chapters.map((i, chapter) => {
+              const m = missions[i];
               const done = completed.includes(i);
               const locked = i > current;
               const best = Math.max(
@@ -118,12 +142,12 @@ export default function AdventureMap({
               return (
                 <div
                   className={`map-stop ${done ? 'done' : locked ? 'locked' : 'current'} ${selected === i ? 'selected' : ''}`}
-                  style={positions[i]}
+                  style={positions[chapter]}
                   key={m.short}
                 >
                   {i === current && !done && (
                     <span
-                      className={`map-trail-buddy ${i === 4 ? 'buddy-at-canopy' : ''}`}
+                      className={`map-trail-buddy ${chapter === 4 ? 'buddy-at-canopy' : ''}`}
                       aria-hidden="true"
                     >
                       <span className="buddy-trail-shadow" />
@@ -144,7 +168,7 @@ export default function AdventureMap({
                     ) : locked ? (
                       <LockKeyhole size={20} />
                     ) : (
-                      <span>{i + 1}</span>
+                      <span>{chapter + 1}</span>
                     )}
                   </button>
                   <span className="map-stop-label">{m.short}</span>
@@ -154,7 +178,11 @@ export default function AdventureMap({
             })}
             <div className="map-bottom-caption">
               <span className="map-legend-dot" />
-              {completed.length === 5 ? 'Woodland guardian' : 'The adventure begins with you'}
+              {completed.length === 5
+                ? world.id === 'crystal'
+                  ? 'Crystal Cove guardian'
+                  : 'Woodland guardian'
+                : 'The adventure begins with you'}
             </div>
             <button className="map-compass" aria-label="Explore all worlds" onClick={onWorlds}>
               <Compass size={27} strokeWidth={1.4} />
@@ -176,7 +204,7 @@ export default function AdventureMap({
         <aside className="mission-card">
           <div className="mission-kicker">
             <span className="live-dot" />
-            {completed.includes(selected) ? 'PLAY IT AGAIN' : 'YOUR NEXT CHAPTER'}
+            {completed.includes(selected) ? 'Play it again' : 'Your next chapter'}
             <BookOpen size={17} />
           </div>
           <div className="mission-mascot">

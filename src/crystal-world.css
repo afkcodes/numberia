@@ -1,0 +1,276 @@
+/* Crystal Cove shares the same controls and layout, with its own coastal palette. */
+.adventure-world-crystal .map-card {
+  background: #d7eeeb;
+  border-color: #70b6b4;
+  box-shadow: 0 6px 0 #70b6b4;
+}
+.adventure-world-crystal .map-card-header {
+  background: #c2e7e2;
+}
+.adventure-world-crystal .map-footer {
+  background: #e6f4eb;
+  border-color: #70b6b4;
+}
+.adventure-world-crystal .world-icon {
+  color: #346c80;
+  background: #f1e2ff;
+  border-color: #b49ccf;
+}
+.adventure-world-crystal .mission-card {
+  background: #fff0e5;
+  border-color: #d8a0b7;
+  box-shadow: 0 6px 0 #d8a0b7;
+}
+.adventure-world-crystal .mission-skill {
+  background: #d3eeea;
+  border-color: #83bcb5;
+}
+.adventure-world-crystal .mission-mascot .mascot-disc {
+  background: #e4d1f4;
+}
+.adventure-world-crystal .map-top-note {
+  color: #225f63;
+}
+.worlds-modal {
+  font-family: var(--font-display);
+}
+.world-passport-copy > h2 {
+  max-width: 200px;
+}
+.world-passport-copy > p {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+  min-height: 58px;
+}
+.world-choice.cove-passport {
+  background: #d9ecef;
+  border-color: #77b4c2;
+  box-shadow: 0 5px 0 #77b4c2;
+}
+button.cove-passport:hover {
+  box-shadow: 0 9px 0 #77b4c2;
+}
+.cove-passport .world-passport-art > img {
+  object-position: 66% 48%;
+}
+.world-choice.coming-passport {
+  background: #eef0df;
+  border-color: #acbc9c;
+  border-style: dashed;
+  box-shadow: 0 5px 0 #acbc9c;
+}
+.coming-passport .world-dreaming {
+  font-size: 13px;
+  line-height: 1.4;
+  color: #4b6858;
+  text-align: center;
+}
+.worlds-modal .world-picker-footnote {
+  font-size: 13px;
+  line-height: 1.5;
+}
+.world-passport:focus-visible {
+  outline: 3px solid #8458b0;
+  outline-offset: 5px;
+}
+.quest-modal.playground-crystal-garden,
+.quest-modal.playground-crystal-bridge,
+.quest-modal.playground-shell-shore,
+.quest-modal.playground-heart-sanctuary {
+  --world-header: #246e70;
+  --world-trim: #194e55;
+  --world-surface: #e5f4ed;
+  --world-ink: #fff4da;
+  --world-muted: #d5eee7;
+  --world-edge: #7abcb5;
+  --world-accent: #dcb8ff;
+  --world-accent-ink: #563375;
+  --world-hill: #79bbb0;
+  --world-hill-front: #4d9789;
+  --world-tree: #ba94df;
+}
+.quest-modal.playground-crystal-bridge {
+  --world-header: #3d647d;
+  --world-trim: #28455e;
+  --world-accent: #ffc0d5;
+  --world-accent-ink: #713b57;
+}
+.quest-modal.playground-shell-shore {
+  --world-header: #80603b;
+  --world-trim: #61442f;
+  --world-surface: #fff0d5;
+  --world-muted: #f2e5d0;
+  --world-edge: #c2a875;
+  --world-accent: #ffc697;
+  --world-accent-ink: #6e3c24;
+  --world-hill: #dfc795;
+  --world-hill-front: #c5ac7c;
+}
+.quest-modal.playground-glow-cavern {
+  --world-header: #42456b;
+  --world-trim: #2b3151;
+  --world-surface: #ede5ff;
+  --world-ink: #fff0cc;
+  --world-muted: #e2def4;
+  --world-edge: #9593c0;
+  --world-accent: #fbd789;
+  --world-accent-ink: #614722;
+  --world-hill: #52678b;
+  --world-hill-front: #354970;
+  --world-tree: #a281ce;
+}
+.quest-modal.playground-heart-sanctuary {
+  --world-header: #5d536f;
+  --world-trim: #403c54;
+  --world-surface: #fff0e7;
+  --world-muted: #eae1ef;
+  --world-edge: #b4a0c1;
+  --world-accent: #ffbace;
+  --world-accent-ink: #6e3b50;
+}
+@media (max-width: 767px) {
+  .worlds-modal .world-picker-welcome > .character {
+    width: 54px;
+    height: 54px;
+  }
+  .world-passport-copy {
+    padding: 13px;
+  }
+  .world-passport-copy > h2 {
+    font-size: 22px;
+  }
+  .world-passport-copy > p {
+    min-height: 0;
+    font-size: 12px;
+  }
+  .world-ready-sticker {
+    max-width: calc(100% - 10px);
+    font-size: 10px;
+  }
+  .world-chapter-stars {
+    gap: 3px;
+  }
+  .world-chapter-stars > svg {
+    width: 16px;
+    flex-shrink: 0;
+  }
+  .world-enter {
+    font-size: 12px;
+  }
+}
+
+/* Each answer belongs to its toy; labels travel with the actual 3D object. */
+.arena-world .crystal-activity .meadow-mission-label {
+  display: flex;
+  left: 50%;
+  top: 15px;
+  transform: translateX(-50%);
+  max-width: calc(100% - 30px);
+  width: max-content;
+  gap: 8px;
+  padding: 9px 16px;
+  color: #38405c;
+  background: #fff3d9;
+  border: 2px solid #dbc0db;
+  border-radius: 20px;
+  font: 800 15px/1.3 var(--font-display);
+  box-shadow: 0 3px 0 #645e7c26;
+  pointer-events: none;
+}
+.arena-world .crystal-activity .orb-label {
+  --toy-color: #e6c5ff;
+  --toy-edge: #8961b0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  min-width: 65px;
+  height: 64px;
+  padding: 6px 11px;
+  color: #393452;
+  background: var(--toy-color);
+  border-color: var(--toy-edge);
+  border-width: 2px;
+  box-shadow:
+    0 4px 0 var(--toy-edge),
+    0 0 0 4px #fff2d657;
+  font: 900 27px/1 var(--font-display);
+  border-radius: 18px 18px 13px 13px;
+  transition:
+    background-color 160ms,
+    box-shadow 160ms;
+}
+.arena-world .crystal-activity .orb-label:nth-of-type(2) {
+  --toy-color: #ffc5d5;
+  --toy-edge: #b96685;
+}
+.arena-world .crystal-activity .orb-label:nth-of-type(3) {
+  --toy-color: #a6ecdc;
+  --toy-edge: #388f83;
+}
+.arena-world .crystal-activity .orb-label:nth-of-type(4) {
+  --toy-color: #ffe2a0;
+  --toy-edge: #b89040;
+}
+.arena-world .crystal-activity .orb-label > small {
+  font: 800 10px/1.5 var(--font-display);
+}
+.arena-world .activity-crystal-bridge .orb-label {
+  border-radius: 8px 22px 8px 8px;
+}
+.arena-world .activity-shell-shore .orb-label {
+  border-radius: 45% 45% 15px 15px;
+}
+.arena-world .activity-glow-cavern .orb-label {
+  border-radius: 24px;
+  box-shadow:
+    0 4px 0 var(--toy-edge),
+    0 0 20px #edd3f34d;
+}
+.arena-world .activity-heart-sanctuary .orb-label {
+  border-radius: 9px 25px;
+}
+.arena-world .crystal-activity .orb-label.orb-correct {
+  background: #fff1ac;
+  border-color: #b68825;
+  box-shadow:
+    0 4px 0 #b68825,
+    0 0 0 5px #ffeaaa70;
+  color: #594617;
+}
+.crystal-activity .meadow-controls {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+@media (max-width: 767px) {
+  .arena-world .crystal-activity .meadow-mission-label {
+    top: 8px;
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  .arena-world .crystal-activity .orb-label {
+    min-width: 44px;
+    height: 44px;
+    padding: 3px 7px;
+    border-radius: 13px;
+    font-size: 20px;
+    box-shadow: 0 3px 0 var(--toy-edge);
+  }
+  .arena-world .crystal-activity .orb-label > small {
+    display: none;
+  }
+}
+
+.crystal-activity .meadow-scene {
+  container: crystal-stage / size;
+}
+/* A short phone still has four large answer buttons in the question panel.
+   Give its tiny scenic preview to the animation instead of duplicating controls. */
+@container crystal-stage (max-height: 190px) {
+  .arena-world .crystal-activity .orb-label,
+  .arena-world .crystal-activity .meadow-mission-label {
+    display: none;
+  }
+}

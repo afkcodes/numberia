@@ -9,6 +9,10 @@ import {
   defaultSave,
   makeProblem,
   missionSkill,
+  missions,
+  getWorld,
+  worldForMission,
+  worlds,
   nextMission,
   readSave,
   recordRun,
@@ -181,6 +185,63 @@ test('Extreme random values cannot produce duplicate or missing answer choices',
   }
 });
 
+test('New discoveries vary the correct slot without moving choices during a retry', () => {
+  const rng = seeded(9017);
+  const slots = [0, 0, 0, 0];
+  for (let grade = 0; grade <= 5; grade++)
+    for (const skill of availableSkills(grade as Grade)) {
+      const save = { ...structuredClone(defaultSave), grade: grade as Grade };
+      let previous: number | undefined;
+      for (let turn = 0; turn < 240; turn++) {
+        const { problem } = nextDiscovery(save, skill, turn, [], rng, previous);
+        const slot = problem.choices.indexOf(problem.answer);
+        assert.notEqual(slot, previous, `${skill}: consecutive answers use different slots`);
+        assert.equal(new Set(problem.choices).size, 4);
+        assert.ok(problem.choices.every(Number.isFinite));
+        slots[slot]++;
+        previous = slot;
+        const before = structuredClone(problem);
+        nextDiscovery(save, skill, turn + 1, [], rng, slot);
+        assert.deepEqual(
+          problem,
+          before,
+          'Making a new question cannot mutate the displayed question',
+        );
+      }
+    }
+  const total = slots.reduce((sum, n) => sum + n, 0);
+  for (const count of slots)
+    assert.ok(
+      count / total > 0.22 && count / total < 0.28,
+      'All four positions remain available without a favored slot',
+    );
+});
+
+test('Returning practice facts also avoid the previous correct slot and preserve saved choices', () => {
+  let save = structuredClone(defaultSave);
+  const problem = makeProblem(1, 'addition', 0, seeded(41));
+  save = rememberDiscovery(save, {
+    id: 'slot-review',
+    grade: 1,
+    problem,
+    supported: true,
+    date: '2026-09-13',
+  });
+  save.learning[memoryKey(1, 'addition')].completed = 3;
+  const before = structuredClone(save);
+  for (const random of [0, 0.5, 0.999999])
+    for (let previous = 0; previous < 4; previous++) {
+      const next = nextDiscovery(save, 'addition', 1, [], () => random, previous);
+      assert.equal(next.reviewKey, factKey(problem));
+      assert.notEqual(next.problem.choices.indexOf(next.problem.answer), previous);
+      assert.deepEqual(
+        [...next.problem.choices].sort((a, b) => a - b),
+        [...problem.choices].sort((a, b) => a - b),
+      );
+    }
+  assert.deepEqual(save, before, 'Review selection cannot mutate persisted learning data');
+});
+
 test('Chapter progression is grade-specific and practice cannot unlock chapters', () => {
   let save: Save = { ...defaultSave, runs: [], claimed: [] };
   assert.equal(nextMission(save), 0);
@@ -236,8 +297,55 @@ test('Malformed saves recover safely; valid saves preserve earned progress', () 
 
 test('Every chapter uses a skill available at the chosen grade', () => {
   for (let grade = 0; grade <= 5; grade++)
-    for (let i = 0; i < 5; i++)
+    for (let i = 0; i < missions.length; i++)
       assert.ok(availableSkills(grade as Grade).includes(missionSkill(grade as Grade, i)));
+});
+
+test('World selection keeps grade-specific chapter progress independent and survives reload', () => {
+  const legacy = recordRun(defaultSave, run({ id: 'woodland', mission: 0 }));
+  const { world: _world, ...oldSave } = legacy;
+  const migrated = readSave(JSON.stringify(oldSave));
+  assert.equal(migrated.world, 'woods');
+  assert.equal(nextMission(migrated), 1);
+  let cove = { ...migrated, world: 'crystal' as const };
+  assert.equal(nextMission(cove), 5);
+  cove = {
+    ...recordRun(cove, run({ id: 'cove-practice', mission: 5, practice: true })),
+    world: 'crystal',
+  };
+  assert.equal(nextMission(cove), 5);
+  const completed = recordRun(cove, run({ id: 'cove-story', mission: 5 }));
+  assert.equal(nextMission(completed), 6);
+  assert.deepEqual(completedMissions(completed, 'woods'), [0]);
+  assert.deepEqual(completedMissions(completed, 'crystal'), [5]);
+  assert.equal(nextMission({ ...completed, world: 'woods' }), 1);
+  assert.equal(nextMission({ ...completed, grade: 2 }), 5);
+  assert.deepEqual(readSave(JSON.stringify(completed)), completed);
+  assert.equal(readSave(JSON.stringify({ ...completed, world: 'unknown' })).world, 'woods');
+  assert.equal(recordRun(completed, run({ id: 'cove-story', mission: 5 })), completed);
+});
+
+test('Both worlds have five distinct chapters, keepsakes, and a world-local finale', () => {
+  const indices = worlds.flatMap((world) => world.chapters);
+  assert.deepEqual(
+    indices,
+    missions.map((_, i) => i),
+  );
+  assert.equal(new Set(missions.map((m) => m.item)).size, missions.length);
+  for (const world of worlds) {
+    assert.equal(world.chapters.length, 5);
+    let save: Save = { ...defaultSave, world: world.id, runs: [] };
+    for (const index of world.chapters) {
+      assert.equal(nextMission(save), index);
+      assert.equal(worldForMission(index).id, world.id);
+      save = recordRun(save, run({ id: `world-${index}`, mission: index }));
+    }
+    assert.equal(nextMission(save), world.chapters.at(-1));
+    assert.equal(completedMissions(save, world.id).length, 5);
+    assert.equal(missionSkill(5, world.chapters[3]), 'fractions');
+    assert.equal(missionSkill(5, world.chapters[4]), 'decimals');
+  }
+  assert.equal(getWorld('crystal').name, 'Crystal Cove');
 });
 
 test('Old saves migrate without losing gems, characters, chapter progress, or treasures', () => {

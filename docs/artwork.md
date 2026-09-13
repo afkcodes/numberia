@@ -1,8 +1,9 @@
 # Original Numberia artwork
 
-Both assets were generated with the built-in imagegen tool, then copied into this project. Character avatars and the 3D woodland are original code-native drawings/models.
+These assets were generated with the built-in imagegen tool, then copied into this project. Character avatars and the 3D woodland are original code-native drawings/models.
 
 - `public/art/whispering-woods.png` — illustrated adventure-map background.
+- `public/art/crystal-cove.png` — illustrated Crystal Cove map, generated using the built-in imagegen tool.
 - `public/art/explorers.png` — transparent explorer, Milo, and Pip artwork.
 
 ## Forest prompt
@@ -12,3 +13,9 @@ Use case: illustration-story. Asset type: background art for an interactive elem
 ## Character prompt
 
 Use case: illustration-story. Asset type: transparent character artwork for the welcome banner of a children's math adventure game called Numberia. Primary request: a charming original trio of adventurers, no text. A small cheerful orange fox with big triangular ears, cream muzzle and tail tip, olive green neckerchief and tiny tan satchel; beside it a plump small mint-teal baby dragon with small leafy ears and cream belly holding a golden star; behind them a young child explorer with warm brown skin, short dark brown tousled hair, round glasses, sage-green explorer hat, yellow shirt and small green backpack waving hello. The fox is left, explorer in middle back, baby dragon right. The three friends are nestled closely, full bodies, very cute confident curious expressions, tiny moss patch at their feet only. Sophisticated children's picture book hand-painted gouache, tactile paper grain, softly modeled 2D forms, no dark outlines, friendly game mascot design with exquisite professional shapes. Muted sage, jade green, amber orange, warm cream and soft teal. Frontal three-quarter view. Compact horizontal character composition, about 1.5:1 aspect ratio. Isolated on a genuinely transparent alpha background, no scenery, no opaque or checkerboard backdrop, no shadows beyond subtle contact shadow under feet, no border, no words, no logo.
+
+## Crystal Cove prompt
+
+Saved asset: `public/art/crystal-cove.png`. Generation mode: built-in imagegen. Exact prompt:
+
+Use case: illustration-story. Create a polished wide landscape storybook game map for a children's math adventure, a magical crystal cove full of friendship and wonder. Hand-painted children's book illustration with rich turquoise water, deep teal and emerald foliage, luminous amethyst and rose quartz formations, warm sandy paths, coral pink flowers, golden sunlight, tactile gouache detail; colorful and playful with natural contrast, never washed-out pastel glare. Elevated three-quarter view with five distinct landmarks joined by a winding sandy trail: small crystal garden near lower left (around 19% x, 73% y), a little arched crystal bridge across a stream at 36% x 50% y, a seashell picnic shore at 57% x 51% y, a glowing crystal cavern at 73% x 30% y, and an elegant little heart-shaped pink crystal sanctuary high at upper right around 88% x 19% y. These locations need open path spaces for clickable game markers. Expansive landscape edge-to-edge with sparkling cove in the middle, distant jewel mountains, gem formations, ferns, tiny wildflowers, beautiful world to explore. Landscaped terrain, not a floating island. No text, no labels, no numbers, no UI, no border, no humans. Landscape aspect ratio 3:2, high quality production game background.
