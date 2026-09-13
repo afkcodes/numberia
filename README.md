@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite. `npm run build` creates the production site in `dist/`; `npm run preview` serves that build. Use Node 22.12+ for the development tools and TypeScript tests.
+Open the local URL printed by Vite. `npm run build` creates the production site in `dist/`; `npm run preview` serves that build. Use Node 22.12+ for the development tools and TypeScript tests. Add `NARI_API_KEY` to the root `.env` to enable streaming Phoebe narration. For production, run `npm run build` followed by `npm start`; see [voice setup](docs/voice.md).
 
 ## Play
 
@@ -21,7 +21,7 @@ Open the local URL printed by Vite. `npm run build` creates the production site 
 - Explore the full park with children on a swing and seesaw, a slide with a clear return path and ladder climb, a picnic, butterflies, and a roaming tabby cat.
 - On the landing page, your buddy marks the current chapter. A background squirrel gathers nuts, collects a nut, carries it home at a brisk running pace, climbs the tree, and waits hidden for **five seconds before repeating**. The white map trail connects the actual centers of the chapter markers.
 - The home page fits one screen, with a roomy, full-width welcome banner, a bounded map, and a wider chapter card that keeps the Play button visible. On phones the chapter card sits beneath the map. Captions remain readable, including the map footer. The sun has its own space above the banner’s right corner, with birds gliding and flapping through the background; reduced motion leaves them still.
-- Milo gives three short, problem-specific coaching steps. His final step demonstrates the math. Counting, questions, and hints all use the original browser speech synthesis, preferring natural or enhanced English voices at a normal pitch and conversational rate. Voice availability and quality depend on the device. No model or recorded voice pack is downloaded, and there is no voice-loading screen.
+- Milo gives three short, problem-specific coaching steps. His final step demonstrates the math. Questions and guidance use streamed Phoebe audio through a private Nari endpoint when configured. Quick counting keeps the original device voice. Repeated lines are cached, and slow or unavailable narration falls back to device speech. No model download or voice-loading screen is needed; see [voice setup and free limits](docs/voice.md).
 - Demonstrations wait for each spoken count; mute, reset, and closing an activity cancel active and queued narration.
 - Finish all five discoveries to receive **3 stars, 100 XP, and 15 gems**. Hints and retries never reduce rewards. The game remembers discoveries separately for each grade and skill. Challenge grows after two independent discoveries and eases after support. Supported facts return after other practice, and visits start with a gentle warm-up. Practice camp suggests a skill to revisit.
 - Visit **My clubhouse** or tap the gem counter to decorate a cozy cottage with earned gems. Choose rugs, furniture, flowers, outfits, and garden toys; name and pet your cat. A selected decoration flies into its place and settles with a little cheer. Owned decorations can be selected again for free. Your room, outfit, and cat’s name stay saved with your progress.
@@ -51,7 +51,7 @@ The scenery remembers discoveries throughout the chapter, including when switchi
 
 ## Scope
 
-Whispering Woods and Crystal Cove each have five playable chapters. The third world card says “More worlds coming” and is not a locked or playable chapter. Existing woodland saves keep their progress; each world has its own chapter sequence and finale. This is a working local prototype, with browser-local saving and JSON progress export. There is no account system, server, cross-device synchronization, or online multiplayer.
+Whispering Woods and Crystal Cove each have five playable chapters. The third world card says “More worlds coming” and is not a locked or playable chapter. Existing woodland saves keep their progress; each world has its own chapter sequence and finale. This is a working local prototype, with browser-local saving and JSON progress export. An optional Node server keeps the narration API key private and streams speech. There is no account system, cross-device synchronization, or online multiplayer.
 
 K–2 focuses on addition and subtraction; grades 3–4 add multiplication and division; grade 5 includes same-denominator fractions and tenths. These are starting levels, not a complete standards-aligned curriculum or diagnostic assessment. Hints and retries count toward full achievements; first-answer support information is retained internally to adapt difficulty, not to rank children.
 
@@ -93,7 +93,8 @@ Oxfmt handles formatting; Oxlint checks correctness, React hooks, and dependency
 - `src/MathGarden.tsx`, `src/fruitLayout.ts`, and `src/mathNarration.ts`: concrete arithmetic, spoken counting, tray geometry, and answer explanations.
 - `src/HintCoach.tsx`: dynamic Milo coaching and spoken explanations.
 - `src/game/`: arithmetic generation, missions, and domain types; `src/game.ts`: public exports, persistence, and progression.
-- `src/audio.ts`, `src/speechQueue.ts`, and `docs/voice.md`: original device narration, spoken counting, sound effects, and cancellation.
+- `src/audio.ts`, `src/speech/`, and `src/speechQueue.ts`: streaming PCM narration, original device counting, fallback, sound effects, and cancellation.
+- `server/` and `docs/voice.md`: private Nari gateway, bounded audio cache, development middleware, production server, and voice configuration.
 - `src/Celebration.tsx`: particle celebrations.
 - `tokens.css`: shared visual tokens; `src/styles.css`, `src/playful.css`, `src/arena.css`, `src/storybook.css`, and `src/adventure-extras.css`: interface, toy-like theme, arena, scenery, and selection styles.
 - `docs/artwork.md`: original artwork paths and exact generation prompts.

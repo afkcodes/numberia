@@ -6,6 +6,7 @@ Use Node 22.12 or newer and install the locked dependencies with `npm ci`.
 
 | Command                | Purpose                                                      |
 | ---------------------- | ------------------------------------------------------------ |
+| `npm start`            | Serve the production build and private speech endpoint       |
 | `npm run dev`          | Start the local Vite server                                  |
 | `npm run format`       | Format source, styles, and documentation with Oxfmt          |
 | `npm run format:check` | Check formatting without changing files                      |
@@ -50,3 +51,7 @@ Keep the stylesheet imports in `src/main.tsx` in their documented order. Base st
 ## Commits
 
 Keep formatting separate from behavior and structural changes. Run `npm run check` before committing a completed change. The initial formatting commit is listed in `.git-blame-ignore-revs`; enable it locally with `git config blame.ignoreRevsFile .git-blame-ignore-revs` when tracing history.
+
+## Speech service
+
+Keep `NARI_API_KEY` server-only in `.env` or the production environment. Vite registers the same speech handler in dev and preview; `npm start` serves the built app and handler through Node. Client code sends narration text to `/api/speech` and decodes streamed PCM without buffering the full response. `src/speech/narrator.ts` owns fallback and network cancellation, `src/speech/pcm.ts` owns sample decoding and playback, and `SpeechQueue` retains count ordering. See [voice setup](voice.md) for formats, timeouts, caching, and the free request allowance. Use mocked upstream streams for automated tests to avoid consuming the daily API allowance.

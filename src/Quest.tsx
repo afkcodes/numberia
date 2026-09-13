@@ -209,7 +209,7 @@ export default function Quest({
     }
   };
   const readAloud = () => {
-    if (save.sound) void speak(`What is ${problem.equation}?`);
+    if (save.sound) void speak(`${problem.equation}. What is the answer?`);
   };
   useEffect(() => () => stopSpeaking(), []);
   return (

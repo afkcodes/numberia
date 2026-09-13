@@ -1,8 +1,19 @@
-import { SpeechQueue, speechParts } from './speechQueue';
+import { SpeechQueue } from './speechQueue';
+import { createNarrator, narrationParts } from './speech/narrator';
 
 let context: AudioContext | null = null;
+const getContext = () => (context ??= new AudioContext());
+let effects: GainNode | null = null;
+const activeSpeech = new Set<symbol>();
 
-/** Use the original device voice for counting, questions, and Milo's guidance. */
+function updateEffects() {
+  if (context && effects) {
+    effects.gain.cancelScheduledValues(context.currentTime);
+    effects.gain.setTargetAtTime(activeSpeech.size ? 0 : 1, context.currentTime, 0.008);
+  }
+}
+
+/** Original device counting voice, also used when remote guidance is unavailable. */
 function browserSpeak(text: string, signal: AbortSignal): Promise<void> {
   if (!('speechSynthesis' in window) || signal.aborted) return Promise.resolve();
   const utterance = new SpeechSynthesisUtterance(text);
@@ -48,26 +59,49 @@ function browserSpeak(text: string, signal: AbortSignal): Promise<void> {
   });
 }
 
-const narration = new SpeechQueue(browserSpeak);
+const narration = new SpeechQueue(createNarrator({ browserSpeak, getContext }));
 
 /** Every count finishes before the next; a new hint replaces stale narration. */
 export function speak(text: string, interrupt = true): Promise<void> {
+  const parts = narrationParts(text);
+  if (!parts.length) return Promise.resolve();
+  const line = Symbol();
+  activeSpeech.add(line);
+  updateEffects();
+  // Unlock Web Audio in the initiating gesture, before an asynchronous fetch.
+  try {
+    void getContext()
+      .resume()
+      .catch(() => {});
+  } catch {
+    /* Device speech still works. */
+  }
   let finished = Promise.resolve();
-  speechParts(text).forEach((part, index) => {
+  parts.forEach((part, index) => {
     finished = narration.say(part, index === 0 && interrupt);
   });
-  return finished;
+  return finished.finally(() => {
+    activeSpeech.delete(line);
+    updateEffects();
+  });
 }
 export function stopSpeaking() {
   narration.stop();
+  activeSpeech.clear();
+  updateEffects();
   if ('speechSynthesis' in window) speechSynthesis.cancel();
 }
 export type Sound = 'tap' | 'plank' | 'berry' | 'chime' | 'correct' | 'try' | 'open' | 'celebrate';
 
 /** Short, synthesized sounds. No downloads, autoplay, or background music. */
 export function playSound(kind: Sound, step = 0) {
+  if (activeSpeech.size) return;
   try {
     context ??= new AudioContext();
+    if (!effects) {
+      effects = context.createGain();
+      effects.connect(context.destination);
+    }
     if (context.state === 'suspended') void context.resume();
     const notes =
       kind === 'chime'
@@ -90,7 +124,7 @@ export function playSound(kind: Sound, step = 0) {
       const oscillator = context!.createOscillator();
       const gain = context!.createGain();
       oscillator.connect(gain);
-      gain.connect(context!.destination);
+      gain.connect(effects!);
       oscillator.type = kind === 'tap' || kind === 'chime' ? 'sine' : 'triangle';
       oscillator.frequency.value = note;
       const start = now + i * (kind === 'chime' ? 0.22 : kind === 'celebrate' ? 0.15 : 0.095);
