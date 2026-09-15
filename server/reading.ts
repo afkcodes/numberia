@@ -1,7 +1,14 @@
 import type { EventEmitter } from 'node:events';
-import type { IncomingMessage } from 'node:http';
+import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { Duplex } from 'node:stream';
 import WebSocket, { WebSocketServer } from 'ws';
+
+const defaultEndpoint = 'wss://api.narilabs.com/v1/realtime?intent=transcription';
+const session = { model: 'qwen3-asr-fast:free', language: 'en', turn_detection: null };
+const maxReadingBytes = 16_000 * 2 * 100;
+// The provider caps one utterance at 36 seconds, so batch audio commits every 30 seconds.
+const utteranceBytes = 16_000 * 2 * 30;
+const appendBytes = 64_000;
 
 /** Narrow, same-origin microphone gateway; no recordings or provider diagnostics retained. */
 export function attachReadingRecognition(
@@ -39,14 +46,11 @@ export function attachReadingRecognition(
     sockets.handleUpgrade(request, socket, head, (client) => sockets.emit('connection', client));
   });
   sockets.on('connection', (client) => {
-    const upstream = new WebSocket(
-      options.endpoint ?? 'wss://api.narilabs.com/v1/realtime?intent=transcription',
-      {
-        headers: { Authorization: `Bearer ${options.apiKey}` },
-        handshakeTimeout: 10_000,
-        maxPayload: 128 * 1024,
-      },
-    );
+    const upstream = new WebSocket(options.endpoint ?? defaultEndpoint, {
+      headers: { Authorization: `Bearer ${options.apiKey}` },
+      handshakeTimeout: 10_000,
+      maxPayload: 128 * 1024,
+    });
     let configured = false,
       bytes = 0;
     const send = (value: unknown) => {
@@ -58,12 +62,7 @@ export function attachReadingRecognition(
     };
     const timeout = setTimeout(unavailable, 120_000);
     upstream.on('open', () =>
-      upstream.send(
-        JSON.stringify({
-          type: 'session.configure',
-          session: { model: 'qwen3-asr-fast:free', language: 'en', turn_detection: null },
-        }),
-      ),
+      upstream.send(JSON.stringify({ type: 'session.configure', session })),
     );
     upstream.on('message', (raw) => {
       try {
@@ -95,7 +94,7 @@ export function attachReadingRecognition(
       if (binary) {
         const audio = Buffer.from(raw as Buffer);
         bytes += audio.length;
-        if (!audio.length || audio.length % 2 || bytes > 16_000 * 2 * 100) {
+        if (!audio.length || audio.length % 2 || bytes > maxReadingBytes) {
           unavailable();
           return;
         }
@@ -121,4 +120,163 @@ export function attachReadingRecognition(
     for (const client of sockets.clients) client.terminate();
     sockets.close();
   });
+}
+
+/** Transcribes a finished PCM16 recording through the provider's realtime socket. */
+export function transcribeReading(
+  audio: Buffer,
+  options: { apiKey: string; endpoint?: string; timeoutMs?: number; signal?: AbortSignal },
+) {
+  return new Promise<string>((resolve, reject) => {
+    const upstream = new WebSocket(options.endpoint ?? defaultEndpoint, {
+      headers: { Authorization: `Bearer ${options.apiKey}` },
+      handshakeTimeout: 10_000,
+      maxPayload: 128 * 1024,
+    });
+    const texts: string[] = [];
+    let offset = 0,
+      settled = false;
+    const finish = (error?: Error) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeout);
+      options.signal?.removeEventListener('abort', abort);
+      if (upstream.readyState === WebSocket.CONNECTING) upstream.terminate();
+      else upstream.close();
+      if (error) reject(error);
+      else resolve(texts.join(' ').trim().slice(0, 4000));
+    };
+    const abort = () => finish(new Error('Canceled'));
+    const timeout = setTimeout(() => finish(new Error('Timed out')), options.timeoutMs ?? 60_000);
+    options.signal?.addEventListener('abort', abort, { once: true });
+    if (options.signal?.aborted) abort();
+    const next = () => {
+      if (offset >= audio.length) {
+        finish();
+        return;
+      }
+      const end = Math.min(audio.length, offset + utteranceBytes);
+      for (let at = offset; at < end; at += appendBytes)
+        upstream.send(
+          JSON.stringify({
+            type: 'input_audio_buffer.append',
+            audio: audio.subarray(at, Math.min(end, at + appendBytes)).toString('base64'),
+          }),
+        );
+      offset = end;
+      upstream.send(JSON.stringify({ type: 'input_audio_buffer.commit' }));
+    };
+    upstream.on('open', () =>
+      upstream.send(JSON.stringify({ type: 'session.configure', session })),
+    );
+    upstream.on('message', (raw) => {
+      try {
+        const event = JSON.parse(raw.toString());
+        if (event.type === 'session.configured') next();
+        else if (event.type === 'transcript.completed' && typeof event.transcript === 'string') {
+          texts.push(event.transcript);
+          next();
+        } else if (event.type === 'input_audio_buffer.commit_empty') next();
+        else if (event.type === 'error') finish(new Error('Provider error'));
+      } catch {
+        finish(new Error('Invalid provider message'));
+      }
+    });
+    upstream.on('error', () => finish(new Error('Provider unavailable')));
+    upstream.on('close', () => finish(new Error('Provider closed')));
+  });
+}
+
+/** HTTP fallback for hosts without inbound WebSockets. Only the final transcript returns. */
+export function createTranscribeHandler(options: {
+  apiKey?: string;
+  endpoint?: string;
+  timeoutMs?: number;
+}) {
+  let active = 0;
+  const requests = new Map<string, { count: number; until: number }>();
+
+  return async function transcribe(req: IncomingMessage, res: ServerResponse) {
+    const json = (status: number, body: object) => {
+      if (res.destroyed || res.writableEnded) return;
+      res.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
+      res.end(JSON.stringify(body));
+    };
+    if (req.method !== 'POST') {
+      res.setHeader('Allow', 'POST');
+      json(405, { error: 'Use POST for listening.' });
+      return;
+    }
+    const apiKey = options.apiKey;
+    try {
+      if (!apiKey || !req.headers.origin || new URL(req.headers.origin).host !== req.headers.host) {
+        json(403, { error: 'Listening unavailable.' });
+        return;
+      }
+    } catch {
+      json(403, { error: 'Listening unavailable.' });
+      return;
+    }
+    if (!req.headers['content-type']?.toLowerCase().startsWith('application/octet-stream')) {
+      json(415, { error: 'Send PCM16 audio.' });
+      return;
+    }
+    if (Number(req.headers['content-length']) > maxReadingBytes) {
+      json(413, { error: 'Reading is too long.' });
+      return;
+    }
+    const now = Date.now();
+    for (const [key, value] of requests) if (value.until <= now) requests.delete(key);
+    const address = req.socket.remoteAddress ?? 'local';
+    const limit = requests.get(address) ?? { count: 0, until: now + 60_000 };
+    if (limit.count >= 10 || active >= 2 || requests.size >= 1000) {
+      res.setHeader('Retry-After', '60');
+      json(429, { error: 'Listening unavailable.' });
+      return;
+    }
+    limit.count++;
+    requests.set(address, limit);
+    let audio: Buffer;
+    try {
+      let size = 0;
+      const chunks: Buffer[] = [];
+      for await (const chunk of req) {
+        size += chunk.length;
+        if (size > maxReadingBytes) {
+          json(413, { error: 'Reading is too long.' });
+          return;
+        }
+        chunks.push(Buffer.from(chunk));
+      }
+      audio = Buffer.concat(chunks);
+    } catch {
+      json(400, { error: 'Invalid audio.' });
+      return;
+    }
+    if (!audio.length || audio.length % 2) {
+      json(400, { error: 'Send PCM16 audio.' });
+      return;
+    }
+    const controller = new AbortController();
+    const disconnect = () => {
+      if (!res.writableEnded) controller.abort();
+    };
+    res.once('close', disconnect);
+    active++;
+    try {
+      const text = await transcribeReading(audio, {
+        apiKey,
+        endpoint: options.endpoint,
+        timeoutMs: options.timeoutMs,
+        signal: controller.signal,
+      });
+      json(200, { text });
+    } catch {
+      // Never forward provider errors or diagnostics.
+      json(503, { error: 'Listening unavailable.' });
+    } finally {
+      active--;
+      res.off('close', disconnect);
+    }
+  };
 }

@@ -4,10 +4,79 @@ import { createServer } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { test, type TestContext } from 'node:test';
 import WebSocket, { WebSocketServer } from 'ws';
-import { attachReadingRecognition } from '../server/reading.ts';
+import { attachReadingRecognition, createTranscribeHandler } from '../server/reading.ts';
 import { createAppServer } from '../server/app.ts';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
+
+test(
+  'Batch transcription commits long readings in provider-sized utterances and returns only text',
+  { timeout: 5000 },
+  async (t) => {
+    const provider = new WebSocketServer({ port: 0, host: '127.0.0.1' });
+    await once(provider, 'listening');
+    let authorization = '',
+      connections = 0,
+      appended = 0,
+      commits = 0;
+    provider.on('connection', (upstream, request) => {
+      connections++;
+      authorization = request.headers.authorization ?? '';
+      upstream.on('message', (raw) => {
+        const event = JSON.parse(raw.toString());
+        if (event.type === 'session.configure')
+          upstream.send(JSON.stringify({ type: 'session.configured' }));
+        else if (event.type === 'input_audio_buffer.append')
+          appended += Buffer.from(event.audio, 'base64').length;
+        else if (event.type === 'input_audio_buffer.commit')
+          upstream.send(
+            JSON.stringify({
+              type: 'transcript.completed',
+              transcript: `part ${++commits}`,
+              item_id: String(commits),
+              internal: 'not for the browser',
+            }),
+          );
+      });
+    });
+    const app = createServer(
+      createTranscribeHandler({
+        apiKey: 'test-key',
+        endpoint: `ws://127.0.0.1:${(provider.address() as AddressInfo).port}`,
+      }),
+    );
+    app.listen(0, '127.0.0.1');
+    await once(app, 'listening');
+    t.after(async () => {
+      for (const client of provider.clients) client.terminate();
+      await Promise.all([
+        new Promise<void>((resolve) => app.close(() => resolve())),
+        new Promise<void>((resolve) => provider.close(() => resolve())),
+      ]);
+    });
+    const host = `127.0.0.1:${(app.address() as AddressInfo).port}`;
+    const post = (body: Uint8Array, origin = `http://${host}`) =>
+      fetch(`http://${host}/api/reading/transcribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/octet-stream', Origin: origin },
+        body,
+      });
+    const audio = new Uint8Array(16_000 * 2 * 45);
+    const response = await post(audio);
+    assert.equal(response.status, 200);
+    assert.deepEqual(await response.json(), { text: 'part 1 part 2' });
+    assert.equal(authorization, 'Bearer test-key');
+    assert.equal(appended, audio.length);
+    assert.equal(commits, 2);
+    const foreign = await post(new Uint8Array(4), 'https://unrelated.example');
+    assert.equal(foreign.status, 403);
+    await foreign.arrayBuffer();
+    const odd = await post(new Uint8Array(3));
+    assert.equal(odd.status, 400);
+    await odd.arrayBuffer();
+    assert.equal(connections, 1);
+  },
+);
 
 test('Production recordings support real byte seeking, suffix requests and invalid ranges', async (t) => {
   const root = new URL('../public/reading/', import.meta.url);

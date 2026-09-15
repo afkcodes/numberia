@@ -1,16 +1,16 @@
 import type { Plugin } from 'vite';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { createSpeechHandler } from './speech.ts';
-import { attachReadingRecognition } from './reading.ts';
+import { attachReadingRecognition, createTranscribeHandler } from './reading.ts';
 
 export function speechPlugin(apiKey?: string, voice?: string): Plugin {
   const handler = createSpeechHandler({ apiKey, voice });
+  const transcribe = createTranscribeHandler({ apiKey });
   const middleware = (req: IncomingMessage, res: ServerResponse, next: () => void) => {
-    if (req.url?.split('?')[0] !== '/api/speech') {
-      next();
-      return;
-    }
-    void handler(req, res);
+    const pathname = req.url?.split('?')[0];
+    if (pathname === '/api/speech') void handler(req, res);
+    else if (pathname === '/api/reading/transcribe') void transcribe(req, res);
+    else next();
   };
   return {
     name: 'numberia-private-speech',

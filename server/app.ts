@@ -3,7 +3,7 @@ import { createReadStream } from 'node:fs';
 import { stat } from 'node:fs/promises';
 import { extname, resolve, sep } from 'node:path';
 import { createSpeechHandler } from './speech.ts';
-import { attachReadingRecognition } from './reading.ts';
+import { attachReadingRecognition, createTranscribeHandler } from './reading.ts';
 
 const mime: Record<string, string> = {
   '.html': 'text/html; charset=utf-8',
@@ -24,6 +24,7 @@ const mime: Record<string, string> = {
 export function createAppServer(options: { root: string; apiKey?: string; voice?: string }) {
   const root = resolve(options.root);
   const speech = createSpeechHandler(options);
+  const transcribe = createTranscribeHandler(options);
   const server = createServer(async (req, res) => {
     let pathname: string;
     try {
@@ -34,6 +35,10 @@ export function createAppServer(options: { root: string; apiKey?: string; voice?
     }
     if (pathname === '/api/speech') {
       await speech(req, res);
+      return;
+    }
+    if (pathname === '/api/reading/transcribe') {
+      await transcribe(req, res);
       return;
     }
     if (pathname.startsWith('/api/')) {
