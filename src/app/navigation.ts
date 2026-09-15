@@ -1,7 +1,8 @@
-import { Backpack, ChartNoAxesCombined, Home, Map, Tent } from 'lucide-react';
+import { Backpack, BookOpen, ChartNoAxesCombined, Home, Map, Tent } from 'lucide-react';
 
 export const navigation = [
   { id: 'adventure', label: 'My adventure', icon: Map },
+  { id: 'reading', label: 'Storywild', icon: BookOpen },
   { id: 'practice', label: 'Practice camp', icon: Tent },
   { id: 'clubhouse', label: 'My clubhouse', icon: Home },
   { id: 'backpack', label: 'My backpack', icon: Backpack },

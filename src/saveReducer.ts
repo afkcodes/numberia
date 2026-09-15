@@ -2,6 +2,8 @@ import { chooseRoomItem } from './clubhouse.ts';
 import { claimDailyQuest } from './dailyQuests.ts';
 import { recordRun, type Grade, type Run, type Save, type WorldId } from './game.ts';
 import { rememberDiscovery, type LearningObservation } from './learning.ts';
+import { finishReading, type ReadingCompletion } from './reading/progress.ts';
+import { editions, type ReadingBand } from './reading/content.ts';
 
 export type SaveAction =
   | { type: 'grade-changed'; grade: Grade }
@@ -13,11 +15,30 @@ export type SaveAction =
   | { type: 'pet-renamed'; name: string }
   | { type: 'daily-reward-claimed'; key: string; today: string }
   | { type: 'quest-completed'; run: Run }
-  | { type: 'discovery-learned'; observation: LearningObservation };
+  | { type: 'discovery-learned'; observation: LearningObservation }
+  | { type: 'reading-completed'; completion: ReadingCompletion }
+  | { type: 'reading-bookmarked'; band: ReadingBand; page: number };
 
 /** All progress updates are pure, so React can safely replay reducer calls. */
 export function saveReducer(save: Save, action: SaveAction): Save {
   switch (action.type) {
+    case 'reading-completed':
+      return finishReading(save, action.completion);
+    case 'reading-bookmarked':
+      if (
+        !Object.hasOwn(editions, action.band) ||
+        !Number.isInteger(action.page) ||
+        action.page < 0 ||
+        action.page >= editions[action.band].pages.length
+      )
+        return save;
+      return {
+        ...save,
+        reading: {
+          ...save.reading,
+          bookmarks: { ...save.reading.bookmarks, [action.band]: action.page },
+        },
+      };
     case 'grade-changed':
       return { ...save, grade: action.grade };
     case 'world-changed':

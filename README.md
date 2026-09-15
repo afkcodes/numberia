@@ -1,6 +1,6 @@
 # Numberia
 
-A story-driven K–5 math game built with React, TypeScript, Vite, and Three.js. Help Milo and his friends bring magic back to Whispering Woods and Crystal Cove.
+A story-driven K–5 math and reading playground built with React, TypeScript, Vite, and Three.js. Explore Whispering Woods and Crystal Cove, or bring a paper story to life in Storywild.
 
 ## Run
 
@@ -49,6 +49,14 @@ Answer buttons and keyboard choices trigger the same chapter animation. Correct 
 
 The scenery remembers discoveries throughout the chapter, including when switching between exploring and building. Optional play buttons animate each landmark. Chapter colors, storybook introductions, and a lightweight illustrated WebGL fallback share the same theme. On compact screens, **Count with Milo** gives the existing visual math activity its own focused panel, keeping the playground and answer buttons visible.
 
+## Storywild
+
+Open **Storywild** in the navigation to play **The hat that wouldn’t stay put**. Build a word, read four short pages, and press **Make it happen** to animate the sentence. Help Pip solve his runaway-hat problem, then change a verb to make him **hop**, **spin**, or **tiptoe**. Your chosen ending and red-hat keepsake stay in **My backpack**.
+
+Three authored reading sizes default from the selected grade; children can choose another before starting. **Hear it** plays prepared Phoebe audio with word highlights aligned to the actual recording. Tap a word for meaning or to hear it in context. **Read to Lumi** optionally follows spoken words through a private Nari gateway after microphone opt-in. Silent reading and help always remain available; recognition never grades or blocks a child.
+
+Finishing an edition earns 100 XP and 15 gems once, including after help and retries. Rereading updates the ending without duplicate rewards. Prepared narration works on static hosting; microphone following needs the Node/Vite server, a private key, and HTTPS or localhost. This is one complete prototype story with three content editions, not a full K–5 reading curriculum. See [Storywild development and audio preparation](docs/storywild.md).
+
 ## Scope
 
 Whispering Woods and Crystal Cove each have five playable chapters. The third world card says “More worlds coming” and is not a locked or playable chapter. Existing woodland saves keep their progress; each world has its own chapter sequence and finale. This is a working local prototype, with browser-local saving and JSON progress export. An optional Node server keeps the narration API key private and streams speech. There is no account system, cross-device synchronization, or online multiplayer.
@@ -76,6 +84,7 @@ Oxfmt handles formatting; Oxlint checks correctness, React hooks, and dependency
 - `src/App.tsx`: page composition and the active quest.
 - `src/app/` and `src/app/dialogs/`: navigation, dialog content, and the browser persistence hook.
 - `src/features/`: adventure map, welcome banner, daily quests, practice, backpack, and progress pages.
+- `src/features/reading/`, `src/reading/`, and `src/reading.css`: Storywild scenes, reading controls, authored content, optional live following, and saved story rewards.
 - `src/components/`: shared characters, dialogs, math props, and visual primitives.
 - `src/saveReducer.ts` and `src/dailyQuests.ts`: typed progress actions and shared daily reward eligibility.
 - `src/Quest.tsx`: story, full-screen arena, answer flow, and completion celebration.

@@ -6,6 +6,17 @@ const getContext = () => (context ??= new AudioContext());
 let effects: GainNode | null = null;
 const activeSpeech = new Set<symbol>();
 
+/** Prepared story narration shares the same quiet sound-effects bus as live guidance. */
+export function holdNarrationFocus() {
+  const line = Symbol();
+  activeSpeech.add(line);
+  updateEffects();
+  return () => {
+    activeSpeech.delete(line);
+    updateEffects();
+  };
+}
+
 function updateEffects() {
   if (context && effects) {
     effects.gain.cancelScheduledValues(context.currentTime);

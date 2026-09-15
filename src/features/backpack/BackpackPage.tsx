@@ -11,14 +11,18 @@ import {
 } from 'lucide-react';
 import { Character, EmptyState } from '../../components';
 import { missions, worldForMission, type Save } from '../../game';
+import { storyTitle } from '../../reading/content';
+import StoryPassport from '../reading/StoryPassport';
 export default function BackpackPage({
   save,
   onCompanion,
   onAdventure,
+  onReading,
 }: {
   save: Save;
   onCompanion: (name: string) => void;
   onAdventure: () => void;
+  onReading: () => void;
 }) {
   const completed = [...new Set(save.runs.filter((r) => !r.practice).map((r) => r.mission))];
   return (
@@ -33,6 +37,25 @@ export default function BackpackPage({
           {save.gems} gems
         </span>
       </div>
+      {save.reading.completed.length > 0 && (
+        <>
+          <h2 className="subsection-title">A story you made your own</h2>
+          <div className="sw-story-treasure">
+            <div className="sw-keepsake">
+              <span className="sw-keepsake-hat" aria-hidden="true" />
+              <span>Story maker</span>
+            </div>
+            <div>
+              <h3>{storyTitle}</h3>
+              <p>Your ending: Pip {save.reading.completed.at(-1)!.remix} in his red hat.</p>
+            </div>
+            <button className="sw-soft-button" onClick={onReading}>
+              Read & remix again
+            </button>
+            <StoryPassport reading={save.reading} />
+          </div>
+        </>
+      )}
       <h2 className="subsection-title">Better with a buddy</h2>
       <div className="companion-grid">
         {[
@@ -55,7 +78,11 @@ export default function BackpackPage({
             description: 'Proof that even the smallest friend can light the way.',
           },
         ].map((c) => {
-          const locked = completed.length < c.need;
+          const readingFriend =
+            c.name === 'Pip'
+              ? save.reading.completed.length > 0
+              : c.name === 'Lumi' && save.reading.endings.length === 3;
+          const locked = completed.length < c.need && !readingFriend;
           return (
             <div className={`companion-card ${locked ? 'is-locked' : ''}`} key={c.name}>
               <Character name={c.name} />

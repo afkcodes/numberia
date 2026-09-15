@@ -19,6 +19,7 @@ import LandingWildlife, { SkySun } from './LandingWildlife';
 import StorybookBackdrop from './StorybookBackdrop';
 
 const Quest = lazy(() => import('./Quest'));
+const ReadingAdventure = lazy(() => import('./features/reading/ReadingAdventure'));
 
 export default function App() {
   const { save, saveError, actions } = useGameSave();
@@ -41,7 +42,7 @@ export default function App() {
         Skip to adventure
       </a>
       <div
-        className={`app-shell ${page === 'adventure' ? 'home-adventure' : ''}`}
+        className={`app-shell ${page === 'adventure' ? 'home-adventure' : page === 'reading' ? 'home-reading' : ''}`}
         onClick={(e) => {
           if (save.sound && (e.target as HTMLElement).closest('button')) playSound('tap');
         }}
@@ -91,6 +92,25 @@ export default function App() {
               </>
             )}
             {page === 'practice' && <Practice save={save} onStart={(skill) => start(0, skill)} />}
+            {page === 'reading' && (
+              <Suspense
+                fallback={
+                  <div className="loading-state" role="status">
+                    <Sprout size={32} />
+                    <h2>Opening a little world of words…</h2>
+                  </div>
+                }
+              >
+                <ReadingAdventure
+                  key={save.grade}
+                  save={save}
+                  onSound={actions.toggleSound}
+                  onComplete={actions.completeReading}
+                  onBookmark={actions.bookmarkReading}
+                  onBackpack={() => goTo('backpack')}
+                />
+              </Suspense>
+            )}
             {page === 'clubhouse' && (
               <Clubhouse
                 save={save}
@@ -104,6 +124,7 @@ export default function App() {
                 save={save}
                 onCompanion={actions.setCompanion}
                 onAdventure={() => goTo('adventure')}
+                onReading={() => goTo('reading')}
               />
             )}
             {page === 'progress' && (

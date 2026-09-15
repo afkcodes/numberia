@@ -1,5 +1,7 @@
 # Spoken counting and guidance
 
+Storywild uses prepared narration with aligned word highlights and optional live transcription through a separate private WebSocket route. See [the reading audio and microphone guide](storywild.md). The math voice behavior described below remains the same.
+
 Milo’s questions, hints, and explanations use Nari’s `qwen3-tts-fast:free` endpoint with the `phoebe` voice when `NARI_API_KEY` is configured on the server. Audio starts playing from the streamed response rather than waiting for the complete file. No speech model is downloaded to the child’s browser.
 
 Quick counts such as “1”, “2”, “3 pieces”, and “4 in this basket” keep the original browser `speechSynthesis` voice. This preserves immediate counting without a network request for every object. The device voice prefers natural or enhanced English voices, at rate `0.96` and normal pitch. Actual installed voices vary by device.

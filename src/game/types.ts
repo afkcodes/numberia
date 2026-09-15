@@ -1,5 +1,6 @@
 import type { ClubhouseSave } from '../clubhouse.ts';
 import type { LearningMemory } from '../learning.ts';
+import type { ReadingProgress } from '../reading/progress.ts';
 export type Grade = 0 | 1 | 2 | 3 | 4 | 5;
 export type WorldId = 'woods' | 'crystal';
 export type Skill =
@@ -43,4 +44,5 @@ export type Save = {
   claimed: string[];
   clubhouse: ClubhouseSave;
   learning: LearningMemory;
+  reading: ReadingProgress;
 };

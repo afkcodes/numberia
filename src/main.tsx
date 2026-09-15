@@ -13,6 +13,7 @@ import './tactile-play.css';
 import './home-layout.css';
 import './playgrounds/playgrounds.css';
 import './crystal-world.css';
+import './reading.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

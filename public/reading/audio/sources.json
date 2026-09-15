@@ -1,0 +1,78 @@
+[
+  {
+    "id": "sprout-wind",
+    "text": "Pip has a red hat. A gust lifts it up.",
+    "hash": "8a93dc611598555ba5ea7b1c33a8b40b5c47c0f0e2ac8706cdf58c814b4ea8b7"
+  },
+  {
+    "id": "sprout-hop",
+    "text": "The hat lands on a log. Pip hops to the log.",
+    "hash": "51e74ba35356ad0260398b9d44265aa86ead593f06e9d1a51347879d11252260"
+  },
+  {
+    "id": "sprout-duck",
+    "text": "The hat dips in the pond. A duck nudges it back.",
+    "hash": "a2c6a8f78dd83bd5835c7b6b2aff2881487981c4faf1dd5185655fdaf63d0ccd"
+  },
+  {
+    "id": "sprout-home",
+    "text": "Pip ties a ribbon to his hat. Now it stays put!",
+    "hash": "1b6796d4602c39736dea44db6ad115e4a9ab6b884bd7cb26e95c2be547ec1d75"
+  },
+  {
+    "id": "trail-wind",
+    "text": "Pip wore his favorite red hat to the picnic. A sudden gust sent it drifting over the hill.",
+    "hash": "d133a1ec5bcc88668c361d1ea02b90dda467245e89b1b3d8be605ff245fcba14"
+  },
+  {
+    "id": "trail-hop",
+    "text": "The hat landed on a mossy log beside the pond. Pip hopped closer, but the wind was quicker.",
+    "hash": "44a80265679e187a6ee1934a57f1fe183e548833b1b5085e0c238d7cf7b38180"
+  },
+  {
+    "id": "trail-duck",
+    "text": "Splash! The hat floated past a curious duck. She nudged it toward Pip with her beak.",
+    "hash": "b6c312311c8baf633be4b1e32d9f221b139c0aa2d3d03686e03edd4e80b4994e"
+  },
+  {
+    "id": "trail-home",
+    "text": "Pip tied a ribbon beneath his chin to hold the hat in place. This time, the wind could only tickle his ears.",
+    "hash": "4003a77015d6f6d8cd61627138d2a8ca598b460707ba08ceffa9d18470f9c0c1"
+  },
+  {
+    "id": "soar-wind",
+    "text": "Pip expected a peaceful picnic, but the weather had other plans. An unpredictable gust snatched his red hat and carried it beyond the hill.",
+    "hash": "6384053080161d85959e9c29b3e451b7111ef8c57a7cd7fa396987fe5f426a54"
+  },
+  {
+    "id": "soar-hop",
+    "text": "The hat settled on a mossy log beside the pond. Pip approached cautiously; one careless movement might send it tumbling into the water.",
+    "hash": "074ff27e1ddb4a9a4fc33dbed656cec46219411c214ce912d47b48fc2d099dc4"
+  },
+  {
+    "id": "soar-duck",
+    "text": "Before Pip could reach it, another breeze tipped the hat into the pond. A duck noticed his worried expression and nudged it gently toward the bank.",
+    "hash": "f6a94c0ba1ec4013d9f7ea3003418d0a0293e3e47e75fa061eb30a7f0d1cb054"
+  },
+  {
+    "id": "soar-home",
+    "text": "Rather than chasing his hat all afternoon, Pip fastened a ribbon beneath his chin. He could not control the wind, but he could change how securely his hat stayed on.",
+    "hash": "402b6b22f2e0066564eecd0778336c490c4fe401a99e636668b1741de495dbee"
+  },
+  {
+    "id": "remix-hop",
+    "text": "Pip hops in his red hat.",
+    "hash": "5b38c45d688e982d89b452dff2612bcc94a732033de7dff25433b83edf7e2acf"
+  },
+  {
+    "id": "remix-spin",
+    "text": "Pip spins in his red hat.",
+    "hash": "53e93d59ac0bb5fcc5abbbfc54b93172762a3cacec6edb97648614f85afc9693"
+  },
+  {
+    "id": "remix-tiptoe",
+    "text": "Pip tiptoes in his red hat.",
+    "hash": "47599502be1a0e65522e7098728f72ddfc6dd1370ed6810062f336eb2ac59cba",
+    "spokenText": "Pip tip-toes in his red hat."
+  }
+]

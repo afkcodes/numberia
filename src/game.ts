@@ -3,6 +3,7 @@ import { availableSkills, missions } from './game/missions.ts';
 import type { Save, Run, WorldId } from './game/types.ts';
 import { getWorld, worldForMission } from './game/worlds.ts';
 import { readLearning } from './learning.ts';
+import { freshReading, readReading } from './reading/progress.ts';
 
 // Stable public entry point; internal game modules avoid importing this barrel.
 export type { Grade, Skill, Problem, Run, Save, WorldId } from './game/types.ts';
@@ -23,6 +24,7 @@ export const defaultSave: Save = {
   claimed: [],
   clubhouse: freshClubhouse(),
   learning: {},
+  reading: freshReading(),
 };
 export const STORAGE_KEY = 'numberia-adventure-v1';
 
@@ -31,7 +33,14 @@ export const dateKey = (date = new Date()) =>
 
 export function readSave(raw: string | null): Save {
   if (!raw)
-    return { ...defaultSave, runs: [], claimed: [], clubhouse: freshClubhouse(), learning: {} };
+    return {
+      ...defaultSave,
+      runs: [],
+      claimed: [],
+      clubhouse: freshClubhouse(),
+      learning: {},
+      reading: freshReading(),
+    };
   try {
     const data = JSON.parse(raw);
     if (
@@ -79,9 +88,17 @@ export function readSave(raw: string | null): Save {
         : [],
       clubhouse: readClubhouse(data.clubhouse),
       learning: readLearning(data.learning),
+      reading: readReading(data.reading),
     };
   } catch {
-    return { ...defaultSave, runs: [], claimed: [], clubhouse: freshClubhouse(), learning: {} };
+    return {
+      ...defaultSave,
+      runs: [],
+      claimed: [],
+      clubhouse: freshClubhouse(),
+      learning: {},
+      reading: freshReading(),
+    };
   }
 }
 export function completedMissions(save: Save, world?: WorldId): number[] {

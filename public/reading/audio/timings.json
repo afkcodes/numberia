@@ -1,0 +1,1327 @@
+{
+  "sprout-wind": {
+    "text": "Pip has a red hat. A gust lifts it up.",
+    "textHash": "8a93dc611598555ba5ea7b1c33a8b40b5c47c0f0e2ac8706cdf58c814b4ea8b7",
+    "audioHash": "77f19622aeab033b45898cf238f8e373dfa1370517f69c5ec237e2e400b3b8a4",
+    "url": "/reading/audio/sprout-wind.wav",
+    "duration": 3.105,
+    "words": [
+      {
+        "word": "Pip",
+        "start": 0,
+        "end": 0.2
+      },
+      {
+        "word": "has",
+        "start": 0.28,
+        "end": 0.42
+      },
+      {
+        "word": "a",
+        "start": 0.5,
+        "end": 0.52
+      },
+      {
+        "word": "red",
+        "start": 0.62,
+        "end": 0.78
+      },
+      {
+        "word": "hat.",
+        "start": 0.88,
+        "end": 1.1
+      },
+      {
+        "word": "A",
+        "start": 1.76,
+        "end": 1.78
+      },
+      {
+        "word": "gust",
+        "start": 1.86,
+        "end": 2.14
+      },
+      {
+        "word": "lifts",
+        "start": 2.26,
+        "end": 2.48
+      },
+      {
+        "word": "it",
+        "start": 2.56,
+        "end": 2.6
+      },
+      {
+        "word": "up.",
+        "start": 2.74,
+        "end": 2.78
+      }
+    ]
+  },
+  "sprout-hop": {
+    "text": "The hat lands on a log. Pip hops to the log.",
+    "textHash": "51e74ba35356ad0260398b9d44265aa86ead593f06e9d1a51347879d11252260",
+    "audioHash": "c2f16e6a181927837b2d7e676b882f6676fd07047c7379a99a9a5cc4d96e1cee",
+    "url": "/reading/audio/sprout-hop.wav",
+    "duration": 3.649,
+    "words": [
+      {
+        "word": "The",
+        "start": 0,
+        "end": 0.08
+      },
+      {
+        "word": "hat",
+        "start": 0.16,
+        "end": 0.36
+      },
+      {
+        "word": "lands",
+        "start": 0.48,
+        "end": 0.8
+      },
+      {
+        "word": "on",
+        "start": 0.9,
+        "end": 0.94
+      },
+      {
+        "word": "a",
+        "start": 1.02,
+        "end": 1.04
+      },
+      {
+        "word": "log.",
+        "start": 1.1,
+        "end": 1.34
+      },
+      {
+        "word": "Pip",
+        "start": 2.24,
+        "end": 2.42
+      },
+      {
+        "word": "hops",
+        "start": 2.54,
+        "end": 2.8
+      },
+      {
+        "word": "to",
+        "start": 2.86,
+        "end": 2.92
+      },
+      {
+        "word": "the",
+        "start": 3.0,
+        "end": 3.06
+      },
+      {
+        "word": "log.",
+        "start": 3.12,
+        "end": 3.34
+      }
+    ]
+  },
+  "sprout-duck": {
+    "text": "The hat dips in the pond. A duck nudges it back.",
+    "textHash": "a2c6a8f78dd83bd5835c7b6b2aff2881487981c4faf1dd5185655fdaf63d0ccd",
+    "audioHash": "c1e034ef4925331b3fc6e908a92d11db6f499cdcaafdc7182e1174103fae77b2",
+    "url": "/reading/audio/sprout-duck.wav",
+    "duration": 3.741,
+    "words": [
+      {
+        "word": "The",
+        "start": 0,
+        "end": 0.08
+      },
+      {
+        "word": "hat",
+        "start": 0.16,
+        "end": 0.42
+      },
+      {
+        "word": "dips",
+        "start": 0.62,
+        "end": 0.88
+      },
+      {
+        "word": "in",
+        "start": 0.94,
+        "end": 1.0
+      },
+      {
+        "word": "the",
+        "start": 1.06,
+        "end": 1.12
+      },
+      {
+        "word": "pond.",
+        "start": 1.18,
+        "end": 1.52
+      },
+      {
+        "word": "A",
+        "start": 2.18,
+        "end": 2.2
+      },
+      {
+        "word": "duck",
+        "start": 2.26,
+        "end": 2.48
+      },
+      {
+        "word": "nudges",
+        "start": 2.66,
+        "end": 2.98
+      },
+      {
+        "word": "it",
+        "start": 3.06,
+        "end": 3.12
+      },
+      {
+        "word": "back.",
+        "start": 3.18,
+        "end": 3.44
+      }
+    ]
+  },
+  "sprout-home": {
+    "text": "Pip ties a ribbon to his hat. Now it stays put!",
+    "textHash": "1b6796d4602c39736dea44db6ad115e4a9ab6b884bd7cb26e95c2be547ec1d75",
+    "audioHash": "d105feb4427bc9fb893d384911596bb7e6e355aed6f152d9e17e6acab3b7197c",
+    "url": "/reading/audio/sprout-home.wav",
+    "duration": 3.04,
+    "words": [
+      {
+        "word": "Pip",
+        "start": 0,
+        "end": 0.18
+      },
+      {
+        "word": "ties",
+        "start": 0.3,
+        "end": 0.54
+      },
+      {
+        "word": "a",
+        "start": 0.6,
+        "end": 0.62
+      },
+      {
+        "word": "ribbon",
+        "start": 0.68,
+        "end": 0.9
+      },
+      {
+        "word": "to",
+        "start": 0.96,
+        "end": 1.04
+      },
+      {
+        "word": "his",
+        "start": 1.1,
+        "end": 1.18
+      },
+      {
+        "word": "hat.",
+        "start": 1.24,
+        "end": 1.44
+      },
+      {
+        "word": "Now",
+        "start": 2.0,
+        "end": 2.12
+      },
+      {
+        "word": "it",
+        "start": 2.2,
+        "end": 2.24
+      },
+      {
+        "word": "stays",
+        "start": 2.3,
+        "end": 2.54
+      },
+      {
+        "word": "put!",
+        "start": 2.6,
+        "end": 2.8
+      }
+    ]
+  },
+  "trail-wind": {
+    "text": "Pip wore his favorite red hat to the picnic. A sudden gust sent it drifting over the hill.",
+    "textHash": "d133a1ec5bcc88668c361d1ea02b90dda467245e89b1b3d8be605ff245fcba14",
+    "audioHash": "60c592df10f490a4ad5f2d0396f4abd8d80650454b70d2bd835fe8e20be1e438",
+    "url": "/reading/audio/trail-wind.wav",
+    "duration": 5.411,
+    "words": [
+      {
+        "word": "Pip",
+        "start": 0.02,
+        "end": 0.22
+      },
+      {
+        "word": "wore",
+        "start": 0.36,
+        "end": 0.54
+      },
+      {
+        "word": "his",
+        "start": 0.6,
+        "end": 0.72
+      },
+      {
+        "word": "favorite",
+        "start": 0.82,
+        "end": 1.16
+      },
+      {
+        "word": "red",
+        "start": 1.22,
+        "end": 1.38
+      },
+      {
+        "word": "hat",
+        "start": 1.44,
+        "end": 1.64
+      },
+      {
+        "word": "to",
+        "start": 1.7,
+        "end": 1.78
+      },
+      {
+        "word": "the",
+        "start": 1.84,
+        "end": 1.9
+      },
+      {
+        "word": "picnic.",
+        "start": 1.96,
+        "end": 2.28
+      },
+      {
+        "word": "A",
+        "start": 2.82,
+        "end": 2.84
+      },
+      {
+        "word": "sudden",
+        "start": 2.96,
+        "end": 3.24
+      },
+      {
+        "word": "gust",
+        "start": 3.34,
+        "end": 3.64
+      },
+      {
+        "word": "sent",
+        "start": 3.82,
+        "end": 4.0
+      },
+      {
+        "word": "it",
+        "start": 4.08,
+        "end": 4.12
+      },
+      {
+        "word": "drifting",
+        "start": 4.18,
+        "end": 4.56
+      },
+      {
+        "word": "over",
+        "start": 4.64,
+        "end": 4.76
+      },
+      {
+        "word": "the",
+        "start": 4.82,
+        "end": 4.88
+      },
+      {
+        "word": "hill.",
+        "start": 4.94,
+        "end": 5.18
+      }
+    ]
+  },
+  "trail-hop": {
+    "text": "The hat landed on a mossy log beside the pond. Pip hopped closer, but the wind was quicker.",
+    "textHash": "44a80265679e187a6ee1934a57f1fe183e548833b1b5085e0c238d7cf7b38180",
+    "audioHash": "aa5c7197984022c0b702cc843d2db65fc740471d683561046e0959bf1bdc71b1",
+    "url": "/reading/audio/trail-hop.wav",
+    "duration": 5.899,
+    "words": [
+      {
+        "word": "The",
+        "start": 0,
+        "end": 0.08
+      },
+      {
+        "word": "hat",
+        "start": 0.16,
+        "end": 0.36
+      },
+      {
+        "word": "landed",
+        "start": 0.48,
+        "end": 0.84
+      },
+      {
+        "word": "on",
+        "start": 0.92,
+        "end": 0.96
+      },
+      {
+        "word": "a",
+        "start": 1.02,
+        "end": 1.04
+      },
+      {
+        "word": "mossy",
+        "start": 1.12,
+        "end": 1.48
+      },
+      {
+        "word": "log",
+        "start": 1.56,
+        "end": 1.78
+      },
+      {
+        "word": "beside",
+        "start": 1.92,
+        "end": 2.2
+      },
+      {
+        "word": "the",
+        "start": 2.26,
+        "end": 2.32
+      },
+      {
+        "word": "pond.",
+        "start": 2.36,
+        "end": 2.66
+      },
+      {
+        "word": "Pip",
+        "start": 3.42,
+        "end": 3.6
+      },
+      {
+        "word": "hopped",
+        "start": 3.7,
+        "end": 3.96
+      },
+      {
+        "word": "closer,",
+        "start": 4.04,
+        "end": 4.44
+      },
+      {
+        "word": "but",
+        "start": 4.78,
+        "end": 4.88
+      },
+      {
+        "word": "the",
+        "start": 4.92,
+        "end": 5.0
+      },
+      {
+        "word": "wind",
+        "start": 5.08,
+        "end": 5.26
+      },
+      {
+        "word": "was",
+        "start": 5.34,
+        "end": 5.44
+      },
+      {
+        "word": "quicker.",
+        "start": 5.54,
+        "end": 5.8
+      }
+    ]
+  },
+  "trail-duck": {
+    "text": "Splash! The hat floated past a curious duck. She nudged it toward Pip with her beak.",
+    "textHash": "b6c312311c8baf633be4b1e32d9f221b139c0aa2d3d03686e03edd4e80b4994e",
+    "audioHash": "935c752c21430220146d12e9184021004ee1684b34472c5509e2027610b645b8",
+    "url": "/reading/audio/trail-duck.wav",
+    "duration": 5.672,
+    "words": [
+      {
+        "word": "Splash!",
+        "start": 0.12,
+        "end": 0.58
+      },
+      {
+        "word": "The",
+        "start": 1.08,
+        "end": 1.18
+      },
+      {
+        "word": "hat",
+        "start": 1.24,
+        "end": 1.42
+      },
+      {
+        "word": "floated",
+        "start": 1.54,
+        "end": 1.84
+      },
+      {
+        "word": "past",
+        "start": 1.92,
+        "end": 2.16
+      },
+      {
+        "word": "a",
+        "start": 2.24,
+        "end": 2.26
+      },
+      {
+        "word": "curious",
+        "start": 2.34,
+        "end": 2.76
+      },
+      {
+        "word": "duck.",
+        "start": 2.84,
+        "end": 3.06
+      },
+      {
+        "word": "She",
+        "start": 3.68,
+        "end": 3.76
+      },
+      {
+        "word": "nudged",
+        "start": 3.86,
+        "end": 4.14
+      },
+      {
+        "word": "it",
+        "start": 4.2,
+        "end": 4.26
+      },
+      {
+        "word": "toward",
+        "start": 4.3,
+        "end": 4.56
+      },
+      {
+        "word": "Pip",
+        "start": 4.66,
+        "end": 4.84
+      },
+      {
+        "word": "with",
+        "start": 4.9,
+        "end": 5.0
+      },
+      {
+        "word": "her",
+        "start": 5.04,
+        "end": 5.12
+      },
+      {
+        "word": "beak.",
+        "start": 5.18,
+        "end": 5.38
+      }
+    ]
+  },
+  "trail-home": {
+    "text": "Pip tied a ribbon beneath his chin to hold the hat in place. This time, the wind could only tickle his ears.",
+    "textHash": "4003a77015d6f6d8cd61627138d2a8ca598b460707ba08ceffa9d18470f9c0c1",
+    "audioHash": "1e53d0088f419ce79a7ef8927ef1ec77a410e63a6255bbcf9b81e156336c5a5f",
+    "url": "/reading/audio/trail-home.wav",
+    "duration": 6.718,
+    "words": [
+      {
+        "word": "Pip",
+        "start": 0,
+        "end": 0.2
+      },
+      {
+        "word": "tied",
+        "start": 0.38,
+        "end": 0.66
+      },
+      {
+        "word": "a",
+        "start": 0.72,
+        "end": 0.74
+      },
+      {
+        "word": "ribbon",
+        "start": 0.8,
+        "end": 1.04
+      },
+      {
+        "word": "beneath",
+        "start": 1.12,
+        "end": 1.4
+      },
+      {
+        "word": "his",
+        "start": 1.46,
+        "end": 1.58
+      },
+      {
+        "word": "chin",
+        "start": 1.66,
+        "end": 1.86
+      },
+      {
+        "word": "to",
+        "start": 1.96,
+        "end": 2.06
+      },
+      {
+        "word": "hold",
+        "start": 2.12,
+        "end": 2.28
+      },
+      {
+        "word": "the",
+        "start": 2.34,
+        "end": 2.4
+      },
+      {
+        "word": "hat",
+        "start": 2.46,
+        "end": 2.64
+      },
+      {
+        "word": "in",
+        "start": 2.72,
+        "end": 2.76
+      },
+      {
+        "word": "place.",
+        "start": 2.84,
+        "end": 3.14
+      },
+      {
+        "word": "This",
+        "start": 3.66,
+        "end": 3.8
+      },
+      {
+        "word": "time,",
+        "start": 3.88,
+        "end": 4.14
+      },
+      {
+        "word": "the",
+        "start": 4.52,
+        "end": 4.6
+      },
+      {
+        "word": "wind",
+        "start": 4.66,
+        "end": 4.82
+      },
+      {
+        "word": "could",
+        "start": 4.9,
+        "end": 5.04
+      },
+      {
+        "word": "only",
+        "start": 5.16,
+        "end": 5.36
+      },
+      {
+        "word": "tickle",
+        "start": 5.44,
+        "end": 5.7
+      },
+      {
+        "word": "his",
+        "start": 5.76,
+        "end": 5.86
+      },
+      {
+        "word": "ears.",
+        "start": 5.96,
+        "end": 6.18
+      }
+    ]
+  },
+  "soar-wind": {
+    "text": "Pip expected a peaceful picnic, but the weather had other plans. An unpredictable gust snatched his red hat and carried it beyond the hill.",
+    "textHash": "6384053080161d85959e9c29b3e451b7111ef8c57a7cd7fa396987fe5f426a54",
+    "audioHash": "5d49ae7676c5f04b44a31d518dd808be04f82c0952a8ad3741d28506f9a1191e",
+    "url": "/reading/audio/soar-wind.wav",
+    "duration": 8.714,
+    "words": [
+      {
+        "word": "Pip",
+        "start": 0.02,
+        "end": 0.2
+      },
+      {
+        "word": "expected",
+        "start": 0.38,
+        "end": 0.88
+      },
+      {
+        "word": "a",
+        "start": 0.94,
+        "end": 0.96
+      },
+      {
+        "word": "peaceful",
+        "start": 1.02,
+        "end": 1.42
+      },
+      {
+        "word": "picnic,",
+        "start": 1.52,
+        "end": 1.88
+      },
+      {
+        "word": "but",
+        "start": 2.42,
+        "end": 2.52
+      },
+      {
+        "word": "the",
+        "start": 2.56,
+        "end": 2.64
+      },
+      {
+        "word": "weather",
+        "start": 2.7,
+        "end": 2.98
+      },
+      {
+        "word": "had",
+        "start": 3.06,
+        "end": 3.18
+      },
+      {
+        "word": "other",
+        "start": 3.32,
+        "end": 3.48
+      },
+      {
+        "word": "plans.",
+        "start": 3.54,
+        "end": 3.96
+      },
+      {
+        "word": "An",
+        "start": 4.5,
+        "end": 4.54
+      },
+      {
+        "word": "unpredictable",
+        "start": 4.68,
+        "end": 5.28
+      },
+      {
+        "word": "gust",
+        "start": 5.36,
+        "end": 5.64
+      },
+      {
+        "word": "snatched",
+        "start": 5.86,
+        "end": 6.26
+      },
+      {
+        "word": "his",
+        "start": 6.3,
+        "end": 6.42
+      },
+      {
+        "word": "red",
+        "start": 6.48,
+        "end": 6.62
+      },
+      {
+        "word": "hat",
+        "start": 6.7,
+        "end": 6.92
+      },
+      {
+        "word": "and",
+        "start": 7.28,
+        "end": 7.36
+      },
+      {
+        "word": "carried",
+        "start": 7.42,
+        "end": 7.76
+      },
+      {
+        "word": "it",
+        "start": 7.8,
+        "end": 7.84
+      },
+      {
+        "word": "beyond",
+        "start": 7.92,
+        "end": 8.18
+      },
+      {
+        "word": "the",
+        "start": 8.22,
+        "end": 8.3
+      },
+      {
+        "word": "hill.",
+        "start": 8.34,
+        "end": 8.62
+      }
+    ]
+  },
+  "soar-hop": {
+    "text": "The hat settled on a mossy log beside the pond. Pip approached cautiously; one careless movement might send it tumbling into the water.",
+    "textHash": "074ff27e1ddb4a9a4fc33dbed656cec46219411c214ce912d47b48fc2d099dc4",
+    "audioHash": "0a6fff97ac350b6c44b95d5fc2aa4475456c1325b3f042b011cb94991acd5d89",
+    "url": "/reading/audio/soar-hop.wav",
+    "duration": 9.015,
+    "words": [
+      {
+        "word": "The",
+        "start": 0,
+        "end": 0.08
+      },
+      {
+        "word": "hat",
+        "start": 0.16,
+        "end": 0.36
+      },
+      {
+        "word": "settled",
+        "start": 0.56,
+        "end": 0.94
+      },
+      {
+        "word": "on",
+        "start": 1.1,
+        "end": 1.14
+      },
+      {
+        "word": "a",
+        "start": 1.2,
+        "end": 1.22
+      },
+      {
+        "word": "mossy",
+        "start": 1.32,
+        "end": 1.66
+      },
+      {
+        "word": "log",
+        "start": 1.74,
+        "end": 1.96
+      },
+      {
+        "word": "beside",
+        "start": 2.1,
+        "end": 2.42
+      },
+      {
+        "word": "the",
+        "start": 2.48,
+        "end": 2.54
+      },
+      {
+        "word": "pond.",
+        "start": 2.58,
+        "end": 2.88
+      },
+      {
+        "word": "Pip",
+        "start": 3.52,
+        "end": 3.7
+      },
+      {
+        "word": "approached",
+        "start": 3.82,
+        "end": 4.22
+      },
+      {
+        "word": "cautiously;",
+        "start": 4.32,
+        "end": 4.9
+      },
+      {
+        "word": "one",
+        "start": 5.64,
+        "end": 5.76
+      },
+      {
+        "word": "careless",
+        "start": 5.88,
+        "end": 6.3
+      },
+      {
+        "word": "movement",
+        "start": 6.38,
+        "end": 6.76
+      },
+      {
+        "word": "might",
+        "start": 6.9,
+        "end": 7.08
+      },
+      {
+        "word": "send",
+        "start": 7.16,
+        "end": 7.34
+      },
+      {
+        "word": "it",
+        "start": 7.42,
+        "end": 7.46
+      },
+      {
+        "word": "tumbling",
+        "start": 7.54,
+        "end": 7.94
+      },
+      {
+        "word": "into",
+        "start": 7.98,
+        "end": 8.12
+      },
+      {
+        "word": "the",
+        "start": 8.18,
+        "end": 8.24
+      },
+      {
+        "word": "water.",
+        "start": 8.28,
+        "end": 8.6
+      }
+    ]
+  },
+  "soar-duck": {
+    "text": "Before Pip could reach it, another breeze tipped the hat into the pond. A duck noticed his worried expression and nudged it gently toward the bank.",
+    "textHash": "f6a94c0ba1ec4013d9f7ea3003418d0a0293e3e47e75fa061eb30a7f0d1cb054",
+    "audioHash": "87248426148738e3e00d32f48f04cfe32251e2930c971493a906a8aeecc234f9",
+    "url": "/reading/audio/soar-duck.wav",
+    "duration": 8.995,
+    "words": [
+      {
+        "word": "Before",
+        "start": 0.02,
+        "end": 0.34
+      },
+      {
+        "word": "Pip",
+        "start": 0.44,
+        "end": 0.62
+      },
+      {
+        "word": "could",
+        "start": 0.7,
+        "end": 0.84
+      },
+      {
+        "word": "reach",
+        "start": 0.9,
+        "end": 1.1
+      },
+      {
+        "word": "it,",
+        "start": 1.2,
+        "end": 1.26
+      },
+      {
+        "word": "another",
+        "start": 1.68,
+        "end": 1.96
+      },
+      {
+        "word": "breeze",
+        "start": 2.04,
+        "end": 2.4
+      },
+      {
+        "word": "tipped",
+        "start": 2.5,
+        "end": 2.74
+      },
+      {
+        "word": "the",
+        "start": 2.76,
+        "end": 2.84
+      },
+      {
+        "word": "hat",
+        "start": 2.88,
+        "end": 3.06
+      },
+      {
+        "word": "into",
+        "start": 3.12,
+        "end": 3.26
+      },
+      {
+        "word": "the",
+        "start": 3.3,
+        "end": 3.36
+      },
+      {
+        "word": "pond.",
+        "start": 3.4,
+        "end": 3.7
+      },
+      {
+        "word": "A",
+        "start": 4.4,
+        "end": 4.42
+      },
+      {
+        "word": "duck",
+        "start": 4.52,
+        "end": 4.78
+      },
+      {
+        "word": "noticed",
+        "start": 5.04,
+        "end": 5.36
+      },
+      {
+        "word": "his",
+        "start": 5.4,
+        "end": 5.5
+      },
+      {
+        "word": "worried",
+        "start": 5.6,
+        "end": 5.9
+      },
+      {
+        "word": "expression",
+        "start": 5.94,
+        "end": 6.44
+      },
+      {
+        "word": "and",
+        "start": 6.88,
+        "end": 6.98
+      },
+      {
+        "word": "nudged",
+        "start": 7.04,
+        "end": 7.34
+      },
+      {
+        "word": "it",
+        "start": 7.4,
+        "end": 7.44
+      },
+      {
+        "word": "gently",
+        "start": 7.56,
+        "end": 7.88
+      },
+      {
+        "word": "toward",
+        "start": 7.94,
+        "end": 8.18
+      },
+      {
+        "word": "the",
+        "start": 8.24,
+        "end": 8.3
+      },
+      {
+        "word": "bank.",
+        "start": 8.34,
+        "end": 8.56
+      }
+    ]
+  },
+  "soar-home": {
+    "text": "Rather than chasing his hat all afternoon, Pip fastened a ribbon beneath his chin. He could not control the wind, but he could change how securely his hat stayed on.",
+    "textHash": "402b6b22f2e0066564eecd0778336c490c4fe401a99e636668b1741de495dbee",
+    "audioHash": "d7026f48ac6a23522437c3803a8e4e8880d46d09f4014e0f6d709df46566a97f",
+    "url": "/reading/audio/soar-home.wav",
+    "duration": 9.659,
+    "words": [
+      {
+        "word": "Rather",
+        "start": 0.06,
+        "end": 0.32
+      },
+      {
+        "word": "than",
+        "start": 0.36,
+        "end": 0.48
+      },
+      {
+        "word": "chasing",
+        "start": 0.56,
+        "end": 0.88
+      },
+      {
+        "word": "his",
+        "start": 0.94,
+        "end": 1.02
+      },
+      {
+        "word": "hat",
+        "start": 1.08,
+        "end": 1.26
+      },
+      {
+        "word": "all",
+        "start": 1.38,
+        "end": 1.48
+      },
+      {
+        "word": "afternoon,",
+        "start": 1.56,
+        "end": 2.0
+      },
+      {
+        "word": "Pip",
+        "start": 2.64,
+        "end": 2.8
+      },
+      {
+        "word": "fastened",
+        "start": 2.9,
+        "end": 3.26
+      },
+      {
+        "word": "a",
+        "start": 3.32,
+        "end": 3.34
+      },
+      {
+        "word": "ribbon",
+        "start": 3.38,
+        "end": 3.62
+      },
+      {
+        "word": "beneath",
+        "start": 3.7,
+        "end": 3.96
+      },
+      {
+        "word": "his",
+        "start": 4.0,
+        "end": 4.12
+      },
+      {
+        "word": "chin.",
+        "start": 4.18,
+        "end": 4.4
+      },
+      {
+        "word": "He",
+        "start": 5.16,
+        "end": 5.24
+      },
+      {
+        "word": "could",
+        "start": 5.28,
+        "end": 5.4
+      },
+      {
+        "word": "not",
+        "start": 5.44,
+        "end": 5.58
+      },
+      {
+        "word": "control",
+        "start": 5.64,
+        "end": 5.92
+      },
+      {
+        "word": "the",
+        "start": 5.98,
+        "end": 6.04
+      },
+      {
+        "word": "wind,",
+        "start": 6.08,
+        "end": 6.34
+      },
+      {
+        "word": "but",
+        "start": 6.82,
+        "end": 6.92
+      },
+      {
+        "word": "he",
+        "start": 6.96,
+        "end": 7.0
+      },
+      {
+        "word": "could",
+        "start": 7.04,
+        "end": 7.18
+      },
+      {
+        "word": "change",
+        "start": 7.22,
+        "end": 7.52
+      },
+      {
+        "word": "how",
+        "start": 7.58,
+        "end": 7.68
+      },
+      {
+        "word": "securely",
+        "start": 7.76,
+        "end": 8.22
+      },
+      {
+        "word": "his",
+        "start": 8.3,
+        "end": 8.4
+      },
+      {
+        "word": "hat",
+        "start": 8.46,
+        "end": 8.64
+      },
+      {
+        "word": "stayed",
+        "start": 8.74,
+        "end": 9.0
+      },
+      {
+        "word": "on.",
+        "start": 9.16,
+        "end": 9.22
+      }
+    ]
+  },
+  "remix-hop": {
+    "text": "Pip hops in his red hat.",
+    "textHash": "5b38c45d688e982d89b452dff2612bcc94a732033de7dff25433b83edf7e2acf",
+    "audioHash": "dff37d4b6b298525f0d7a58d42b25173a0709f07fdf2d773a28ed728bd378a3a",
+    "url": "/reading/audio/remix-hop.wav",
+    "duration": 1.6,
+    "words": [
+      {
+        "word": "Pip",
+        "start": 0.02,
+        "end": 0.18
+      },
+      {
+        "word": "hops",
+        "start": 0.24,
+        "end": 0.5
+      },
+      {
+        "word": "in",
+        "start": 0.58,
+        "end": 0.62
+      },
+      {
+        "word": "his",
+        "start": 0.68,
+        "end": 0.78
+      },
+      {
+        "word": "red",
+        "start": 0.82,
+        "end": 0.96
+      },
+      {
+        "word": "hat.",
+        "start": 1.02,
+        "end": 1.32
+      }
+    ]
+  },
+  "remix-spin": {
+    "text": "Pip spins in his red hat.",
+    "textHash": "53e93d59ac0bb5fcc5abbbfc54b93172762a3cacec6edb97648614f85afc9693",
+    "audioHash": "b1eb9304c0bed75bb01bc874298e7e3b6abf1b48e9a9f476e7b874cf1f214fe8",
+    "url": "/reading/audio/remix-spin.wav",
+    "duration": 1.751,
+    "words": [
+      {
+        "word": "Pip",
+        "start": 0.02,
+        "end": 0.14
+      },
+      {
+        "word": "spins",
+        "start": 0.32,
+        "end": 0.66
+      },
+      {
+        "word": "in",
+        "start": 0.74,
+        "end": 0.78
+      },
+      {
+        "word": "his",
+        "start": 0.84,
+        "end": 0.94
+      },
+      {
+        "word": "red",
+        "start": 1.0,
+        "end": 1.16
+      },
+      {
+        "word": "hat.",
+        "start": 1.22,
+        "end": 1.46
+      }
+    ]
+  },
+  "remix-tiptoe": {
+    "text": "Pip tiptoes in his red hat.",
+    "textHash": "47599502be1a0e65522e7098728f72ddfc6dd1370ed6810062f336eb2ac59cba",
+    "audioHash": "4a80e41e22b46549941431b027ecffb8b8f10cd939685fc00a06836afed945e3",
+    "url": "/reading/audio/remix-tiptoe.wav",
+    "duration": 2.153,
+    "words": [
+      {
+        "word": "Pip",
+        "start": 0.02,
+        "end": 0.2
+      },
+      {
+        "word": "tiptoes",
+        "start": 0.46,
+        "end": 1.1
+      },
+      {
+        "word": "in",
+        "start": 1.18,
+        "end": 1.22
+      },
+      {
+        "word": "his",
+        "start": 1.3,
+        "end": 1.4
+      },
+      {
+        "word": "red",
+        "start": 1.46,
+        "end": 1.62
+      },
+      {
+        "word": "hat.",
+        "start": 1.68,
+        "end": 1.92
+      }
+    ]
+  }
+}

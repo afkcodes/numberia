@@ -3,6 +3,8 @@ import { stopSpeaking } from '../audio';
 import { dateKey, readSave, STORAGE_KEY, type Grade, type Run, type WorldId } from '../game';
 import type { LearningObservation } from '../learning';
 import { saveReducer } from '../saveReducer';
+import type { ReadingCompletion } from '../reading/progress';
+import type { ReadingBand } from '../reading/content';
 
 function loadProgress() {
   try {
@@ -44,6 +46,10 @@ export function useGameSave() {
       claimDaily: (key: string) =>
         dispatch({ type: 'daily-reward-claimed', key, today: dateKey() }),
       completeQuest: (run: Run) => dispatch({ type: 'quest-completed', run }),
+      completeReading: (completion: ReadingCompletion) =>
+        dispatch({ type: 'reading-completed', completion }),
+      bookmarkReading: (band: ReadingBand, page: number) =>
+        dispatch({ type: 'reading-bookmarked', band, page }),
       learn: (observation: LearningObservation) =>
         dispatch({ type: 'discovery-learned', observation }),
     }),

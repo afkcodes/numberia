@@ -3,6 +3,7 @@ import { createReadStream } from 'node:fs';
 import { stat } from 'node:fs/promises';
 import { extname, resolve, sep } from 'node:path';
 import { createSpeechHandler } from './speech.ts';
+import { attachReadingRecognition } from './reading.ts';
 
 const mime: Record<string, string> = {
   '.html': 'text/html; charset=utf-8',
@@ -15,13 +16,15 @@ const mime: Record<string, string> = {
   '.webp': 'image/webp',
   '.woff2': 'font/woff2',
   '.ico': 'image/x-icon',
+  '.wav': 'audio/wav',
+  '.mp3': 'audio/mpeg',
 };
 
 /** Production serves only built assets and the private same-origin speech route. */
 export function createAppServer(options: { root: string; apiKey?: string; voice?: string }) {
   const root = resolve(options.root);
   const speech = createSpeechHandler(options);
-  return createServer(async (req, res) => {
+  const server = createServer(async (req, res) => {
     let pathname: string;
     try {
       pathname = decodeURIComponent(new URL(req.url ?? '/', 'http://localhost').pathname);
@@ -60,19 +63,46 @@ export function createAppServer(options: { root: string; apiKey?: string; voice?
         file = resolve(root, 'index.html');
       }
       const size = (await stat(file)).size;
-      res.writeHead(200, {
+      let start = 0,
+        end = size - 1;
+      const range = req.method === 'GET' ? req.headers.range : undefined;
+      if (range) {
+        const match = /^bytes=(\d*)-(\d*)$/.exec(range);
+        const first = match?.[1] ? Number(match[1]) : undefined;
+        const last = match?.[2] ? Number(match[2]) : undefined;
+        const valid =
+          match &&
+          (first !== undefined || last !== undefined) &&
+          (first === undefined || Number.isSafeInteger(first)) &&
+          (last === undefined || Number.isSafeInteger(last));
+        if (valid && first === undefined && last! > 0) start = Math.max(0, size - last!);
+        else if (valid && first !== undefined) {
+          start = first;
+          end = Math.min(last ?? end, end);
+        } else {
+          res.writeHead(416, { 'Content-Range': `bytes */${size}` }).end();
+          return;
+        }
+        if (start >= size || start > end) {
+          res.writeHead(416, { 'Content-Range': `bytes */${size}` }).end();
+          return;
+        }
+      }
+      res.writeHead(range ? 206 : 200, {
         'Content-Type': mime[extname(file)] ?? 'application/octet-stream',
-        'Content-Length': size,
+        'Content-Length': Math.max(0, end - start + 1),
+        'Accept-Ranges': 'bytes',
+        ...(range ? { 'Content-Range': `bytes ${start}-${end}/${size}` } : {}),
         'Cache-Control': pathname.startsWith('/assets/')
           ? 'public, max-age=31536000, immutable'
           : 'no-cache',
         'X-Content-Type-Options': 'nosniff',
       });
-      if (req.method === 'HEAD') {
+      if (req.method === 'HEAD' || !size) {
         res.end();
         return;
       }
-      const stream = createReadStream(file);
+      const stream = createReadStream(file, { start, end });
       stream.on('error', () => res.destroy());
       res.on('close', () => stream.destroy());
       stream.pipe(res);
@@ -81,4 +111,6 @@ export function createAppServer(options: { root: string; apiKey?: string; voice?
       else res.destroy();
     }
   });
+  attachReadingRecognition(server, options);
+  return server;
 }

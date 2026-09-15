@@ -40,6 +40,8 @@ The adventure map is keyed by grade and current chapter, so chapter selection re
 
 ## Animation and styling
 
+Storywild keeps its authored text, reading progress, and speech matching in `src/reading/`, with the paper theatre UI in `src/features/reading/`. Its completion/bookmark actions go through the same save reducer. See [Storywild](storywild.md) for narration preparation and the optional microphone gateway.
+
 Each chapter scene is composed by `src/playgrounds/createPlayground.ts`. Landmark builders own their objects and update functions; `Meadow` owns the renderer, frame loop, input, observers, and cleanup. Progress comes from the question engine through `restore(count)` and never awards rewards inside the scene. Materials and geometry are shared and disposed when the chapter closes. Reduced-motion updates show all earned pieces without decorative movement.
 
 Each discovery owns its animation timeline. Sound and solved-state callbacks read committed values through `useLatest`; muting does not rebuild the Three.js scene or restart a demonstration. Clean up animation frames, timers, observers, listeners, and narration when an activity closes. React state drives rendered feedback; refs hold imperative handles and immediate event guards.

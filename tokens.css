@@ -80,4 +80,32 @@
   --dur-medium: 350ms;
   --dur-slow: 650ms;
   --rule-hair: 1px;
+  /* Storywild paper theatre: shared UI and illustration palette. */
+  --sw-paper: oklch(97% 0.042 87);
+  --sw-white: oklch(99% 0.014 87);
+  --sw-ink: oklch(29% 0.043 174);
+  --sw-muted: oklch(45% 0.039 174);
+  --sw-rule: oklch(85% 0.04 87);
+  --sw-red: oklch(64% 0.186 31);
+  --sw-red-dark: oklch(45% 0.137 29);
+  --sw-button: oklch(53% 0.166 31);
+  --sw-rose: oklch(84% 0.1 23);
+  --sw-gold: oklch(86% 0.15 87);
+  --sw-gold-dark: oklch(58% 0.11 74);
+  --sw-orange: oklch(73% 0.16 56);
+  --sw-sky: oklch(90% 0.063 212);
+  --sw-water: oklch(76% 0.12 208);
+  --sw-water-edge: oklch(69% 0.092 190);
+  --sw-water-light: oklch(93% 0.043 207);
+  --sw-hill-back: oklch(79% 0.108 160);
+  --sw-hill: oklch(70% 0.124 151);
+  --sw-grass: oklch(84% 0.099 129);
+  --sw-green: oklch(72% 0.13 165);
+  --sw-green-dark: oklch(44% 0.102 168);
+  --sw-sand: oklch(92% 0.072 86);
+  --sw-brown: oklch(44% 0.075 51);
+  --sw-brown-light: oklch(64% 0.087 57);
+  --sw-shadow: oklch(40% 0.077 137 / 0.22);
+  --sw-transparent: oklch(97% 0.042 87 / 0);
+  --sw-tint: oklch(93% 0.058 159);
 }
